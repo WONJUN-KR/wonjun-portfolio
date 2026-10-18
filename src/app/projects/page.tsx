@@ -94,9 +94,28 @@ export default function ProjectsPage() {
         {PROJECTS.map((p) => (
           <article
             key={p.slug}
-            className="rounded-3xl border border-line bg-surface p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center"
+            id={p.slug}
+            // 홈 카드에서 /projects#slug 로 오면 해당 카드로 스크롤 (상단 고정 헤더만큼 여백) + 테두리 강조
+            className="scroll-mt-24 target:border-accent/60 rounded-3xl border border-line bg-surface p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start"
           >
-            <ProjectVisual project={p} />
+            {/* 왼쪽: 화면 + 핵심 기능(사용자가 할 수 있는 것) / 오른쪽: 소개 + 내가 맡은 부분 */}
+            <div className="flex flex-col gap-6">
+              <ProjectVisual project={p} />
+              <div className="flex flex-col gap-1">
+                <p className="text-base text-muted">{p.subtitle}</p>
+                <p className="text-lg font-semibold leading-snug">{p.tagline}</p>
+              </div>
+              <div className="flex flex-col gap-2">
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-2">핵심 기능</span>
+                <ul className="flex flex-col gap-1.5 text-sm leading-relaxed">
+                  {p.features.map((f) => (
+                    <li key={f} className="relative pl-4 before:absolute before:left-0 before:top-2 before:size-1 before:rounded-full before:bg-accent">
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
 
             <div className="flex flex-col gap-5">
               <div className="flex flex-col gap-2">
@@ -109,24 +128,24 @@ export default function ProjectsPage() {
                       운영 중
                     </span>
                   )}
+                  {p.lead && (
+                    <span className="rounded-full bg-accent-soft text-accent-2 px-2.5 py-0.5 font-semibold">팀장</span>
+                  )}
                   <span className="tabular-nums">{p.period}</span>
                   <span>·</span>
                   <span>{p.role}</span>
                 </div>
                 <h2 className="text-3xl font-bold tracking-tight">{p.title}</h2>
-                <p className="text-base text-muted">{p.subtitle}</p>
               </div>
 
-              <ul className="flex flex-col gap-2 text-sm leading-relaxed">
-                {p.highlights.map((h) => (
-                  <li
-                    key={h}
-                    className="relative pl-4 before:absolute before:left-0 before:top-2 before:size-1 before:rounded-full before:bg-accent"
-                  >
-                    {h}
-                  </li>
-                ))}
-              </ul>
+              <div className="flex flex-col gap-2 rounded-2xl border border-line bg-background p-4">
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">내가 맡은 부분</span>
+                <ul className="flex flex-col gap-1.5 text-sm leading-relaxed text-muted">
+                  {p.myPart.map((m) => (
+                    <li key={m}>{m}</li>
+                  ))}
+                </ul>
+              </div>
 
               <div className="flex flex-wrap gap-1.5">
                 {p.stack.map((s) => (
