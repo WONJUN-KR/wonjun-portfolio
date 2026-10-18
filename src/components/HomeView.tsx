@@ -45,7 +45,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
 
   // 숫자 카드 - 커밋 수 같은 활동량 대신 결과 지표 + 근거 한 줄
   const stats = [
-    { label: "경력", value: profile?.careerPeriod ?? "-", basis: "CGM 의료기기 기업 재직" },
+    { label: "경력", value: profile?.careerPeriod ?? "-", basis: "UXN 재직 중" },
     ...HOME_HIGHLIGHTS,
   ];
 
