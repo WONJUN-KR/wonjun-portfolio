@@ -44,8 +44,8 @@ export const PROJECTS: Project[] = [
     stack: ["Java", "TypeScript", "Spring Boot", "Next.js", "카카오맵", "Vercel", "PostgreSQL"],
     liveUrl: "https://gotcha.it.com/",
     repos: [
-      { label: "Frontend", url: "https://github.com/WONJUN-KR/GOTCHA-Frontend" },
-      { label: "Backend", url: "https://github.com/WONJUN-KR/GOTCHA-Backend" },
+      { label: "Frontend", url: "https://github.com/fcde-project9/GOTCHA-FE" },
+      { label: "Backend", url: "https://github.com/fcde-project9/GOTCHA-BE" },
     ],
     thumbnail: "/projects/gotcha.png",
     pinned: true,
