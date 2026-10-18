@@ -7,12 +7,8 @@ import ContributionsCalendar from "@/components/ContributionsCalendar";
 import YearSelector from "@/components/YearSelector";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { Chip, SectionHeader } from "@/components/ui";
-import {
-  getContributions,
-  getGithubContributionAllTime,
-  getPosts,
-  type AboutContent,
-} from "@/lib/api";
+import { getContributions, getPosts, type AboutContent } from "@/lib/api";
+import { HOME_HIGHLIGHTS } from "@/lib/about";
 import { PROJECTS } from "@/lib/projects";
 
 const EARLIEST_YEAR = 2020;
@@ -23,9 +19,6 @@ const COMPANY_LOGOS: Record<string, string> = {
   "(주)유엑스엔": "/logos/uxn.jpg",
   "상상스토리(주)": "/logos/sangs.jpg",
 };
-
-const GITHUB_WORK = "WonJun-Uxn";
-const GITHUB_PERSONAL = "WONJUN-KR";
 
 const PROFILE_IMG = "/img/profile.jpg";
 const hasProfileImg = fs.existsSync(path.join(process.cwd(), "public", PROFILE_IMG));
@@ -39,12 +32,9 @@ function availableYears(): number[] {
 
 // 홈 본문 - 이력서 데이터는 src/lib/about.ts 하드코딩
 export default async function HomeView({ year, about }: { year?: string; about: AboutContent }) {
-  // 숫자 카드는 회사·개인 계정을 따로, 전체 기간 합계로 셈 (잔디는 두 계정 합산 그대로)
-  const [contributions, posts, workCount, personalCount] = await Promise.all([
+  const [contributions, posts] = await Promise.all([
     getContributions(year).catch(() => null),
     getPosts().catch(() => []),
-    getGithubContributionAllTime(GITHUB_WORK).catch(() => null),
-    getGithubContributionAllTime(GITHUB_PERSONAL).catch(() => null),
   ]);
 
   const profile = about?.profile;
@@ -53,11 +43,10 @@ export default async function HomeView({ year, about }: { year?: string; about: 
   const latestPosts = posts.slice(0, LATEST_POSTS_COUNT);
   const featured = PROJECTS.slice(0, FEATURED_PROJECTS_COUNT);
 
+  // 숫자 카드 - 커밋 수 같은 활동량 대신 결과 지표 + 근거 한 줄
   const stats = [
-    { label: "경력", value: profile?.careerPeriod ?? "-" },
-    { label: "프로젝트", value: `${PROJECTS.length}개` },
-    { label: "UXN 기여", value: workCount !== null ? `${workCount.toLocaleString()}회` : "-" },
-    { label: "개인 작업", value: personalCount !== null ? `${personalCount.toLocaleString()}회` : "-" },
+    { label: "경력", value: profile?.careerPeriod ?? "-", basis: "CGM 의료기기 기업 재직" },
+    ...HOME_HIGHLIGHTS,
   ];
 
   return (
@@ -136,6 +125,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
           <div key={s.label} className="rounded-2xl border border-line bg-surface p-5 flex flex-col gap-1">
             <span className="text-sm text-muted">{s.label}</span>
             <span className="text-2xl sm:text-3xl font-bold tracking-tight text-accent-2">{s.value}</span>
+            <span className="text-xs text-muted truncate" title={s.basis}>{s.basis}</span>
           </div>
         ))}
       </section>

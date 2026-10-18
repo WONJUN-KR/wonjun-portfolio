@@ -28,6 +28,13 @@ export function groupSkillsByKind(items: SkillItem[]): { kind?: string; items: S
   return groups;
 }
 
+// 홈 숫자 카드 - 커밋 수 대신 결과 지표. 아래 careers 문구에 있는 숫자만 씀 (basis = 근거 한 줄)
+export const HOME_HIGHLIGHTS: { label: string; value: string; basis: string }[] = [
+  { label: "신규 구축", value: "3개", basis: "혈당 관리 도구 외 2건" },
+  { label: "무중단 배포", value: "3개 서비스", basis: "배포 중 의료 서비스 중단 0건" },
+  { label: "AWS 무손실 이전", value: "2건", basis: "의료 데이터 40만 행 · 유실 0건" },
+];
+
 // 이력서 데이터 - 홈(/)과 Resume(/resume)이 함께 씀. DB 대신 코드로 관리해서 수정 이력이 커밋으로 남음
 export const ABOUT: AboutContent = {
   profile: {
