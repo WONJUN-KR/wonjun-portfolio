@@ -50,7 +50,7 @@ export default function LogBrowser({ posts, seriesList }: { posts: LogPost[]; se
     <>
       {seriesList.length > 0 && (
         <section className="flex flex-col gap-8">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             {seriesList.map((series) => {
               const active = series.id === seriesId;
               const { title, years } = splitSeriesName(series.name);
@@ -60,7 +60,7 @@ export default function LogBrowser({ posts, seriesList }: { posts: LogPost[]; se
                   type="button"
                   onClick={() => selectSeries(series.id)}
                   aria-pressed={active}
-                  className={`group flex flex-col gap-4 rounded-3xl border p-6 text-left transition-all hover:-translate-y-1 ${
+                  className={`group flex flex-col gap-3 sm:gap-4 rounded-3xl border p-4 sm:p-6 text-left transition-all hover:-translate-y-1 ${
                     active ? "border-accent bg-accent-soft" : "border-line bg-surface hover:border-accent/40"
                   }`}
                 >
@@ -132,7 +132,7 @@ export default function LogBrowser({ posts, seriesList }: { posts: LogPost[]; se
         {visible.length === 0 ? (
           <p className="text-muted">{posts.length === 0 ? "아직 글이 없습니다." : "조건에 맞는 글이 없어요."}</p>
         ) : (
-          <ul className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <ul className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
             {visible.map((post) => (
               <li key={post.id}>
                 <a
@@ -157,7 +157,7 @@ export default function LogBrowser({ posts, seriesList }: { posts: LogPost[]; se
                       </div>
                     )}
                   </div>
-                  <div className="flex flex-col gap-1 px-4 py-3.5">
+                  <div className="flex flex-col gap-1 px-3 py-3 sm:px-4 sm:py-3.5">
                     <h3 className="text-sm font-bold tracking-tight line-clamp-2 group-hover:text-accent-2 transition-colors">
                       {post.title}
                     </h3>

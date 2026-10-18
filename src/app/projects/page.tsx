@@ -96,7 +96,7 @@ export default function ProjectsPage() {
             key={p.slug}
             id={p.slug}
             // 홈 카드에서 /projects#slug 로 오면 해당 카드로 스크롤 (상단 고정 헤더만큼 여백) + 테두리 강조
-            className="scroll-mt-24 target:border-accent/60 rounded-3xl border border-line bg-surface p-6 sm:p-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start"
+            className="scroll-mt-24 target:border-accent/60 rounded-3xl border border-line bg-surface p-4 sm:p-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start"
           >
             {/* 왼쪽: 화면 + 핵심 기능(사용자가 할 수 있는 것) / 오른쪽: 소개 + 내가 맡은 부분 */}
             <div className="flex flex-col gap-6">
@@ -153,8 +153,8 @@ export default function ProjectsPage() {
                 ))}
               </div>
 
-              {/* 링크 버튼은 한 줄로 - 좁은 화면에서도 줄바꿈 없이 */}
-              <div className="flex flex-nowrap gap-2 pt-2">
+              {/* 링크 버튼은 한 줄로 (휴대폰 폭에선 넘치지 않게 줄바꿈) */}
+              <div className="flex flex-wrap sm:flex-nowrap gap-2 pt-2">
                 {p.liveUrl && (
                   <a
                     href={p.liveUrl}
