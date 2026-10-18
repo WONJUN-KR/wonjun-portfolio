@@ -5,6 +5,7 @@ import Link from "next/link";
 import { BookOpen, ChevronLeft, ChevronRight, Funnel, FunnelX, Layers, Search } from "lucide-react";
 import type { PostListItem } from "@/lib/api";
 import { SectionHeader } from "@/components/ui";
+import { splitSeriesName } from "@/lib/series";
 
 // 한 페이지 9개 (3칸 x 3줄), 페이지 번호는 네이버 블로그처럼 10개씩 묶음
 const PAGE_SIZE = 9;
@@ -53,6 +54,7 @@ export default function LogBrowser({ posts, seriesList }: { posts: LogPost[]; se
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {seriesList.map((series) => {
               const active = series.id === seriesId;
+              const { title, years } = splitSeriesName(series.name);
               return (
                 <button
                   key={series.id}
@@ -74,9 +76,12 @@ export default function LogBrowser({ posts, seriesList }: { posts: LogPost[]; se
                       <Funnel className="size-5 text-muted transition-colors group-hover:text-accent-2" aria-label="이 시리즈로 필터" />
                     )}
                   </div>
-                  <h3 className="text-lg font-bold tracking-tight">{series.name}</h3>
+                  <div className="flex flex-col gap-1">
+                    {years && <span className="text-xs font-semibold tabular-nums text-accent-2">{years}</span>}
+                    <h3 className="text-lg font-bold tracking-tight">{title}</h3>
+                  </div>
                   <div className="flex items-center gap-2 text-xs text-muted">
-                    <span>{series.postsCount}개 글</span>
+                    <span>{series.postsCount}개의 글</span>
                     {series.updated && (
                       <>
                         <span>·</span>
@@ -94,7 +99,11 @@ export default function LogBrowser({ posts, seriesList }: { posts: LogPost[]; se
       <section className="flex flex-col gap-8">
         {/* 제목 왼쪽, 검색창 오른쪽 한 줄 (좁은 화면에선 아래로) */}
         <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
-          <SectionHeader eyebrow="All Posts" title={selected ? `${selected.name} ${filtered.length}` : `전체 글 ${filtered.length}`} />
+          {/* 시리즈 선택 시: 작은 글씨 = 시리즈 이름·연도, 큰 제목 = 글 수 */}
+          <SectionHeader
+            eyebrow={selected ? seriesHeading(selected.name) : "All Posts"}
+            title={selected ? `${filtered.length}개의 글` : `전체 ${filtered.length}개의 글`}
+          />
           <div className="flex items-center gap-2">
             <label className="relative w-full sm:w-72">
               <Search className="pointer-events-none absolute left-4 top-1/2 size-4 -translate-y-1/2 text-muted" />
@@ -182,6 +191,12 @@ export default function LogBrowser({ posts, seriesList }: { posts: LogPost[]; se
       </section>
     </>
   );
+}
+
+// 선택한 시리즈 표시 - "취업준비 기록지 · 2026"
+function seriesHeading(name: string): string {
+  const { title, years } = splitSeriesName(name);
+  return years ? `${title} · ${years}` : title;
 }
 
 function PageButton({ children, onClick, label, active = false }: {

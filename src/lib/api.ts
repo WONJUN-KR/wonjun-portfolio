@@ -1,6 +1,6 @@
-// 데이터는 백엔드 없이 Next.js 서버에서 직접 가져옴: 글·시리즈 = Velog, 잔디 = GitHub (src/lib/velog.ts, github.ts)
+// 데이터: 글·시리즈 = src/content/posts.json 하드코딩(네이버에도 있는 글만, 날짜는 네이버 발행일), 잔디 = GitHub (src/lib/github.ts)
 import { contributionAllTime, contributionDays } from "@/lib/github";
-import { velogPost, velogPosts, velogSeries, velogSeriesList, type VelogPost } from "@/lib/velog";
+import postsData from "@/content/posts.json";
 
 export type Tag = {
   id: string;
@@ -23,6 +23,25 @@ export type PostDetail = PostListItem & {
   updatedAt: string;
 };
 
+type StoredPost = {
+  id: string;
+  slug: string;
+  title: string;
+  excerpt: string | null;
+  publishedAt: string;
+  thumbnail: string | null;
+  tags: string[];
+  seriesId: string | null;
+  seriesIndex: number | null;
+  naverUrl: string;
+  body: string;
+};
+
+type StoredSeries = { id: string; slug: string; name: string; description: string | null };
+
+const POSTS = postsData.posts as StoredPost[];
+const SERIES = postsData.series as StoredSeries[];
+
 function decodeSlug(slug: string): string {
   try {
     return decodeURIComponent(slug);
@@ -31,39 +50,27 @@ function decodeSlug(slug: string): string {
   }
 }
 
-function toTags(tags: string[] | null | undefined): Tag[] {
-  return (tags ?? []).filter(Boolean).map((name) => ({ id: name, name }));
-}
-
-function toListItem(p: VelogPost): PostListItem {
+function toListItem(p: StoredPost): PostListItem {
   return {
     id: p.id,
-    slug: p.url_slug,
+    slug: p.slug,
     title: p.title,
-    excerpt: p.short_description || null,
-    publishedAt: p.released_at,
-    thumbnail: p.thumbnail || null,
-    tags: toTags(p.tags),
+    excerpt: p.excerpt,
+    publishedAt: p.publishedAt,
+    thumbnail: p.thumbnail,
+    tags: p.tags.map((name) => ({ id: name, name })),
   };
 }
 
 // 최신 글이 위
 export async function getPosts(): Promise<PostListItem[]> {
-  const posts = await velogPosts();
-  return posts
-    .map(toListItem)
-    .sort((a, b) => (b.publishedAt ?? "").localeCompare(a.publishedAt ?? ""));
+  return POSTS.map(toListItem).sort((a, b) => (b.publishedAt ?? "").localeCompare(a.publishedAt ?? ""));
 }
 
 export async function getPost(slug: string): Promise<PostDetail | null> {
-  const p = await velogPost(decodeSlug(slug));
+  const p = POSTS.find((x) => x.slug === decodeSlug(slug));
   if (!p) return null;
-  return {
-    ...toListItem(p),
-    content: p.body ?? "",
-    createdAt: p.released_at ?? "",
-    updatedAt: p.updated_at ?? p.released_at ?? "",
-  };
+  return { ...toListItem(p), content: p.body, createdAt: p.publishedAt, updatedAt: p.publishedAt };
 }
 
 export type SeriesListItem = {
@@ -89,30 +96,22 @@ export type SeriesDetail = SeriesListItem & {
   posts: SeriesPostItem[];
 };
 
-// 최근 업데이트된 시리즈가 앞
+// 시리즈 글 수·업데이트일은 담긴 글에서 계산 (업데이트 = 가장 최근 글 날짜). 최근 업데이트된 시리즈가 앞
 export async function getSeriesList(): Promise<SeriesListItem[]> {
-  const list = await velogSeriesList();
-  const sorted = [...list].sort((a, b) => (b.updated_at ?? "").localeCompare(a.updated_at ?? ""));
-  return sorted.map((s) => ({
-    id: s.id,
-    slug: s.url_slug,
-    name: s.name,
-    description: s.description?.trim() || null,
-    postsCount: s.posts_count,
-    updatedAt: s.updated_at,
-  }));
+  return SERIES.map((s) => {
+    const mine = POSTS.filter((p) => p.seriesId === s.id);
+    const updatedAt = mine.map((p) => p.publishedAt).sort().at(-1) ?? null;
+    return { id: s.id, slug: s.slug, name: s.name, description: s.description, postsCount: mine.length, updatedAt };
+  }).sort((a, b) => (b.updatedAt ?? "").localeCompare(a.updatedAt ?? ""));
 }
 
-// 시리즈 상세는 id 로만 조회돼서 목록에서 slug → id 를 찾음
 export async function getSeries(slug: string): Promise<SeriesDetail | null> {
   const target = (await getSeriesList()).find((s) => s.slug === decodeSlug(slug));
   if (!target) return null;
-  const detail = await velogSeries(target.id);
-  if (!detail) return null;
   return {
     ...target,
-    posts: detail.series_posts
-      .map(({ index, post }) => ({ ...toListItem(post), seriesIndex: index }))
+    posts: POSTS.filter((p) => p.seriesId === target.id)
+      .map((p) => ({ ...toListItem(p), seriesIndex: p.seriesIndex }))
       .sort((a, b) => (a.seriesIndex ?? 0) - (b.seriesIndex ?? 0)),
   };
 }
