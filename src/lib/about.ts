@@ -194,9 +194,6 @@ export const ABOUT: AboutContent = {
       gpa: "3.49 / 4.5",
       projects: [
         "스마트멀티탭 - IoT 기반 에너지 절약 솔루션 개발 및 안드로이드 앱 연동",
-        "대중교통 통합 예약 어플 - 좌석 예약·취소·결제 기능 통합",
-        "숨겨진 명소 알리기 사이트 - 명소 등록/파일 업로드 공유형 웹사이트",
-        "농구팀 사이트 - 팀 소개, 공지사항, 질문 기능 + 관리자 페이지",
       ],
       sortOrder: 2,
     },
@@ -210,6 +207,11 @@ export const ABOUT: AboutContent = {
         "Java", "HTML5", "CSS3", "JavaScript", "TypeScript", "Spring Boot", "JSP", "React",
         "JPA", "jQuery", "AI API", "Oracle", "MySQL", "PostgreSQL",
       ],
+      projects: [
+        "Co's House (5인 팀, 2025.09 ~ 2025.10) - 인테리어 커뮤니티·쇼핑 통합 플랫폼(Spring Boot). 마이페이지(회원정보 수정·리뷰·탈퇴), 관리자 상품·주문 관리, 커뮤니티 댓글 담당",
+        "Youth Compass (5인 팀, 2025.10 ~ 2025.11) - 청년 금융·주택 정책 AI 상담 챗봇(React + Spring Boot + FastAPI·LangGraph RAG). 백엔드 초기 설정과 DTO·Entity·Service·Controller 계층 구성, 사용자 정보 수정 API, FAQ 탭 UI 담당",
+        "AI Auto Posting (6인 팀, 2025.11 ~ 2025.12) - AI 블로그 콘텐츠 생성·자동 업로드 파이프라인(Spring Boot + React). 관리자 통계 API·일별 자동 집계 스케줄러·공통코드 관리, 관리자 대시보드 차트·통계 페이징 담당",
+      ],
       sortOrder: 1,
     },
     {
@@ -217,6 +219,11 @@ export const ABOUT: AboutContent = {
       course: "웹 콘텐츠 개발을 위한 응용SW엔지니어링 양성과정",
       period: "2021.07 ~ 2022.01",
       learned: ["Java", "Oracle", "JSP", "HTML5", "CSS3", "JavaScript", "jQuery", "Spring"],
+      projects: [
+        "대중교통 통합 예약 어플 - 좌석 예약·취소·결제 기능 통합",
+        "숨겨진 명소 알리기 사이트 - 명소 등록/파일 업로드 공유형 웹사이트",
+        "농구팀 사이트 - 팀 소개, 공지사항, 질문 기능 + 관리자 페이지",
+      ],
       sortOrder: 2,
     },
   ],

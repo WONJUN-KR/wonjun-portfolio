@@ -150,6 +150,7 @@ export default function AboutView({ about }: { about: AboutContent }) {
                   ))}
                 </div>
               )}
+              {t.projects && t.projects.length > 0 && <BulletList items={t.projects} />}
             </TimelineItem>
           ))}
         </Timeline>

@@ -199,6 +199,7 @@ export type TrainingItem = {
   course: string;
   period: string;
   learned?: string[];
+  projects?: string[];
   sortOrder: number;
 };
 
