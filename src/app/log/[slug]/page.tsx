@@ -4,6 +4,7 @@ import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { getPost } from "@/lib/api";
 import { formatDate } from "@/lib/format";
+import { normalizePostMarkdown } from "@/lib/markdown";
 import { BackLink, TagList } from "@/components/ui";
 
 type PageProps = {
@@ -31,7 +32,7 @@ export default async function PostPage({ params }: PageProps) {
       </header>
 
       <div className="prose prose-invert max-w-none prose-headings:font-[family-name:var(--font-display)] prose-headings:tracking-tight prose-p:text-foreground/90 prose-li:text-foreground/90 prose-strong:text-foreground prose-a:text-accent-2 prose-code:text-accent-2 prose-pre:bg-surface prose-pre:border prose-pre:border-line prose-blockquote:border-accent prose-hr:border-line">
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>{post.content}</ReactMarkdown>
+        <ReactMarkdown remarkPlugins={[remarkGfm]}>{normalizePostMarkdown(post.content)}</ReactMarkdown>
       </div>
     </article>
   );
