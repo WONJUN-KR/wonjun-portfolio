@@ -70,7 +70,7 @@ export default function AboutView({ about }: { about: AboutContent }) {
       </section>
 
       <Section eyebrow="Cover Letter" title="자기소개서">
-        <div className="rounded-3xl border border-line bg-surface p-6 sm:p-10">
+        <div className="rounded-3xl border border-line bg-surface p-5 sm:p-10">
           <div className="prose prose-invert max-w-none prose-headings:font-[family-name:var(--font-display)] prose-p:text-foreground/90 prose-li:text-foreground/90 prose-strong:text-foreground prose-a:text-accent-2">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{coverLetter}</ReactMarkdown>
           </div>
@@ -93,7 +93,7 @@ export default function AboutView({ about }: { about: AboutContent }) {
               {c.projects && c.projects.length > 0 && (
                 <div className="flex flex-col gap-4 mt-1">
                   {c.projects.map((p, pi) => (
-                    <div key={pi} className="rounded-2xl border border-line bg-background p-5 flex flex-col gap-2">
+                    <div key={pi} className="rounded-2xl border border-line bg-background p-4 sm:p-5 flex flex-col gap-2">
                       <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                         <h4 className="font-semibold">{p.title}</h4>
                         <span className="text-xs tabular-nums text-muted">{p.period}</span>
@@ -242,7 +242,7 @@ function TimelineItem({ period, current, children }: {
   children: React.ReactNode;
 }) {
   return (
-    <li className="relative pl-8 flex flex-col gap-3">
+    <li className="relative pl-5 sm:pl-8 flex flex-col gap-3">
       <span
         className={`absolute -left-[5px] top-1.5 size-2.5 rounded-full ring-4 ring-background ${
           current ? "bg-accent" : "bg-muted"

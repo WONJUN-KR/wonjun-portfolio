@@ -50,7 +50,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
   ];
 
   return (
-    <div className="flex flex-col gap-28 py-6">
+    <div className="flex flex-col gap-20 sm:gap-28 py-6">
       {/* Hero */}
       <section className="animate-fade-up flex flex-col-reverse sm:flex-row sm:items-start gap-10 sm:gap-10 pt-2">
         <div className="flex flex-col gap-6 min-w-0">
@@ -125,7 +125,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
           <div key={s.label} className="rounded-2xl border border-line bg-surface p-5 flex flex-col gap-1">
             <span className="text-sm text-muted">{s.label}</span>
             <span className="text-2xl sm:text-3xl font-bold tracking-tight text-accent-2">{s.value}</span>
-            <span className="text-xs text-muted truncate" title={s.basis}>{s.basis}</span>
+            <span className="text-xs text-muted sm:truncate" title={s.basis}>{s.basis}</span>
           </div>
         ))}
       </section>
@@ -138,7 +138,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
             {careers.map((c) => {
               const logo = COMPANY_LOGOS[c.company];
               return (
-                <li key={c.company + c.period} className="rounded-3xl border border-line bg-surface p-6 sm:p-8 flex flex-col gap-5">
+                <li key={c.company + c.period} className="rounded-3xl border border-line bg-surface p-4 sm:p-8 flex flex-col gap-5">
                   <div className="flex items-start gap-4">
                     <div className="shrink-0 size-12 rounded-xl bg-white border border-line flex items-center justify-center overflow-hidden p-1.5">
                       {logo ? (
@@ -164,14 +164,14 @@ export default async function HomeView({ year, about }: { year?: string; about: 
                     <div className="flex flex-col gap-2">
                       {c.projects.map((proj) => (
                         <details key={proj.title} className="group rounded-2xl border border-line bg-background open:bg-background">
-                          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-5 py-4 [&::-webkit-details-marker]:hidden">
+                          <summary className="flex cursor-pointer list-none items-center justify-between gap-3 px-4 sm:px-5 py-4 [&::-webkit-details-marker]:hidden">
                             <span className="font-semibold text-sm sm:text-base">{proj.title}</span>
                             <span className="flex items-center gap-3 shrink-0">
                               <span className="hidden sm:inline text-xs tabular-nums text-muted">{proj.period}</span>
                               <ChevronDown className="size-4 text-muted transition-transform group-open:rotate-180" />
                             </span>
                           </summary>
-                          <ul className="flex flex-col gap-2 px-5 pb-5 text-sm text-muted">
+                          <ul className="flex flex-col gap-2 px-4 sm:px-5 pb-5 text-sm text-muted">
                             {proj.details.map((d) => (
                               <li key={d} className="relative pl-4 before:absolute before:left-0 before:top-2 before:size-1 before:rounded-full before:bg-accent">
                                 {d}
