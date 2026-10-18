@@ -1,0 +1,45 @@
+# 매일 아침 네이버 블로그 RSS 를 확인해서, 새 글이 있으면 dev 로 가는 PR 을 자동으로 엶 (머지는 사람이)
+# 필요 설정: Settings → Actions → General → Workflow permissions → "Allow GitHub Actions to create and approve pull requests"
+name: 네이버 블로그 동기화
+
+on:
+  schedule:
+    - cron: "0 0 * * *" # 매일 09:00 KST (UTC 00:00)
+  workflow_dispatch: # Actions 탭에서 손으로도 실행 가능
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: dev
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 네이버 RSS 에서 새 글 가져오기
+        run: node scripts/sync-naver.mjs
+
+      - name: 새 글이 있으면 PR 열기
+        uses: peter-evans/create-pull-request@v7
+        with:
+          base: dev
+          branch: chore/naver-sync
+          delete-branch: true
+          commit-message: "chore: 네이버 블로그 새 글 동기화"
+          title: "chore: 네이버 블로그 새 글 동기화"
+          body: |
+            네이버 블로그 RSS 에 새 글이 있어서 자동으로 만든 PR 이에요.
+            - `src/content/posts.json` 에 새 글 추가 (기존 글은 그대로)
+            - `public/blog/naver/` 에 새 글 썸네일 저장
+
+            사이트에 올리기 싫은 글이 있으면 이 PR 에서 해당 항목을 지운 뒤 머지하세요.
+          add-paths: |
+            src/content/posts.json
+            public/blog/naver/**

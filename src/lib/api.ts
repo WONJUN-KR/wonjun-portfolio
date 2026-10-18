@@ -1,6 +1,7 @@
-// 데이터는 백엔드 없이 Next.js 서버에서 직접 가져옴: 글·시리즈 = Velog, 잔디 = GitHub (src/lib/velog.ts, github.ts)
+// 데이터: 글 = 네이버 블로그(src/content/posts.json, scripts/sync-naver.mjs 로 동기화), 잔디 = GitHub (src/lib/github.ts)
+// 글을 누르면 네이버 원문으로 이동 - 시리즈 = 네이버 카테고리
 import { contributionAllTime, contributionDays } from "@/lib/github";
-import { velogPost, velogPosts, velogSeries, velogSeriesList, type VelogPost } from "@/lib/velog";
+import postsData from "@/content/posts.json";
 
 export type Tag = {
   id: string;
@@ -9,19 +10,26 @@ export type Tag = {
 
 export type PostListItem = {
   id: string;
-  slug: string;
   title: string;
   excerpt: string | null;
   publishedAt: string | null;
   thumbnail: string | null;
   tags: Tag[];
+  url: string; // 네이버 원문
 };
 
-export type PostDetail = PostListItem & {
-  content: string;
-  createdAt: string;
-  updatedAt: string;
+type StoredPost = {
+  id: string;
+  title: string;
+  excerpt: string | null;
+  publishedAt: string;
+  thumbnail: string | null;
+  tags: string[];
+  category: string;
+  url: string;
 };
+
+const POSTS = postsData.posts as StoredPost[];
 
 function decodeSlug(slug: string): string {
   try {
@@ -31,39 +39,26 @@ function decodeSlug(slug: string): string {
   }
 }
 
-function toTags(tags: string[] | null | undefined): Tag[] {
-  return (tags ?? []).filter(Boolean).map((name) => ({ id: name, name }));
+// 카테고리 이름 → 주소용 slug ("취업준비 기록지(21)" → "취업준비-기록지-21")
+export function categorySlug(name: string): string {
+  return name.replace(/[^가-힣a-zA-Z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 
-function toListItem(p: VelogPost): PostListItem {
+function toListItem(p: StoredPost): PostListItem {
   return {
     id: p.id,
-    slug: p.url_slug,
     title: p.title,
-    excerpt: p.short_description || null,
-    publishedAt: p.released_at,
-    thumbnail: p.thumbnail || null,
-    tags: toTags(p.tags),
+    excerpt: p.excerpt,
+    publishedAt: p.publishedAt,
+    thumbnail: p.thumbnail,
+    tags: p.tags.map((name) => ({ id: name, name })),
+    url: p.url,
   };
 }
 
 // 최신 글이 위
 export async function getPosts(): Promise<PostListItem[]> {
-  const posts = await velogPosts();
-  return posts
-    .map(toListItem)
-    .sort((a, b) => (b.publishedAt ?? "").localeCompare(a.publishedAt ?? ""));
-}
-
-export async function getPost(slug: string): Promise<PostDetail | null> {
-  const p = await velogPost(decodeSlug(slug));
-  if (!p) return null;
-  return {
-    ...toListItem(p),
-    content: p.body ?? "",
-    createdAt: p.released_at ?? "",
-    updatedAt: p.updated_at ?? p.released_at ?? "",
-  };
+  return POSTS.map(toListItem).sort((a, b) => (b.publishedAt ?? "").localeCompare(a.publishedAt ?? ""));
 }
 
 export type SeriesListItem = {
@@ -75,46 +70,39 @@ export type SeriesListItem = {
   updatedAt: string | null;
 };
 
-export type SeriesPostItem = {
-  id: string;
-  slug: string;
-  title: string;
-  excerpt: string | null;
-  publishedAt: string | null;
-  seriesIndex: number | null;
-  tags: Tag[];
-};
+export type SeriesPostItem = PostListItem & { seriesIndex: number | null };
 
 export type SeriesDetail = SeriesListItem & {
   posts: SeriesPostItem[];
 };
 
-// 최근 업데이트된 시리즈가 앞
+// 시리즈 = 네이버 카테고리. 글 수·업데이트일(가장 최근 글)은 글에서 계산, 최근 업데이트된 시리즈가 앞
 export async function getSeriesList(): Promise<SeriesListItem[]> {
-  const list = await velogSeriesList();
-  const sorted = [...list].sort((a, b) => (b.updated_at ?? "").localeCompare(a.updated_at ?? ""));
-  return sorted.map((s) => ({
-    id: s.id,
-    slug: s.url_slug,
-    name: s.name,
-    description: s.description?.trim() || null,
-    postsCount: s.posts_count,
-    updatedAt: s.updated_at,
-  }));
+  const names = [...new Set(POSTS.map((p) => p.category).filter(Boolean))];
+  return names
+    .map((name) => {
+      const mine = POSTS.filter((p) => p.category === name);
+      const updatedAt = mine.map((p) => p.publishedAt).sort().at(-1) ?? null;
+      const slug = categorySlug(name);
+      return { id: slug, slug, name, description: null, postsCount: mine.length, updatedAt };
+    })
+    .sort((a, b) => (b.updatedAt ?? "").localeCompare(a.updatedAt ?? ""));
 }
 
-// 시리즈 상세는 id 로만 조회돼서 목록에서 slug → id 를 찾음
+// 시리즈 글은 오래된 글부터 1, 2, 3… 번호
 export async function getSeries(slug: string): Promise<SeriesDetail | null> {
   const target = (await getSeriesList()).find((s) => s.slug === decodeSlug(slug));
   if (!target) return null;
-  const detail = await velogSeries(target.id);
-  if (!detail) return null;
-  return {
-    ...target,
-    posts: detail.series_posts
-      .map(({ index, post }) => ({ ...toListItem(post), seriesIndex: index }))
-      .sort((a, b) => (a.seriesIndex ?? 0) - (b.seriesIndex ?? 0)),
-  };
+  const mine = POSTS.filter((p) => categorySlug(p.category) === target.slug).sort((a, b) =>
+    a.publishedAt.localeCompare(b.publishedAt),
+  );
+  return { ...target, posts: mine.map((p, i) => ({ ...toListItem(p), seriesIndex: i + 1 })) };
+}
+
+// 글 → 속한 시리즈 id (Log 필터용)
+export function seriesIdOf(postId: string): string | null {
+  const p = POSTS.find((x) => x.id === postId);
+  return p?.category ? categorySlug(p.category) : null;
 }
 
 export type RoadmapStatus = "PLANNED" | "IN_PROGRESS" | "SUCCEEDED" | "FAILED" | "LEARNED";
