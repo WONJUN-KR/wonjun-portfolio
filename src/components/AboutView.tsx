@@ -53,10 +53,20 @@ export default function AboutView({ about }: { about: AboutContent }) {
       </header>
 
       {/* 정보 박스 */}
-      <section className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-        {currentCareer && <InfoBox label="현재 회사" value={currentCareer.company} sub={currentCareer.role} />}
-        <InfoBox label="학력" value="대학교(4년) 졸업" sub="국평원 정보통신학과" />
-        <InfoBox label="포트폴리오" value={`총 ${portfolios.length}건`} />
+      {/* 이력서 요약 4칸 - 사람인·잡코리아 상단 요약 기준 (총 경력 · 최종 학력 · 자격증 · 전문 분야) */}
+      <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <InfoBox
+          label="총 경력"
+          value={profile.careerPeriod}
+          sub={currentCareer ? `${currentCareer.company} 재직 중` : undefined}
+        />
+        <InfoBox label="최종 학력" value="대학교(4년) 졸업" sub="정보통신학과" />
+        <InfoBox
+          label="자격증"
+          value={certifications.slice(0, 2).map((c) => c.name.replace(/\s*\(.*\)$/, "")).join(" · ")}
+          sub={certifications.length > 2 ? `외 ${certifications.length - 2}개` : undefined}
+        />
+        <InfoBox label="전문 분야" value="의료 IT (CGM)" sub="혈당 데이터 서비스" />
       </section>
 
       <Section eyebrow="Cover Letter" title="자기소개서">
