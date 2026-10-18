@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
 import type { SeriesPostItem } from "@/lib/api";
 import { formatDate } from "@/lib/format";
 import { TagList } from "@/components/ui";
@@ -42,8 +41,10 @@ export default function SeriesPostList({ posts }: { posts: SeriesPostItem[] }) {
       <ol className="flex flex-col gap-3">
         {sorted.map((post) => (
           <li key={post.id}>
-            <Link
-              href={`/log/${post.slug}`}
+            <a
+              href={post.url}
+              target="_blank"
+              rel="noreferrer"
               className="group flex gap-5 rounded-3xl border border-line bg-surface p-6 transition-all hover:-translate-y-0.5 hover:border-accent/40"
             >
               <span className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-accent-soft tabular-nums text-sm font-bold text-accent-2">
@@ -57,7 +58,7 @@ export default function SeriesPostList({ posts }: { posts: SeriesPostItem[] }) {
                   <TagList tags={post.tags} />
                 </div>
               </div>
-            </Link>
+            </a>
           </li>
         ))}
       </ol>

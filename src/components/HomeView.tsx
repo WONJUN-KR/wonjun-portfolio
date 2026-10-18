@@ -244,9 +244,11 @@ export default async function HomeView({ year, about }: { year?: string; about: 
         {latestPosts.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {latestPosts.map((post) => (
-              <Link
+              <a
                 key={post.id}
-                href={`/log/${encodeURIComponent(post.slug)}`}
+                href={post.url}
+                target="_blank"
+                rel="noreferrer"
                 className="group flex flex-col gap-3 rounded-3xl border border-line bg-surface p-6 transition-all hover:-translate-y-1 hover:border-accent/40"
               >
                 <span className="text-xs tabular-nums text-muted">{post.publishedAt?.slice(0, 10) ?? ""}</span>
@@ -254,7 +256,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
                   {post.title}
                 </h3>
                 {post.excerpt && <p className="text-sm text-muted line-clamp-3">{post.excerpt}</p>}
-              </Link>
+              </a>
             ))}
           </div>
         )}

@@ -9,6 +9,8 @@ const nextConfig: NextConfig = {
       { source: "/about", destination: "/resume", permanent: true },
       { source: "/roadmap", destination: "/history", permanent: true },
       { source: "/roadmap/:slug", destination: "/history", permanent: true },
+      // 글 상세는 네이버 원문으로 옮겨서, 예전 글 주소는 목록으로
+      { source: "/log/:slug", destination: "/log", permanent: false },
     ];
   },
 };

@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import Link from "next/link";
 import { BookOpen, ChevronLeft, ChevronRight, Funnel, FunnelX, Layers, Search } from "lucide-react";
 import type { PostListItem } from "@/lib/api";
 import { SectionHeader } from "@/components/ui";
@@ -136,13 +135,15 @@ export default function LogBrowser({ posts, seriesList }: { posts: LogPost[]; se
           <ul className="grid grid-cols-1 sm:grid-cols-3 gap-4">
             {visible.map((post) => (
               <li key={post.id}>
-                <Link
-                  href={`/log/${post.slug}`}
+                <a
+                  href={post.url}
+                  target="_blank"
+                  rel="noreferrer"
                   className="group flex h-full flex-col overflow-hidden rounded-3xl border border-line bg-surface transition-all hover:-translate-y-1 hover:border-accent/40"
                 >
-                  <div className="relative aspect-[4/3] overflow-hidden border-b border-line bg-background">
+                  <div className="relative aspect-square overflow-hidden border-b border-line bg-background">
                     {post.thumbnail ? (
-                      // Velog 이미지 CDN 을 그대로 씀
+                      // 썸네일은 public/blog/naver 에 받아 둔 파일
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={post.thumbnail}
@@ -162,7 +163,7 @@ export default function LogBrowser({ posts, seriesList }: { posts: LogPost[]; se
                     </h3>
                     <time className="text-xs tabular-nums text-muted">{post.date}</time>
                   </div>
-                </Link>
+                </a>
               </li>
             ))}
           </ul>
