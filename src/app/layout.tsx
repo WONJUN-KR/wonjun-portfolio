@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 // 링크 미리보기 이미지 등 절대 주소의 기준 - 도메인 바꾸면 여기만 수정
-const SITE_URL = "https://wonjun-portfolio-kr.vercel.app";
+const SITE_URL = "https://wonjun.page";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
