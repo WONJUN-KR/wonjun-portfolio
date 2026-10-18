@@ -1,4 +1,5 @@
-// 데이터: 글·시리즈 = src/content/posts.json 하드코딩(네이버에도 있는 글만, 날짜는 네이버 발행일), 잔디 = GitHub (src/lib/github.ts)
+// 데이터: 글 = 네이버 블로그(src/content/posts.json, scripts/sync-naver.mjs 로 동기화), 잔디 = GitHub (src/lib/github.ts)
+// 글을 누르면 네이버 원문으로 이동 - 시리즈 = 네이버 카테고리
 import { contributionAllTime, contributionDays } from "@/lib/github";
 import postsData from "@/content/posts.json";
 
@@ -9,38 +10,26 @@ export type Tag = {
 
 export type PostListItem = {
   id: string;
-  slug: string;
   title: string;
   excerpt: string | null;
   publishedAt: string | null;
   thumbnail: string | null;
   tags: Tag[];
-};
-
-export type PostDetail = PostListItem & {
-  content: string;
-  createdAt: string;
-  updatedAt: string;
+  url: string; // 네이버 원문
 };
 
 type StoredPost = {
   id: string;
-  slug: string;
   title: string;
   excerpt: string | null;
   publishedAt: string;
   thumbnail: string | null;
   tags: string[];
-  seriesId: string | null;
-  seriesIndex: number | null;
-  naverUrl: string;
-  body: string;
+  category: string;
+  url: string;
 };
 
-type StoredSeries = { id: string; slug: string; name: string; description: string | null };
-
 const POSTS = postsData.posts as StoredPost[];
-const SERIES = postsData.series as StoredSeries[];
 
 function decodeSlug(slug: string): string {
   try {
@@ -50,27 +39,26 @@ function decodeSlug(slug: string): string {
   }
 }
 
+// 카테고리 이름 → 주소용 slug ("취업준비 기록지(21)" → "취업준비-기록지-21")
+export function categorySlug(name: string): string {
+  return name.replace(/[^가-힣a-zA-Z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+
 function toListItem(p: StoredPost): PostListItem {
   return {
     id: p.id,
-    slug: p.slug,
     title: p.title,
     excerpt: p.excerpt,
     publishedAt: p.publishedAt,
     thumbnail: p.thumbnail,
     tags: p.tags.map((name) => ({ id: name, name })),
+    url: p.url,
   };
 }
 
 // 최신 글이 위
 export async function getPosts(): Promise<PostListItem[]> {
   return POSTS.map(toListItem).sort((a, b) => (b.publishedAt ?? "").localeCompare(a.publishedAt ?? ""));
-}
-
-export async function getPost(slug: string): Promise<PostDetail | null> {
-  const p = POSTS.find((x) => x.slug === decodeSlug(slug));
-  if (!p) return null;
-  return { ...toListItem(p), content: p.body, createdAt: p.publishedAt, updatedAt: p.publishedAt };
 }
 
 export type SeriesListItem = {
@@ -82,38 +70,39 @@ export type SeriesListItem = {
   updatedAt: string | null;
 };
 
-export type SeriesPostItem = {
-  id: string;
-  slug: string;
-  title: string;
-  excerpt: string | null;
-  publishedAt: string | null;
-  seriesIndex: number | null;
-  tags: Tag[];
-};
+export type SeriesPostItem = PostListItem & { seriesIndex: number | null };
 
 export type SeriesDetail = SeriesListItem & {
   posts: SeriesPostItem[];
 };
 
-// 시리즈 글 수·업데이트일은 담긴 글에서 계산 (업데이트 = 가장 최근 글 날짜). 최근 업데이트된 시리즈가 앞
+// 시리즈 = 네이버 카테고리. 글 수·업데이트일(가장 최근 글)은 글에서 계산, 최근 업데이트된 시리즈가 앞
 export async function getSeriesList(): Promise<SeriesListItem[]> {
-  return SERIES.map((s) => {
-    const mine = POSTS.filter((p) => p.seriesId === s.id);
-    const updatedAt = mine.map((p) => p.publishedAt).sort().at(-1) ?? null;
-    return { id: s.id, slug: s.slug, name: s.name, description: s.description, postsCount: mine.length, updatedAt };
-  }).sort((a, b) => (b.updatedAt ?? "").localeCompare(a.updatedAt ?? ""));
+  const names = [...new Set(POSTS.map((p) => p.category).filter(Boolean))];
+  return names
+    .map((name) => {
+      const mine = POSTS.filter((p) => p.category === name);
+      const updatedAt = mine.map((p) => p.publishedAt).sort().at(-1) ?? null;
+      const slug = categorySlug(name);
+      return { id: slug, slug, name, description: null, postsCount: mine.length, updatedAt };
+    })
+    .sort((a, b) => (b.updatedAt ?? "").localeCompare(a.updatedAt ?? ""));
 }
 
+// 시리즈 글은 오래된 글부터 1, 2, 3… 번호
 export async function getSeries(slug: string): Promise<SeriesDetail | null> {
   const target = (await getSeriesList()).find((s) => s.slug === decodeSlug(slug));
   if (!target) return null;
-  return {
-    ...target,
-    posts: POSTS.filter((p) => p.seriesId === target.id)
-      .map((p) => ({ ...toListItem(p), seriesIndex: p.seriesIndex }))
-      .sort((a, b) => (a.seriesIndex ?? 0) - (b.seriesIndex ?? 0)),
-  };
+  const mine = POSTS.filter((p) => categorySlug(p.category) === target.slug).sort((a, b) =>
+    a.publishedAt.localeCompare(b.publishedAt),
+  );
+  return { ...target, posts: mine.map((p, i) => ({ ...toListItem(p), seriesIndex: i + 1 })) };
+}
+
+// 글 → 속한 시리즈 id (Log 필터용)
+export function seriesIdOf(postId: string): string | null {
+  const p = POSTS.find((x) => x.id === postId);
+  return p?.category ? categorySlug(p.category) : null;
 }
 
 export type RoadmapStatus = "PLANNED" | "IN_PROGRESS" | "SUCCEEDED" | "FAILED" | "LEARNED";
