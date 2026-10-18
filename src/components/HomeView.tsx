@@ -196,23 +196,21 @@ export default async function HomeView({ year, about }: { year?: string; about: 
         </section>
       )}
 
-      {/* Projects - 벤토 그리드: 첫 카드는 크게 */}
+      {/* Projects - 같은 크기 카드 3개 나란히 */}
       <section className="flex flex-col gap-8">
         <SectionHeader eyebrow="Projects" title="포트폴리오" href="/projects" linkLabel="전체 보기" />
-        <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-4">
-          {featured.map((p, i) => {
-            const isHero = i === 0;
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {featured.map((p) => {
+            // 홈은 맛보기(이미지 + 한 줄 소개), 핵심 기능·내가 맡은 부분은 /projects 에서
             const visual = p.thumbnail ?? p.logo;
             return (
               <Link
                 key={p.slug}
-                href="/projects"
-                className={`group relative flex flex-col overflow-hidden rounded-3xl border border-line bg-surface transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-xl hover:shadow-accent/5 ${
-                  isHero ? "md:col-span-2 md:row-span-2" : ""
-                }`}
+                href={`/projects#${p.slug}`}
+                className="group relative flex flex-col overflow-hidden rounded-3xl border border-line bg-surface transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-xl hover:shadow-accent/5"
               >
                 {visual && (
-                  <div className={`relative bg-background border-b border-line overflow-hidden ${isHero ? "aspect-[16/9]" : "aspect-[16/7]"}`}>
+                  <div className={`relative aspect-[16/9] border-b border-line overflow-hidden ${p.thumbnail ? "bg-background" : "bg-white"}`}>
                     <Image
                       src={visual}
                       alt={p.title}
@@ -223,24 +221,16 @@ export default async function HomeView({ year, about }: { year?: string; about: 
                   </div>
                 )}
                 <div className="flex flex-col gap-3 p-6 flex-1">
-                  <div className="flex items-center gap-2 text-xs text-muted">
-                    <span>{p.period}</span>
-                    {p.status === "live" && (
-                      <span className="rounded-full bg-accent-soft text-accent-2 px-2 py-0.5 font-semibold">운영 중</span>
-                    )}
-                  </div>
                   <div className="flex items-start justify-between gap-3">
-                    <div className="flex flex-col gap-1">
-                      <h3 className={`${isHero ? "text-2xl" : "text-lg"} font-bold tracking-tight`}>{p.title}</h3>
-                      <p className="text-sm text-muted">{p.subtitle}</p>
+                    <div className="flex items-center gap-2 min-w-0">
+                      <h3 className="text-xl font-bold tracking-tight truncate">{p.title}</h3>
+                      {p.status === "live" && (
+                        <span className="shrink-0 rounded-full bg-accent-soft text-accent-2 px-2 py-0.5 text-xs font-semibold">운영 중</span>
+                      )}
                     </div>
                     <ArrowUpRight className="size-5 shrink-0 text-muted transition-all group-hover:text-accent-2 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </div>
-                  <div className="flex flex-wrap gap-1.5 mt-auto pt-2">
-                    {p.stack.slice(0, isHero ? 6 : 3).map((s) => (
-                      <Chip key={s}>{s}</Chip>
-                    ))}
-                  </div>
+                  <p className="text-base leading-snug">{p.tagline}</p>
                 </div>
               </Link>
             );

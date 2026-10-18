@@ -6,13 +6,17 @@ export type Project = {
   subtitle: string;
   period: string;
   role: string;
-  highlights: string[];
+  // 앱스토어식 소개: 사용자가 이걸로 뭘 할 수 있는지(tagline·features) → 내가 맡은 부분(myPart)
+  tagline: string;
+  features: string[];
+  myPart: string[];
   stack: string[];
   liveUrl?: string;
   repos: Repo[];
   thumbnail?: string;
   logo?: string;
   pinned?: boolean;
+  lead?: boolean; // 팀장 - projects 페이지에 '팀장' 배지
   status: "live" | "local";
   device: "mobile" | "laptop";
 };
@@ -21,15 +25,21 @@ export const PROJECTS: Project[] = [
   {
     slug: "gotcha",
     title: "GOTCHA",
-    subtitle: "지도 기반 제보·커뮤니티 서비스",
+    subtitle: "가챠샵 지도 서비스 · App Store 출시",
     period: "2026.01 ~ 진행중",
-    role: "풀스택",
-    highlights: [
-      "[FE] 지도 기반 UX - 핀 미리보기 바텀시트(3단 스냅), 뒤로가기 시 위치·줌 복원",
-      "[FE] 제보 등록 흐름, 차단 목록·마이페이지, 세션 만료 안내",
-      "[BE] 사용자 차단, 신고 사유 분리·목록 API, 권한 동의 관리",
-      "[BE] Web Push 알림 (구독은 FE 까지 연동), 회원 탈퇴 시 카카오 연결 끊기",
-      "GitHub Actions CI/CD + Vercel 배포, Critical CSS · 폰트 · preconnect 최적화",
+    role: "5인 팀 · 풀스택",
+    tagline: "근처 가챠샵을 지도에서 찾고, 리뷰와 제보로 함께 채워가는 서비스",
+    features: [
+      "지도에서 주변 가챠샵 찾기 - 핀을 누르면 미리보기, 이 지역 다시 검색",
+      "매장 정보·리뷰 보고 즐겨찾기",
+      "새 가챠샵 제보 - 지도에서 위치를 찍으면 주소가 자동으로",
+      "새 소식 알림 받기",
+    ],
+    myPart: [
+      "[FE] 홈 지도 탐색 - 핀 미리보기 바텀시트(3단 스냅), 뒤로가기 시 위치·줌 복원",
+      "[FE] 제보 등록 흐름 전체, 마이페이지·내가 제보한 업체",
+      "[FE+BE] 신고·차단, Web Push 알림(구독 화면 + 발송 서버)",
+      "초기 세팅·GitHub Actions CI/CD, 웹 성능 최적화(Critical CSS·폰트·preconnect)",
     ],
     stack: ["Java", "TypeScript", "Spring Boot", "Next.js", "카카오맵", "Vercel", "PostgreSQL"],
     liveUrl: "https://gotcha.it.com/",
@@ -44,15 +54,23 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "ai-auto-posting",
-    title: "AI Auto Posting (OCP)",
-    subtitle: "AI 콘텐츠 자동 생성 플랫폼",
+    title: "AI Auto Posting",
+    subtitle: "블로그 콘텐츠 자동 발행 플랫폼",
     period: "2025.11 ~ 2025.12",
-    role: "풀스택",
-    highlights: [
-      "RabbitMQ 비동기 처리 환경 백엔드 API 개발",
-      "관리자 통계 API, 일별 포스팅 자동 집계 스케줄러",
-      "블로그 플랫폼별 발행 통계 조회 API",
-      "관리자 대시보드 차트 개선 + 통계 테이블 페이징",
+    role: "6인 팀 · 풀스택",
+    lead: true,
+    tagline: "트렌드 키워드로 AI가 블로그 글을 쓰고, 연결한 블로그에 자동 발행",
+    features: [
+      "블로그 계정을 연결하고 발행 워크플로우 등록",
+      "트렌드 키워드 수집 → AI 글 생성 → 자동 발행",
+      "발행 기록·결과 확인",
+    ],
+    myPart: [
+      "[리드] 주제 선정·역할 분배·일정 조율, 팀 협업 규칙 정립",
+      "[BE] 관리자 통계 API - 사용자·포스팅·블로그 플랫폼별 발행 통계, AI 토큰 사용량",
+      "[BE] 일별 통계 자동 집계 스케줄러, 통계 쿼리 최적화(ISO 주차 버그 수정)",
+      "[BE] 관리자 사용자 관리(본인·관리자 정지 방지), 공통코드 관리",
+      "[FE] 관리자 대시보드 추이 그래프·통계 테이블 페이징·공통코드 페이지",
     ],
     stack: ["Java", "Spring Boot", "React", "JPA", "RabbitMQ", "PostgreSQL"],
     repos: [
@@ -66,15 +84,24 @@ export const PROJECTS: Project[] = [
   {
     slug: "cos-house",
     title: "Co's House",
-    subtitle: "오늘의 집 벤치마킹 커머스 (5인 팀)",
+    subtitle: "인테리어 커뮤니티 + 쇼핑 플랫폼",
     period: "2025.09 ~ 2025.10",
-    role: "백엔드",
-    highlights: [
-      "마이페이지·주문 관리·상품 검색 기능 담당",
-      "댓글 시스템 구현",
-      "Spring Data JPA 기반 REST API 설계",
+    role: "5인 팀 · 풀스택",
+    lead: true,
+    tagline: "'오늘의 집'처럼 인테리어 이야기를 나누고 상품까지 사는 커머스",
+    features: [
+      "인테리어 상품 검색·구매(토스 결제)",
+      "인테리어 커뮤니티 - 글·댓글",
+      "구매 후기와 마이페이지",
     ],
-    stack: ["Java", "TypeScript", "Spring Boot", "JPA", "MySQL"],
+    myPart: [
+      "[리드] 주제 선정·역할 분배·일정 조율, 팀 협업 규칙 정립",
+      "[BE] 마이페이지 - 회원정보 수정·구매 후기·회원 탈퇴",
+      "[BE] 관리자 상품 관리·검색, 주문 관리",
+      "[BE] 커뮤니티 댓글·게시글 수정",
+      "화면(Thymeleaf)·CSS 리팩토링",
+    ],
+    stack: ["Java", "Spring Boot", "JPA", "Querydsl", "Thymeleaf", "MySQL"],
     repos: [{ label: "Repo", url: "https://github.com/WONJUN-KR/Co-s_House" }],
     logo: "/projects/coshouse.png",
     status: "local",
