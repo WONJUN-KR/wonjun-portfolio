@@ -161,7 +161,8 @@ export default function AboutView({ about }: { about: AboutContent }) {
                   ))}
                 </div>
               )}
-              {t.projects && t.projects.length > 0 && <BulletList items={t.projects} />}
+              {/* 교육 중 사이드 프로젝트는 제목만 ("제목 (팀·기간) - 설명" 에서 설명 앞까지) - 자세한 건 포트폴리오에서 */}
+              {t.projects && t.projects.length > 0 && <BulletList items={t.projects.map((x) => x.split(" - ")[0])} />}
             </TimelineItem>
           ))}
         </Timeline>
