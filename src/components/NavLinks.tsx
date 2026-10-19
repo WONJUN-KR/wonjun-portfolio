@@ -15,7 +15,7 @@ export default function NavLinks() {
   const pathname = usePathname();
 
   return (
-    <div className="flex items-center gap-0.5 sm:gap-1 text-[13px] sm:text-sm font-semibold text-accent-2">
+    <div className="flex items-center gap-0.5 max-[359px]:gap-0 sm:gap-1 text-[13px] max-[359px]:text-[12px] sm:text-sm font-semibold text-accent-2">
       {NAV_ITEMS.map((item) => {
         const active = item.match.some((m) => pathname === m || pathname.startsWith(`${m}/`));
         return (
@@ -23,7 +23,7 @@ export default function NavLinks() {
             key={item.href}
             href={item.href}
             aria-current={active ? "page" : undefined}
-            className={`px-2 sm:px-3 py-1.5 rounded-full transition-colors ${
+            className={`px-2 max-[359px]:px-1 sm:px-3 py-1.5 rounded-full transition-colors ${
               active ? "text-foreground bg-surface-hover" : "hover:text-foreground hover:bg-surface-hover"
             }`}
           >

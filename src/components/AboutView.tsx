@@ -1,6 +1,6 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { BookOpen, ExternalLink, Mail, MapPin } from "lucide-react";
+import { BookOpen, ChevronDown, ExternalLink, Mail, MapPin } from "lucide-react";
 import type { AboutContent } from "@/lib/api";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import SkillGroups from "@/components/SkillGroups";
@@ -70,7 +70,7 @@ export default function AboutView({ about }: { about: AboutContent }) {
       </section>
 
       <Section eyebrow="Cover Letter" title="자기소개서">
-        <div className="rounded-3xl border border-line bg-surface p-5 sm:p-10">
+        <div className="rounded-3xl border border-line bg-surface p-5 sm:p-10 max-sm:rounded-none max-sm:border-0 max-sm:bg-transparent max-sm:p-0">
           <div className="prose prose-invert max-w-none prose-headings:font-[family-name:var(--font-display)] prose-p:text-foreground/90 prose-li:text-foreground/90 prose-strong:text-foreground prose-a:text-accent-2">
             <ReactMarkdown remarkPlugins={[remarkGfm]}>{coverLetter}</ReactMarkdown>
           </div>
@@ -91,9 +91,9 @@ export default function AboutView({ about }: { about: AboutContent }) {
               </div>
               {c.summary && <p className="text-sm leading-relaxed">{c.summary}</p>}
               {c.projects && c.projects.length > 0 && (
-                <div className="flex flex-col gap-4 mt-1">
+                <div className="flex flex-col gap-4 max-sm:gap-6 mt-1">
                   {c.projects.map((p, pi) => (
-                    <div key={pi} className="rounded-2xl border border-line bg-background p-4 sm:p-5 flex flex-col gap-2">
+                    <div key={pi} className="rounded-2xl border border-line bg-background p-4 sm:p-5 flex flex-col gap-2 max-sm:rounded-none max-sm:border-0 max-sm:bg-transparent max-sm:p-0">
                       <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                         <h4 className="font-semibold">{p.title}</h4>
                         <span className="text-xs tabular-nums text-muted">{p.period}</span>
@@ -104,11 +104,25 @@ export default function AboutView({ about }: { about: AboutContent }) {
                 </div>
               )}
               {c.stack && c.stack.length > 0 && (
-                <div className="flex flex-wrap gap-1.5">
-                  {c.stack.map((s) => (
-                    <Chip key={s}>{s}</Chip>
-                  ))}
-                </div>
+                <>
+                  <div className="flex flex-wrap gap-1.5 max-sm:hidden">
+                    {c.stack.map((s) => (
+                      <Chip key={s}>{s}</Chip>
+                    ))}
+                  </div>
+                  {/* 휴대폰은 칩이 화면을 많이 차지해서 접어둠 */}
+                  <details className="group sm:hidden">
+                    <summary className="flex cursor-pointer list-none items-center gap-1.5 text-sm text-muted [&::-webkit-details-marker]:hidden">
+                      기술 스택 {c.stack.length}개
+                      <ChevronDown className="size-4 transition-transform group-open:rotate-180" />
+                    </summary>
+                    <div className="flex flex-wrap gap-1.5 pt-3">
+                      {c.stack.map((s) => (
+                        <Chip key={s}>{s}</Chip>
+                      ))}
+                    </div>
+                  </details>
+                </>
               )}
             </TimelineItem>
           ))}
@@ -150,6 +164,7 @@ export default function AboutView({ about }: { about: AboutContent }) {
                   ))}
                 </div>
               )}
+              {t.projects && t.projects.length > 0 && <BulletList items={t.projects} />}
             </TimelineItem>
           ))}
         </Timeline>
