@@ -6,11 +6,10 @@ import { ArrowUpRight, BookOpen, Building2, ChevronDown, Mail } from "lucide-rea
 import ContributionsCalendar from "@/components/ContributionsCalendar";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { SectionHeader, StackChips } from "@/components/ui";
-import { getContributions, getPosts, type AboutContent } from "@/lib/api";
+import { CONTRIBUTIONS_EARLIEST_YEAR, getContributions, getPosts, type AboutContent } from "@/lib/api";
 import { HOME_HIGHLIGHTS } from "@/lib/about";
 import { PROJECTS } from "@/lib/projects";
 
-const EARLIEST_YEAR = 2020;
 const LATEST_POSTS_COUNT = 3;
 const FEATURED_PROJECTS_COUNT = 3;
 
@@ -25,7 +24,7 @@ const hasProfileImg = fs.existsSync(path.join(process.cwd(), "public", PROFILE_I
 function availableYears(): number[] {
   const now = new Date().getFullYear();
   const years: number[] = [];
-  for (let y = now; y >= EARLIEST_YEAR; y--) years.push(y);
+  for (let y = now; y >= CONTRIBUTIONS_EARLIEST_YEAR; y--) years.push(y);
   return years;
 }
 
