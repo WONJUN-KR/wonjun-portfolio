@@ -193,7 +193,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
       {/* Projects - 같은 크기 카드 3개 나란히 */}
       <section className="flex flex-col gap-8">
         <SectionHeader eyebrow="Projects" title="포트폴리오" href="/projects" linkLabel="전체 보기" />
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-sm:gap-3">
           {featured.map((p) => {
             // 홈은 맛보기(이미지 + 한 줄 소개), 핵심 기능·내가 맡은 부분은 /projects 에서
             const visual = p.thumbnail ?? p.logo;
@@ -204,27 +204,27 @@ export default async function HomeView({ year, about }: { year?: string; about: 
                 className="group relative flex flex-col overflow-hidden rounded-3xl border border-line bg-surface transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-xl hover:shadow-accent/5"
               >
                 {visual && (
-                  <div className={`relative aspect-[16/9] border-b border-line overflow-hidden ${p.thumbnail ? "bg-background" : "bg-white"}`}>
+                  <div className={`relative aspect-[16/9] max-sm:aspect-[5/2] border-b border-line overflow-hidden ${p.thumbnail ? "bg-background" : "bg-white"}`}>
                     <Image
                       src={visual}
                       alt={p.title}
                       fill
                       unoptimized
-                      className={`${p.thumbnail ? "object-cover object-top" : "object-contain p-6"} transition-transform duration-500 group-hover:scale-[1.03]`}
+                      className={`${p.thumbnail ? `object-cover object-top ${p.mobileThumbPosition ?? ""}` : "object-contain p-6 max-sm:p-3"} transition-transform duration-500 group-hover:scale-[1.03]`}
                     />
                   </div>
                 )}
-                <div className="flex flex-col gap-3 p-6 flex-1">
+                <div className="flex flex-col gap-3 p-6 flex-1 max-sm:gap-1.5 max-sm:p-4">
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-2 min-w-0">
-                      <h3 className="text-xl font-bold tracking-tight truncate">{p.title}</h3>
+                      <h3 className="text-xl max-sm:text-lg font-bold tracking-tight truncate">{p.title}</h3>
                       {p.status === "live" && (
                         <span className="shrink-0 rounded-full bg-accent-soft text-accent-2 px-2 py-0.5 text-xs font-semibold">운영 중</span>
                       )}
                     </div>
                     <ArrowUpRight className="size-5 shrink-0 text-muted transition-all group-hover:text-accent-2 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
                   </div>
-                  <p className="text-base leading-snug">{p.tagline}</p>
+                  <p className="text-base max-sm:text-sm leading-snug max-sm:line-clamp-2">{p.tagline}</p>
                 </div>
               </Link>
             );
@@ -236,20 +236,20 @@ export default async function HomeView({ year, about }: { year?: string; about: 
       <section className="flex flex-col gap-8">
         <SectionHeader eyebrow="Activity" title="기록" href="/log" linkLabel="모든 글" />
         {latestPosts.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-sm:gap-3">
             {latestPosts.map((post) => (
               <a
                 key={post.id}
                 href={post.url}
                 target="_blank"
                 rel="noreferrer"
-                className="group flex flex-col gap-3 rounded-3xl border border-line bg-surface p-6 transition-all hover:-translate-y-1 hover:border-accent/40"
+                className="group flex flex-col gap-3 rounded-3xl border border-line bg-surface p-6 transition-all hover:-translate-y-1 hover:border-accent/40 max-sm:gap-1.5 max-sm:rounded-2xl max-sm:p-4"
               >
                 <span className="text-xs tabular-nums text-muted">{post.publishedAt?.slice(0, 10) ?? ""}</span>
                 <h3 className="font-bold tracking-tight leading-snug line-clamp-2 group-hover:text-accent-2 transition-colors">
                   {post.title}
                 </h3>
-                {post.excerpt && <p className="text-sm text-muted line-clamp-3">{post.excerpt}</p>}
+                {post.excerpt && <p className="text-sm text-muted line-clamp-3 max-sm:line-clamp-2">{post.excerpt}</p>}
               </a>
             ))}
           </div>
