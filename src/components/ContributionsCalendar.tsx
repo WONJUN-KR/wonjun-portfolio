@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import type { ContributionDay } from "@/lib/api";
 import {
   HEATMAP_BG_CLASS,
@@ -8,16 +11,29 @@ import {
 
 type Props = {
   days: ContributionDay[];
-  totalCount: number;
+  // true = 최근 1년 데이터를 받아서 화면 폭에 들어가는 만큼만 (휴대폰 6개월 ~ 넓은 화면 12개월)
+  // false = 고른 연도 전체 (좁으면 가로 스크롤)
+  recent?: boolean;
 };
 
 const CELL = 11;
 const GAP = 3;
-const STEP = CELL + GAP;
+const STEP = CELL + GAP; // 기본 칸 간격 (연도 모드, 범례)
 const HEADER_H = 20;
-const MIN_LABEL_GAP = 3 * STEP;
+const MIN_WEEKS = 26; // 6개월 - 휴대폰처럼 좁아도 이만큼은 보여줌 (칸이 작아짐)
+const MAX_STEP = 18; // 넓은 화면에서 칸이 너무 커지지 않게
 
-export default function ContributionsCalendar({ days, totalCount }: Props) {
+export default function ContributionsCalendar({ days, recent = false }: Props) {
+  const boxRef = useRef<HTMLDivElement>(null);
+  const [boxWidth, setBoxWidth] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!recent || !boxRef.current) return;
+    const observer = new ResizeObserver(([entry]) => setBoxWidth(entry.contentRect.width));
+    observer.observe(boxRef.current);
+    return () => observer.disconnect();
+  }, [recent]);
+
   if (days.length === 0) {
     return <p className="text-sm text-muted">잔디 데이터를 불러올 수 없습니다.</p>;
   }
@@ -35,18 +51,34 @@ export default function ContributionsCalendar({ days, totalCount }: Props) {
   const totalDays = Math.round((end.getTime() - start.getTime()) / 86400000) + 1;
   const totalWeeks = Math.ceil(totalDays / 7);
 
-  const width = totalWeeks * STEP;
-  const height = 7 * STEP + HEADER_H;
+  // 최근 모드: 폭에 기본 칸이 몇 주 들어가는지로 보여줄 주 수(6~12개월)를 정하고,
+  // 칸 크기는 그 주 수가 폭을 꽉 채우도록 다시 계산 (정사각형 유지, 글자는 그대로). 폭을 재기 전(서버 렌더)엔 기본 크기로 전체
+  const measured = recent && boxWidth !== null;
+  const fitWeeks = measured ? Math.floor(boxWidth / STEP) : totalWeeks;
+  const shownWeeks = recent ? Math.min(totalWeeks, Math.max(MIN_WEEKS, fitWeeks)) : totalWeeks;
+  const offset = totalWeeks - shownWeeks;
+  const step = measured ? Math.min(MAX_STEP, boxWidth / shownWeeks) : STEP;
+  const gap = step * (GAP / STEP);
+  const cell = step - gap;
+  const minLabelGap = 3 * step;
+
+  const dateAt = (week: number, dow: number) => {
+    const d = new Date(start);
+    d.setDate(d.getDate() + week * 7 + dow);
+    return d;
+  };
+
+  const width = shownWeeks * step;
+  const height = 7 * step + HEADER_H;
 
   const monthLabels: { x: number; label: string }[] = [];
   const monthDividers: number[] = [];
   let lastMonth = -1;
   let lastLabelX = -Infinity;
-  for (let week = 0; week < totalWeeks; week++) {
+  for (let week = offset; week < totalWeeks; week++) {
     let dataDay: Date | null = null;
     for (let dow = 0; dow < 7; dow++) {
-      const d = new Date(start);
-      d.setDate(d.getDate() + week * 7 + dow);
+      const d = dateAt(week, dow);
       if (d >= first && d <= last) {
         dataDay = d;
         break;
@@ -55,9 +87,9 @@ export default function ContributionsCalendar({ days, totalCount }: Props) {
     if (!dataDay) continue;
     const month = dataDay.getMonth();
     if (month !== lastMonth) {
-      const x = week * STEP;
-      if (lastMonth !== -1) monthDividers.push(x - GAP / 2);
-      if (x - lastLabelX >= MIN_LABEL_GAP) {
+      const x = (week - offset) * step;
+      if (lastMonth !== -1) monthDividers.push(x - gap / 2);
+      if (x - lastLabelX >= minLabelGap) {
         monthLabels.push({ x, label: `${month + 1}월` });
         lastLabelX = x;
       }
@@ -66,23 +98,23 @@ export default function ContributionsCalendar({ days, totalCount }: Props) {
   }
 
   const cells: React.ReactElement[] = [];
-  for (let week = 0; week < totalWeeks; week++) {
+  let shownTotal = 0;
+  for (let week = offset; week < totalWeeks; week++) {
     for (let dow = 0; dow < 7; dow++) {
-      const d = new Date(start);
-      d.setDate(d.getDate() + week * 7 + dow);
+      const d = dateAt(week, dow);
       if (d < first || d > last) continue;
       const key = d.toISOString().slice(0, 10);
-      const day = byDate.get(key);
-      const count = day?.count ?? 0;
+      const count = byDate.get(key)?.count ?? 0;
+      shownTotal += count;
       const level = levelFor(count, thresholds);
       cells.push(
         <rect
           key={key}
-          x={week * STEP}
-          y={HEADER_H + dow * STEP}
-          width={CELL}
-          height={CELL}
-          rx={3}
+          x={(week - offset) * step}
+          y={HEADER_H + dow * step}
+          width={cell}
+          height={cell}
+          rx={Math.min(3, cell / 4)}
           className={HEATMAP_FILL_CLASS[level]}
         >
           <title>{`${key} - ${count}건`}</title>
@@ -91,19 +123,26 @@ export default function ContributionsCalendar({ days, totalCount }: Props) {
     }
   }
 
+  // 보이는 기간 (최근 모드에서만) - 주 수를 개월로 어림
+  const shownMonths = Math.min(12, Math.round(shownWeeks / 4.345));
+
   return (
     <div className="flex flex-col gap-2">
       <div className="flex items-baseline gap-2">
         <span className="text-sm text-muted">
-          <span className="text-lg font-bold text-accent-2">{totalCount}</span>건
+          {recent && <span className="mr-1">최근 {shownMonths}개월</span>}
+          <span className="text-lg font-bold text-accent-2">{shownTotal.toLocaleString()}</span>건
         </span>
         <span className="text-xs text-muted">(개인 + 회사 계정 합산)</span>
       </div>
-      <div className="overflow-x-auto">
+      <div ref={boxRef} className={recent ? "overflow-hidden" : "overflow-x-auto"}>
         <svg
           viewBox={`0 0 ${width} ${height}`}
-          className="w-full h-auto"
-          style={{ minWidth: `${width}px` }}
+          // 폭을 잰 뒤엔 실제 픽셀 크기 그대로 (늘이거나 줄이지 않아 칸·글자가 찌그러지지 않음). 연도 모드는 원래 크기로 스크롤
+          className={measured ? "block" : "w-full h-auto"}
+          width={measured ? width : undefined}
+          height={measured ? height : undefined}
+          style={measured ? undefined : { minWidth: `${width}px` }}
           role="img"
           aria-label="GitHub contributions calendar"
         >

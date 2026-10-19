@@ -260,7 +260,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
               <span className="text-sm font-semibold">GitHub Contributions</span>
               <YearSelector years={availableYears()} />
             </div>
-            <ContributionsCalendar days={contributions.days} totalCount={contributions.totalCount} />
+            <ContributionsCalendar days={contributions.days} recent={!year} />
           </div>
         )}
       </section>
