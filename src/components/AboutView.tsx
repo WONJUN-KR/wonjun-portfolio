@@ -4,7 +4,7 @@ import { BookOpen, ChevronDown, ExternalLink, Mail, MapPin } from "lucide-react"
 import type { AboutContent } from "@/lib/api";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import SkillGroups from "@/components/SkillGroups";
-import { Chip, Eyebrow, MOBILE_OPEN_ONLY_ITEM, MOBILE_TOGGLE, MobileMoreInput, MobileMoreToggle, StackChips } from "@/components/ui";
+import { Eyebrow, MOBILE_OPEN_ONLY_INLINE, MOBILE_OPEN_ONLY_ITEM, MOBILE_TOGGLE, MobileMoreInput, MobileMoreToggle, StackChips } from "@/components/ui";
 
 // resume 페이지 본문 - 데이터는 src/lib/about.ts
 export default function AboutView({ about }: { about: AboutContent }) {
@@ -53,20 +53,21 @@ export default function AboutView({ about }: { about: AboutContent }) {
       </header>
 
       {/* 정보 박스 */}
-      {/* 이력서 요약 4칸 - 사람인·잡코리아 상단 요약 기준 (총 경력 · 최종 학력 · 자격증 · 전문 분야) */}
-      <section className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      {/* 이력서 요약 4칸 - 사람인·잡코리아 상단 요약 기준 (총 경력 · 전문 분야 · 최종 학력 · 자격증) */}
+      {/* 휴대폰은 홈 숫자 카드처럼 한 상자 안에 한 줄씩 (이름·설명 왼쪽, 값 오른쪽) */}
+      <section className="grid grid-cols-2 max-sm:grid-cols-1 md:grid-cols-4 gap-3 max-sm:gap-0 max-sm:rounded-2xl max-sm:border max-sm:border-line max-sm:bg-surface max-sm:divide-y max-sm:divide-line">
         <InfoBox
           label="총 경력"
           value={profile.careerPeriod}
           sub={currentCareer ? `${currentCareer.company} 재직 중` : undefined}
         />
+        <InfoBox label="전문 분야" value="의료 IT (CGM)" sub="혈당 데이터 서비스" />
         <InfoBox label="최종 학력" value="대학교(4년) 졸업" sub="정보통신학과" />
         <InfoBox
           label="자격증"
           value={certifications.slice(0, 2).map((c) => c.name.replace(/\s*\(.*\)$/, "")).join(" · ")}
           sub={certifications.length > 2 ? `외 ${certifications.length - 2}개` : undefined}
         />
-        <InfoBox label="전문 분야" value="의료 IT (CGM)" sub="혈당 데이터 서비스" />
       </section>
 
       <Section eyebrow="Cover Letter" title="자기소개서">
@@ -93,37 +94,38 @@ export default function AboutView({ about }: { about: AboutContent }) {
       </Section>
 
       <Section eyebrow="Experience" title="경력" sub={profile.careerPeriod}>
-        {/* 휴대폰은 프로젝트마다 대표 1줄만 - 경력 전체를 위·아래 버튼 하나로 같이 펼침 */}
-        <div className="group/more flex flex-col gap-6">
-          <MobileMoreInput id="experience-more" />
-          <MobileMoreToggle htmlFor="experience-more" more="경력 상세 전부 보기" />
-          <Timeline>
-            {sortedCareers.map((c, idx) => (
-              <TimelineItem key={idx} period={c.period} current={c.isCurrent}>
+        {/* 휴대폰은 회사마다 프로젝트 제목만 - 기간·상세(작은 글씨)·기술은 회사 이름 옆 버튼으로 그 회사만 펼침, 펼치면 위 버튼은 사라지고 끝에 접기 */}
+        <Timeline>
+          {sortedCareers.map((c, idx) => (
+            <TimelineItem key={idx} period={c.period} current={c.isCurrent}>
+              <div className="group/more flex flex-col gap-3">
+                <MobileMoreInput id={`career-more-${idx}`} />
                 <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                   <h3 className="text-lg font-bold tracking-tight">{c.company}</h3>
                   <span className="text-sm text-muted">{[c.position, c.role].filter(Boolean).join(" · ")}</span>
+                  <MobileMoreToggle htmlFor={`career-more-${idx}`} more="상세 보기" className="ml-auto self-center max-sm:group-has-[:checked]/more:hidden" />
                 </div>
                 {c.summary && <p className="text-sm leading-relaxed">{c.summary}</p>}
                 {c.projects && c.projects.length > 0 && (
-                  <div className="flex flex-col gap-4 max-sm:gap-6 mt-1">
+                  <div className="flex flex-col gap-4 max-sm:gap-5 mt-1">
                     {c.projects.map((p, pi) => (
-                      <div key={pi} className="rounded-2xl border border-line bg-background p-4 sm:p-5 flex flex-col gap-2 max-sm:rounded-none max-sm:border-0 max-sm:bg-transparent max-sm:p-0">
+                      <div key={pi} className="rounded-2xl border border-line bg-background p-4 sm:p-5 flex flex-col gap-2 max-sm:gap-0 max-sm:group-has-[:checked]/more:gap-2 max-sm:rounded-none max-sm:border-0 max-sm:bg-transparent max-sm:p-0">
                         <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
                           <h4 className="font-semibold">{p.title}</h4>
-                          <span className="text-xs tabular-nums text-muted">{p.period}</span>
+                          <span className={`text-xs tabular-nums text-muted ${MOBILE_OPEN_ONLY_INLINE}`}>{p.period}</span>
                         </div>
-                        <BulletList items={p.details} mobileKeep={1} />
+                        <BulletList items={p.details} mobileKeep={0} />
                       </div>
                     ))}
                   </div>
                 )}
                 {c.stack && <StackChips items={c.stack} grouped />}
-              </TimelineItem>
-            ))}
-          </Timeline>
-          <MobileMoreToggle htmlFor="experience-more" more="경력 상세 전부 보기" />
-        </div>
+                {/* 펼친 뒤엔 내용 끝에도 접기 버튼 */}
+                <MobileMoreToggle htmlFor={`career-more-${idx}`} more="접기" className="max-sm:hidden max-sm:group-has-[:checked]/more:inline-flex" />
+              </div>
+            </TimelineItem>
+          ))}
+        </Timeline>
       </Section>
 
       <Section eyebrow="Education" title="학력">
@@ -154,13 +156,7 @@ export default function AboutView({ about }: { about: AboutContent }) {
                 <h3 className="text-lg font-bold tracking-tight">{t.org}</h3>
                 <span className="text-sm text-muted">{t.course}</span>
               </div>
-              {t.learned && t.learned.length > 0 && (
-                <div className="flex flex-wrap gap-1.5">
-                  {t.learned.map((s) => (
-                    <Chip key={s}>{s}</Chip>
-                  ))}
-                </div>
-              )}
+              {/* 배운 기술(learned)은 역량과 겹쳐서 안 그림 - 데이터는 about.ts 에 그대로 */}
               {/* 교육 중 사이드 프로젝트는 제목만 ("제목 (팀·기간) - 설명" 에서 설명 앞까지) - 자세한 건 포트폴리오에서 */}
               {t.projects && t.projects.length > 0 && <BulletList items={t.projects.map((x) => x.split(" - ")[0])} />}
             </TimelineItem>
@@ -217,10 +213,10 @@ export default function AboutView({ about }: { about: AboutContent }) {
 
 function InfoBox({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
-    <div className="rounded-2xl border border-line bg-surface p-5 flex flex-col gap-1">
-      <div className="text-sm text-muted">{label}</div>
-      <div className="text-lg font-bold tracking-tight text-accent-2">{value}</div>
-      {sub && <div className="text-xs text-muted">{sub}</div>}
+    <div className="rounded-2xl border border-line bg-surface p-5 flex flex-col gap-1 max-sm:grid max-sm:grid-cols-[auto_minmax(0,1fr)] max-sm:gap-x-3 max-sm:gap-y-0.5 max-sm:rounded-none max-sm:border-0 max-sm:bg-transparent max-sm:px-4 max-sm:py-3.5">
+      <div className="text-sm text-muted max-sm:col-start-1 max-sm:row-start-1">{label}</div>
+      <div className="text-lg font-bold tracking-tight text-accent-2 max-sm:col-start-2 max-sm:row-start-1 max-sm:row-span-2 max-sm:self-center max-sm:text-right max-sm:text-base">{value}</div>
+      {sub && <div className="text-xs text-muted max-sm:col-start-1 max-sm:row-start-2">{sub}</div>}
     </div>
   );
 }
