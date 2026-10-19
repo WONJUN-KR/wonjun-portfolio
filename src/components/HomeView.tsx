@@ -111,7 +111,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
         </div>
         <div className="shrink-0 size-40 max-sm:size-24 max-sm:rounded-2xl sm:size-60 rounded-3xl overflow-hidden border border-line bg-surface flex items-center justify-center">
           {hasProfileImg ? (
-            <Image src={PROFILE_IMG} alt={profile?.name ?? "WonJun"} width={416} height={416} className="size-full object-cover object-[center_5%]" />
+            <Image src={PROFILE_IMG} alt={profile?.name ?? "WonJun"} width={416} height={416} loading="eager" fetchPriority="high" className="size-full object-cover object-[center_5%]" />
           ) : (
             <span className="text-5xl sm:text-7xl font-bold tracking-tight text-muted/40">WJ</span>
           )}
