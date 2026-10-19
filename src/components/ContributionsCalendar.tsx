@@ -11,12 +11,12 @@ import {
 } from "@/lib/heatmap";
 
 type Props = {
-  days: ContributionDay[];
-  // true = 최근 1년 데이터를 받아서 화면 폭에 들어가는 만큼만 (휴대폰 6개월 ~ 넓은 화면 12개월)
-  // false = 고른 연도 전체 (좁으면 가로 스크롤)
-  recent?: boolean;
+  initialDays: ContributionDay[]; // 서버가 처음 그릴 때 받은 데이터 (주소의 ?year= 기준)
+  initialYear?: string;
   years: number[]; // 연도 선택 상자에 넣을 연도들
 };
+// 연도 "" = 최근: 1년 데이터를 받아서 화면 폭에 들어가는 만큼만 (휴대폰 6개월 ~ 넓은 화면 12개월)
+// 연도 YYYY = 그 해 전체 (좁으면 가로 스크롤)
 
 const CELL = 11;
 const GAP = 3;
@@ -25,9 +25,37 @@ const HEADER_H = 20;
 const MIN_WEEKS = 26; // 6개월 - 휴대폰처럼 좁아도 이만큼은 보여줌 (칸이 작아짐)
 const MAX_STEP = 18; // 넓은 화면에서 칸이 너무 커지지 않게
 
-export default function ContributionsCalendar({ days, recent = false, years }: Props) {
+export default function ContributionsCalendar({ initialDays, initialYear = "", years }: Props) {
   const boxRef = useRef<HTMLDivElement>(null);
   const [boxWidth, setBoxWidth] = useState<number | null>(null);
+  const [year, setYear] = useState(initialYear);
+  const [days, setDays] = useState(initialDays);
+  const [loading, setLoading] = useState(false);
+  const requestId = useRef(0);
+  const recent = !year;
+
+  // 연도를 바꾸면 페이지 이동 없이 잔디 데이터만 받아서 다시 그림 (스크롤 위치 그대로).
+  // 주소의 ?year= 도 같이 바꿔서 새로고침·공유해도 같은 연도로 열림
+  const changeYear = async (next: string) => {
+    setYear(next);
+    const url = new URL(window.location.href);
+    if (next) url.searchParams.set("year", next);
+    else url.searchParams.delete("year");
+    window.history.replaceState(window.history.state, "", url);
+
+    const id = ++requestId.current;
+    setLoading(true);
+    try {
+      const res = await fetch(`/api/contributions${next ? `?year=${next}` : ""}`);
+      if (!res.ok) throw new Error(String(res.status));
+      const data = (await res.json()) as { days: ContributionDay[] };
+      if (id === requestId.current) setDays(data.days);
+    } catch {
+      // 실패하면 이전 잔디를 그대로 둠
+    } finally {
+      if (id === requestId.current) setLoading(false);
+    }
+  };
 
   useEffect(() => {
     if (!recent || !boxRef.current) return;
@@ -40,7 +68,7 @@ export default function ContributionsCalendar({ days, recent = false, years }: P
   const header = (periodLabel: string) => (
     <div className="flex items-center justify-between gap-3">
       <span className="whitespace-nowrap text-sm font-semibold">GitHub Contributions</span>
-      <YearSelector years={years} defaultLabel={periodLabel} />
+      <YearSelector years={years} value={year} onChange={changeYear} defaultLabel={periodLabel} />
     </div>
   );
 
@@ -152,7 +180,7 @@ export default function ContributionsCalendar({ days, recent = false, years }: P
           </span>
           <span className="text-xs text-muted">(개인 + 회사 계정 합산)</span>
         </div>
-        <div ref={boxRef} className={recent ? "overflow-hidden" : "overflow-x-auto"}>
+        <div ref={boxRef} className={`${recent ? "overflow-hidden" : "overflow-x-auto"} transition-opacity ${loading ? "opacity-40" : ""}`}>
           <svg
             viewBox={`0 0 ${width} ${height}`}
             // 폭을 잰 뒤엔 실제 픽셀 크기 그대로 (늘이거나 줄이지 않아 칸·글자가 찌그러지지 않음). 연도 모드는 원래 크기로 스크롤
