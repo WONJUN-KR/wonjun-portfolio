@@ -128,6 +128,22 @@ export default function AboutView({ about }: { about: AboutContent }) {
         </Timeline>
       </Section>
 
+      <Section eyebrow="Training" title="교육">
+        <Timeline>
+          {sortedTrainings.map((t, idx) => (
+            <TimelineItem key={idx} period={t.period}>
+              <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                <h3 className="text-lg font-bold tracking-tight">{t.org}</h3>
+                <span className="text-sm text-muted">{t.course}</span>
+              </div>
+              {/* 배운 기술(learned)은 역량과 겹쳐서 안 그림 - 데이터는 about.ts 에 그대로 */}
+              {/* 교육 중 사이드 프로젝트는 제목만 ("제목 (팀·기간) - 설명" 에서 설명 앞까지) - 자세한 건 포트폴리오에서 */}
+              {t.projects && t.projects.length > 0 && <BulletList items={t.projects.map((x) => x.split(" - ")[0])} />}
+            </TimelineItem>
+          ))}
+        </Timeline>
+      </Section>
+
       <Section eyebrow="Education" title="학력">
         <Timeline>
           {sortedEducations.map((e, idx) => (
@@ -143,22 +159,6 @@ export default function AboutView({ about }: { about: AboutContent }) {
                 </div>
               )}
               {e.projects && e.projects.length > 0 && <BulletList items={e.projects} />}
-            </TimelineItem>
-          ))}
-        </Timeline>
-      </Section>
-
-      <Section eyebrow="Training" title="교육">
-        <Timeline>
-          {sortedTrainings.map((t, idx) => (
-            <TimelineItem key={idx} period={t.period}>
-              <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                <h3 className="text-lg font-bold tracking-tight">{t.org}</h3>
-                <span className="text-sm text-muted">{t.course}</span>
-              </div>
-              {/* 배운 기술(learned)은 역량과 겹쳐서 안 그림 - 데이터는 about.ts 에 그대로 */}
-              {/* 교육 중 사이드 프로젝트는 제목만 ("제목 (팀·기간) - 설명" 에서 설명 앞까지) - 자세한 건 포트폴리오에서 */}
-              {t.projects && t.projects.length > 0 && <BulletList items={t.projects.map((x) => x.split(" - ")[0])} />}
             </TimelineItem>
           ))}
         </Timeline>
