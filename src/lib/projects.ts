@@ -14,6 +14,8 @@ export type Project = {
   liveUrl?: string;
   repos: Repo[];
   thumbnail?: string;
+  // 홈 휴대폰 카드(낮은 5:2)에서 썸네일 어디를 보여줄지 - 없으면 위쪽
+  mobileThumbPosition?: string;
   logo?: string;
   pinned?: boolean;
   lead?: boolean; // 팀장 - projects 페이지에 '팀장' 배지
@@ -48,6 +50,7 @@ export const PROJECTS: Project[] = [
       { label: "Backend", url: "https://github.com/fcde-project9/GOTCHA-BE" },
     ],
     thumbnail: "/projects/gotcha.png",
+    mobileThumbPosition: "max-sm:object-bottom", // 글자 대신 캐릭터 얼굴이 보이게
     pinned: true,
     status: "live",
     device: "laptop",
