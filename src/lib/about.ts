@@ -140,10 +140,10 @@ export const ABOUT: AboutContent = {
       company: "상상스토리(주)",
       position: "연구소 · 주임",
       role: "웹개발",
-      period: "2022.05 ~ 2024.04",
+      period: "2022.03 ~ 2024.04",
       region: "서울",
       resignReason: "학업",
-      summary: "Spring 기반 웹 시스템 3건 개발·운영 (포털, LMS, 시설물 관리)",
+      summary: "Spring 기반 웹 시스템 3건 개발·운영 (포털, LMS, 시설물 관리) (2022.03~04 수습 2개월은 사업소득, 2022.05 병역특례 편입과 함께 정규 전환)",
       projects: [
         {
           title: "사내 포털 및 접근권한 관리 시스템 개발",

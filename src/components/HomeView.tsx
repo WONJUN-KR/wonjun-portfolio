@@ -52,7 +52,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
   return (
     <div className="flex flex-col gap-20 sm:gap-28 py-6">
       {/* Hero */}
-      <section className="animate-fade-up flex flex-col-reverse sm:flex-row sm:items-start gap-10 sm:gap-10 pt-2">
+      <section className="animate-fade-up flex flex-col-reverse sm:flex-row sm:items-start gap-10 max-sm:gap-6 sm:gap-10 pt-2">
         <div className="flex flex-col gap-6 min-w-0">
           <div className="flex flex-col gap-3">
             <h1 className="text-4xl sm:text-6xl font-bold tracking-tight leading-[1.15] bg-gradient-to-br from-foreground via-foreground to-accent-2 bg-clip-text text-transparent">
@@ -61,11 +61,11 @@ export default async function HomeView({ year, about }: { year?: string; about: 
             <p className="text-lg text-muted">안녕하세요, {profile?.name ?? "WonJun"}입니다.</p>
           </div>
           {profile?.intro && (
-            <p className="text-base sm:text-lg leading-relaxed text-muted whitespace-pre-line">
+            <p className="text-base max-sm:text-[15px] sm:text-lg leading-relaxed text-muted whitespace-pre-line">
               {profile.intro}
             </p>
           )}
-          <div className="flex flex-wrap gap-3 pt-2">
+          <div className="flex flex-wrap gap-3 max-sm:gap-2 pt-2">
             {profile?.email && (
               <a
                 href={`mailto:${profile.email}`}
@@ -80,10 +80,10 @@ export default async function HomeView({ year, about }: { year?: string; about: 
                 href={contacts.githubPersonal}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-semibold hover:bg-surface-hover transition-colors"
+                className="inline-flex items-center gap-2 rounded-full border border-line px-5 max-sm:px-3 py-2.5 text-sm font-semibold hover:bg-surface-hover transition-colors"
               >
                 <GithubIcon className="size-4" />
-                GitHub
+                <span className="max-sm:sr-only">GitHub</span>
               </a>
             )}
             {contacts?.blog && (
@@ -91,10 +91,10 @@ export default async function HomeView({ year, about }: { year?: string; about: 
                 href={contacts.blog}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-semibold hover:bg-surface-hover transition-colors"
+                className="inline-flex items-center gap-2 rounded-full border border-line px-5 max-sm:px-3 py-2.5 text-sm font-semibold hover:bg-surface-hover transition-colors"
               >
                 <BookOpen className="size-4" />
-                Blog
+                <span className="max-sm:sr-only">Blog</span>
               </a>
             )}
             {contacts?.linkedin && (
@@ -102,15 +102,15 @@ export default async function HomeView({ year, about }: { year?: string; about: 
                 href={contacts.linkedin}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-semibold hover:bg-surface-hover transition-colors"
+                className="inline-flex items-center gap-2 rounded-full border border-line px-5 max-sm:px-3 py-2.5 text-sm font-semibold hover:bg-surface-hover transition-colors"
               >
                 <LinkedinIcon className="size-4" />
-                LinkedIn
+                <span className="max-sm:sr-only">LinkedIn</span>
               </a>
             )}
           </div>
         </div>
-        <div className="shrink-0 size-40 sm:size-60 rounded-3xl overflow-hidden border border-line bg-surface flex items-center justify-center">
+        <div className="shrink-0 size-40 max-sm:size-24 max-sm:rounded-2xl sm:size-60 rounded-3xl overflow-hidden border border-line bg-surface flex items-center justify-center">
           {hasProfileImg ? (
             <Image src={PROFILE_IMG} alt={profile?.name ?? "WonJun"} width={416} height={416} className="size-full object-cover object-[center_5%]" />
           ) : (
@@ -120,12 +120,12 @@ export default async function HomeView({ year, about }: { year?: string; about: 
       </section>
 
       {/* Stats */}
-      <section className="animate-fade-up [animation-delay:100ms] grid grid-cols-2 md:grid-cols-4 gap-3">
+      <section className="animate-fade-up [animation-delay:100ms] grid grid-cols-2 max-sm:grid-cols-1 md:grid-cols-4 gap-3 max-sm:gap-0 max-sm:rounded-2xl max-sm:border max-sm:border-line max-sm:bg-surface max-sm:divide-y max-sm:divide-line">
         {stats.map((s) => (
-          <div key={s.label} className="rounded-2xl border border-line bg-surface p-5 flex flex-col gap-1">
-            <span className="text-sm text-muted">{s.label}</span>
-            <span className="text-2xl sm:text-3xl font-bold tracking-tight text-accent-2">{s.value}</span>
-            <span className="text-xs text-muted sm:truncate" title={s.basis}>{s.basis}</span>
+          <div key={s.label} className="rounded-2xl border border-line bg-surface p-5 flex flex-col gap-1 max-sm:grid max-sm:grid-cols-[minmax(0,1fr)_auto] max-sm:gap-x-3 max-sm:gap-y-0.5 max-sm:rounded-none max-sm:border-0 max-sm:bg-transparent max-sm:px-4 max-sm:py-3.5">
+            <span className="text-sm text-muted max-sm:col-start-1 max-sm:row-start-1">{s.label}</span>
+            <span className="text-2xl max-sm:text-xl sm:text-3xl font-bold tracking-tight text-accent-2 max-sm:col-start-2 max-sm:row-start-1 max-sm:row-span-2 max-sm:self-center max-sm:text-right">{s.value}</span>
+            <span className="text-xs text-muted sm:truncate max-sm:col-start-1 max-sm:row-start-2" title={s.basis}>{s.basis}</span>
           </div>
         ))}
       </section>
@@ -134,11 +134,11 @@ export default async function HomeView({ year, about }: { year?: string; about: 
       {careers.length > 0 && (
         <section className="flex flex-col gap-8">
           <SectionHeader eyebrow="Experience" title="경력" href="/resume" linkLabel="이력서 보기" />
-          <ol className="relative flex flex-col gap-4">
+          <ol className="relative flex flex-col gap-4 max-sm:gap-10">
             {careers.map((c) => {
               const logo = COMPANY_LOGOS[c.company];
               return (
-                <li key={c.company + c.period} className="rounded-3xl border border-line bg-surface p-4 sm:p-8 flex flex-col gap-5">
+                <li key={c.company + c.period} className="rounded-3xl border border-line bg-surface p-4 sm:p-8 flex flex-col gap-5 max-sm:rounded-none max-sm:border-x-0 max-sm:border-b-0 max-sm:bg-transparent max-sm:px-0 max-sm:pb-0 max-sm:pt-6">
                   <div className="flex items-start gap-4">
                     <div className="shrink-0 size-12 rounded-xl bg-white border border-line flex items-center justify-center overflow-hidden p-1.5">
                       {logo ? (
@@ -183,11 +183,25 @@ export default async function HomeView({ year, about }: { year?: string; about: 
                     </div>
                   )}
                   {c.stack && c.stack.length > 0 && (
-                    <div className="flex flex-wrap gap-1.5">
-                      {c.stack.map((s) => (
-                        <Chip key={s}>{s}</Chip>
-                      ))}
-                    </div>
+                    <>
+                      <div className="flex flex-wrap gap-1.5 max-sm:hidden">
+                        {c.stack.map((s) => (
+                          <Chip key={s}>{s}</Chip>
+                        ))}
+                      </div>
+                      {/* 휴대폰은 칩이 반 화면을 차지해서 접어둠 */}
+                      <details className="group sm:hidden">
+                        <summary className="flex cursor-pointer list-none items-center gap-1.5 text-sm text-muted [&::-webkit-details-marker]:hidden">
+                          기술 스택 {c.stack.length}개
+                          <ChevronDown className="size-4 transition-transform group-open:rotate-180" />
+                        </summary>
+                        <div className="flex flex-wrap gap-1.5 pt-3">
+                          {c.stack.map((s) => (
+                            <Chip key={s}>{s}</Chip>
+                          ))}
+                        </div>
+                      </details>
+                    </>
                   )}
                 </li>
               );
