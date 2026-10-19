@@ -28,16 +28,17 @@ export default function HistoryPage() {
 
       <div className="flex flex-col">
         {years.map(({ year, items }) => (
-          <section key={year} className="grid grid-cols-[72px_1fr] sm:grid-cols-[160px_1fr] gap-4 sm:gap-8 border-t border-line py-8">
-            {/* 연도 - 넓은 화면에선 그 해 항목을 내리는 동안 따라옴 */}
+          <section key={year} className="grid grid-cols-[72px_minmax(0,1fr)] max-[359px]:grid-cols-1 sm:grid-cols-[160px_1fr] gap-4 max-[359px]:gap-3 sm:gap-8 border-t border-line py-8">
+            {/* 연도 - 넓은 화면에선 그 해 항목을 내리는 동안 따라옴. 360px 미만에선 항목 위로 올려 글 칸을 넓힘 */}
             <h2 className="self-start text-2xl sm:text-4xl font-bold tracking-tight tabular-nums text-accent-2 sm:sticky sm:top-20">
               {year}
             </h2>
             <ol className="flex flex-col gap-6">
               {items.map((item) => (
-                <li key={item.id} className="grid grid-cols-[44px_1fr] gap-3 sm:gap-4">
+                <li key={item.id} className="grid grid-cols-[44px_minmax(0,1fr)] gap-3 sm:gap-4">
                   <span className="pt-0.5 text-sm tabular-nums text-muted">{item.period ? `${item.period.slice(5, 7)}월` : ""}</span>
-                  <div className="flex flex-col gap-1">
+                  {/* 긴 문구가 칸을 밀어내지 않게 - 가장 작은 폰(320px)에서 가로 스크롤 생기던 곳 */}
+                  <div className="flex flex-col gap-1 min-w-0 break-words">
                     <div className="flex flex-wrap items-center gap-2">
                       <h3 className="font-semibold tracking-tight">{item.title}</h3>
                       {item.status === "IN_PROGRESS" && (
