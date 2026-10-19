@@ -1,39 +1,21 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-
+// 잔디 연도 선택 상자 - 값과 바뀔 때 할 일은 잔디 컴포넌트가 정함 (페이지 이동 없음)
 type Props = {
-  paramName?: string;
   years: number[];
+  value: string; // "" = 최근
+  onChange: (year: string) => void;
   defaultLabel?: string;
+  disabled?: boolean;
 };
 
-export default function YearSelector({
-  paramName = "year",
-  years,
-  defaultLabel = "최근 1년",
-}: Props) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const current = searchParams.get(paramName) ?? "";
-
-  const onChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const params = new URLSearchParams(searchParams.toString());
-    if (e.target.value) {
-      params.set(paramName, e.target.value);
-    } else {
-      params.delete(paramName);
-    }
-    const qs = params.toString();
-    router.push(qs ? `${pathname}?${qs}` : pathname);
-  };
-
+export default function YearSelector({ years, value, onChange, defaultLabel = "최근 1년", disabled = false }: Props) {
   return (
     <select
-      value={current}
-      onChange={onChange}
-      className="text-xs bg-surface border border-line rounded-full px-3 py-1 text-foreground"
+      value={value}
+      onChange={(e) => onChange(e.target.value)}
+      disabled={disabled}
+      className="text-xs bg-surface border border-line rounded-full px-3 py-1 text-foreground disabled:opacity-60"
     >
       <option value="">{defaultLabel}</option>
       {years.map((y) => (

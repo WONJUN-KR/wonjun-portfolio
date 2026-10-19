@@ -255,7 +255,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
         )}
         {contributions && (
           <div className="rounded-3xl border border-line bg-surface p-6 sm:p-8 flex flex-col gap-4">
-            <ContributionsCalendar days={contributions.days} recent={!year} years={availableYears()} />
+            <ContributionsCalendar initialDays={contributions.days} initialYear={year} years={availableYears()} />
           </div>
         )}
       </section>
