@@ -42,6 +42,7 @@ export const MOBILE_TOGGLE =
 // 안쪽의 MOBILE_OPEN_ONLY 붙은 것들이 그 버튼 하나로 같이 펼쳐지고 접힘 (JS 없이 체크박스 + :has). sm 이상은 항상 펼침
 export const MOBILE_OPEN_ONLY = "max-sm:hidden max-sm:group-has-[:checked]/more:flex";
 export const MOBILE_OPEN_ONLY_ITEM = "max-sm:hidden max-sm:group-has-[:checked]/more:list-item";
+export const MOBILE_OPEN_ONLY_INLINE = "max-sm:hidden max-sm:group-has-[:checked]/more:inline";
 
 // htmlFor 를 주면 같은 체크박스를 여는 버튼을 위·아래 두 군데 둘 수 있음 (체크박스는 MobileMoreInput 으로 앞에 한 번)
 export function MobileMoreToggle({ more = "자세히 보기", less = "접기", htmlFor, className = "" }: {
