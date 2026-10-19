@@ -60,31 +60,33 @@ export default function LogBrowser({ posts, seriesList }: { posts: LogPost[]; se
                   type="button"
                   onClick={() => selectSeries(series.id)}
                   aria-pressed={active}
-                  className={`group flex flex-col gap-3 sm:gap-4 rounded-3xl border p-4 sm:p-6 text-left transition-all hover:-translate-y-1 ${
+                  className={`group flex flex-col gap-3 sm:gap-4 rounded-3xl border p-4 sm:p-6 text-left transition-all hover:-translate-y-1 max-sm:grid max-sm:grid-cols-[auto_minmax(0,1fr)_auto] max-sm:items-center max-sm:gap-x-3 max-sm:gap-y-0.5 max-sm:rounded-2xl max-sm:px-4 max-sm:py-3 ${
                     active ? "border-accent bg-accent-soft" : "border-line bg-surface hover:border-accent/40"
                   }`}
                 >
-                  {/* 오른쪽 위 깔때기 = 누르면 이 시리즈 글만 걸러짐 (선택 중이면 해제 아이콘) */}
-                  <div className="flex items-start justify-between gap-3">
-                    <span className="flex size-10 items-center justify-center rounded-xl bg-accent-soft">
+                  {/* 오른쪽 위 깔때기 = 누르면 이 시리즈 글만 걸러짐 (선택 중이면 해제 아이콘)
+                      휴대폰은 세로 한 줄 카드: [아이콘] [연도·제목 / 글 수·업데이트] [깔때기] */}
+                  <div className="flex items-start justify-between gap-3 max-sm:contents">
+                    <span className="flex size-10 items-center justify-center rounded-xl bg-accent-soft max-sm:col-start-1 max-sm:row-span-2 max-sm:row-start-1 max-sm:size-9">
                       <Layers className="size-5 text-accent-2" />
                     </span>
                     {active ? (
-                      <FunnelX className="size-5 text-accent-2" aria-label="필터 해제" />
+                      <FunnelX className="size-5 text-accent-2 max-sm:col-start-3 max-sm:row-span-2 max-sm:row-start-1" aria-label="필터 해제" />
                     ) : (
-                      <Funnel className="size-5 text-muted transition-colors group-hover:text-accent-2" aria-label="이 시리즈로 필터" />
+                      <Funnel className="size-5 text-muted transition-colors group-hover:text-accent-2 max-sm:col-start-3 max-sm:row-span-2 max-sm:row-start-1" aria-label="이 시리즈로 필터" />
                     )}
                   </div>
-                  <div className="flex flex-col gap-1">
-                    {years && <span className="text-xs font-semibold tabular-nums text-accent-2">{years}</span>}
-                    <h3 className="text-lg font-bold tracking-tight">{title}</h3>
+                  {/* 360px 미만은 연도를 제목 위로, 글 수·날짜를 짧게 */}
+                  <div className="flex flex-col gap-1 max-sm:col-start-2 max-sm:row-start-1 max-sm:min-w-0 max-sm:gap-0 min-[360px]:max-sm:flex-row min-[360px]:max-sm:items-baseline min-[360px]:max-sm:gap-2">
+                    {years && <span className="text-xs font-semibold tabular-nums text-accent-2 max-sm:shrink-0">{years}</span>}
+                    <h3 className="text-lg font-bold tracking-tight max-sm:truncate max-sm:text-base">{title}</h3>
                   </div>
-                  <div className="flex items-center gap-2 text-xs text-muted">
-                    <span>{series.postsCount}개의 글</span>
+                  <div className="flex items-center gap-2 text-xs text-muted max-sm:col-start-2 max-sm:row-start-2 max-sm:min-w-0 max-sm:gap-1.5 max-sm:overflow-hidden max-sm:whitespace-nowrap">
+                    <span className="shrink-0">{series.postsCount}개<span className="max-[359px]:hidden">의 글</span></span>
                     {series.updated && (
                       <>
                         <span>·</span>
-                        <span>{series.updated} 업데이트</span>
+                        <span className="max-sm:truncate">{series.updated}<span className="max-[359px]:hidden"> 업데이트</span></span>
                       </>
                     )}
                   </div>
