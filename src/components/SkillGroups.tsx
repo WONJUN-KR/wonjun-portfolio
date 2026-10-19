@@ -1,6 +1,6 @@
 import type { SkillItem } from "@/lib/api";
 import { groupSkillsByKind } from "@/lib/about";
-import { Chip } from "@/components/ui";
+import { Chip, MOBILE_OPEN_ONLY, MobileMoreToggle } from "@/components/ui";
 
 // Resume 역량 목록 - 키 순서대로 그림
 const SKILL_GROUPS: { key: string; label: string }[] = [
@@ -10,10 +10,37 @@ const SKILL_GROUPS: { key: string; label: string }[] = [
 ];
 
 // 분야를 위에서 아래로 쌓고, 분야 안에서는 세부 묶음을 한 줄씩 (이름 | 칩)
+// 휴대폰은 언어 칩 + '외 N개'만 보이고 '전체 보기'로 펼침 → 분야별 칩 (세부 묶음 이름은 생략, 순서는 묶음 순서 그대로)
 export default function SkillGroups({ skills }: { skills: Record<string, SkillItem[]> }) {
+  const groups = SKILL_GROUPS.filter((g) => skills[g.key]?.length);
+  // 대표 = 언어만 분야 순서대로 (Backend → Frontend → DevOps)
+  const preview = groups.flatMap((g) => skills[g.key].filter((x) => x.kind === "언어").map((x) => x.name));
+  const total = groups.reduce((n, g) => n + skills[g.key].length, 0);
   return (
-    <div className="flex flex-col gap-8">
-      {SKILL_GROUPS.filter((g) => skills[g.key]?.length).map((g) => (
+    <>
+    <div className="group/more flex flex-col gap-3 sm:hidden">
+      <div className="flex flex-wrap items-center gap-1.5 group-has-[:checked]/more:hidden">
+        {preview.map((name) => (
+          <Chip key={name}>{name}</Chip>
+        ))}
+        <span className="text-xs text-muted">외 {total - preview.length}개</span>
+      </div>
+      <div className={`flex-col gap-4 ${MOBILE_OPEN_ONLY}`}>
+        {groups.map((g) => (
+          <div key={g.key} className="flex flex-col gap-2">
+            <span className="text-sm font-semibold">{g.label}</span>
+            <div className="flex flex-wrap gap-1.5">
+              {groupSkillsByKind(skills[g.key]).flatMap((k) => k.items).map((x) => (
+                <Chip key={x.name}>{x.name}</Chip>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <MobileMoreToggle more="전체 보기" />
+    </div>
+    <div className="flex flex-col gap-8 max-sm:hidden">
+      {groups.map((g) => (
         <div key={g.key} className="flex flex-col gap-3">
           <span className="text-sm font-semibold">{g.label}</span>
           {groupSkillsByKind(skills[g.key]).map((k) => (
@@ -29,5 +56,6 @@ export default function SkillGroups({ skills }: { skills: Record<string, SkillIt
         </div>
       ))}
     </div>
+    </>
   );
 }

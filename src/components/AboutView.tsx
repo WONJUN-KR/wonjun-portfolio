@@ -4,7 +4,7 @@ import { BookOpen, ChevronDown, ExternalLink, Mail, MapPin } from "lucide-react"
 import type { AboutContent } from "@/lib/api";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import SkillGroups from "@/components/SkillGroups";
-import { Chip, Eyebrow } from "@/components/ui";
+import { Chip, Eyebrow, MOBILE_OPEN_ONLY_ITEM, MOBILE_TOGGLE, MobileMoreInput, MobileMoreToggle, StackChips } from "@/components/ui";
 
 // resume 페이지 본문 - 데이터는 src/lib/about.ts
 export default function AboutView({ about }: { about: AboutContent }) {
@@ -71,8 +71,19 @@ export default function AboutView({ about }: { about: AboutContent }) {
 
       <Section eyebrow="Cover Letter" title="자기소개서">
         <div className="rounded-3xl border border-line bg-surface p-5 sm:p-10 max-sm:rounded-none max-sm:border-0 max-sm:bg-transparent max-sm:p-0">
-          <div className="prose prose-invert max-w-none prose-headings:font-[family-name:var(--font-display)] prose-p:text-foreground/90 prose-li:text-foreground/90 prose-strong:text-foreground prose-a:text-accent-2">
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>{coverLetter}</ReactMarkdown>
+          {/* 휴대폰은 앞부분만 보여주고 '전체 읽기' ↔ '접기' - JS 없이 체크박스 + :has */}
+          <div className="group/cover flex flex-col">
+            <div className="relative max-sm:max-h-[22rem] max-sm:overflow-hidden max-sm:group-has-[:checked]/cover:max-h-none max-sm:after:absolute max-sm:after:inset-x-0 max-sm:after:bottom-0 max-sm:after:h-24 max-sm:after:bg-gradient-to-t max-sm:after:from-background max-sm:after:to-transparent max-sm:group-has-[:checked]/cover:after:hidden">
+              <div className="prose prose-invert max-w-none prose-headings:font-[family-name:var(--font-display)] prose-p:text-foreground/90 prose-li:text-foreground/90 prose-strong:text-foreground prose-a:text-accent-2">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>{coverLetter}</ReactMarkdown>
+              </div>
+            </div>
+            <label className={`sm:hidden mt-3 ${MOBILE_TOGGLE}`}>
+              <input type="checkbox" className="peer sr-only" />
+              <span className="peer-checked:hidden">전체 읽기</span>
+              <span className="hidden peer-checked:inline">접기</span>
+              <ChevronDown className="size-3.5 transition-transform peer-checked:rotate-180" />
+            </label>
           </div>
         </div>
       </Section>
@@ -82,51 +93,37 @@ export default function AboutView({ about }: { about: AboutContent }) {
       </Section>
 
       <Section eyebrow="Experience" title="경력" sub={profile.careerPeriod}>
-        <Timeline>
-          {sortedCareers.map((c, idx) => (
-            <TimelineItem key={idx} period={c.period} current={c.isCurrent}>
-              <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-                <h3 className="text-lg font-bold tracking-tight">{c.company}</h3>
-                <span className="text-sm text-muted">{[c.position, c.role].filter(Boolean).join(" · ")}</span>
-              </div>
-              {c.summary && <p className="text-sm leading-relaxed">{c.summary}</p>}
-              {c.projects && c.projects.length > 0 && (
-                <div className="flex flex-col gap-4 max-sm:gap-6 mt-1">
-                  {c.projects.map((p, pi) => (
-                    <div key={pi} className="rounded-2xl border border-line bg-background p-4 sm:p-5 flex flex-col gap-2 max-sm:rounded-none max-sm:border-0 max-sm:bg-transparent max-sm:p-0">
-                      <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-                        <h4 className="font-semibold">{p.title}</h4>
-                        <span className="text-xs tabular-nums text-muted">{p.period}</span>
-                      </div>
-                      <BulletList items={p.details} />
-                    </div>
-                  ))}
+        {/* 휴대폰은 프로젝트마다 대표 1줄만 - 경력 전체를 위·아래 버튼 하나로 같이 펼침 */}
+        <div className="group/more flex flex-col gap-6">
+          <MobileMoreInput id="experience-more" />
+          <MobileMoreToggle htmlFor="experience-more" more="경력 상세 전부 보기" />
+          <Timeline>
+            {sortedCareers.map((c, idx) => (
+              <TimelineItem key={idx} period={c.period} current={c.isCurrent}>
+                <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+                  <h3 className="text-lg font-bold tracking-tight">{c.company}</h3>
+                  <span className="text-sm text-muted">{[c.position, c.role].filter(Boolean).join(" · ")}</span>
                 </div>
-              )}
-              {c.stack && c.stack.length > 0 && (
-                <>
-                  <div className="flex flex-wrap gap-1.5 max-sm:hidden">
-                    {c.stack.map((s) => (
-                      <Chip key={s}>{s}</Chip>
+                {c.summary && <p className="text-sm leading-relaxed">{c.summary}</p>}
+                {c.projects && c.projects.length > 0 && (
+                  <div className="flex flex-col gap-4 max-sm:gap-6 mt-1">
+                    {c.projects.map((p, pi) => (
+                      <div key={pi} className="rounded-2xl border border-line bg-background p-4 sm:p-5 flex flex-col gap-2 max-sm:rounded-none max-sm:border-0 max-sm:bg-transparent max-sm:p-0">
+                        <div className="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                          <h4 className="font-semibold">{p.title}</h4>
+                          <span className="text-xs tabular-nums text-muted">{p.period}</span>
+                        </div>
+                        <BulletList items={p.details} mobileKeep={1} />
+                      </div>
                     ))}
                   </div>
-                  {/* 휴대폰은 칩이 화면을 많이 차지해서 접어둠 */}
-                  <details className="group sm:hidden">
-                    <summary className="flex cursor-pointer list-none items-center gap-1.5 text-sm text-muted [&::-webkit-details-marker]:hidden">
-                      기술 스택 {c.stack.length}개
-                      <ChevronDown className="size-4 transition-transform group-open:rotate-180" />
-                    </summary>
-                    <div className="flex flex-wrap gap-1.5 pt-3">
-                      {c.stack.map((s) => (
-                        <Chip key={s}>{s}</Chip>
-                      ))}
-                    </div>
-                  </details>
-                </>
-              )}
-            </TimelineItem>
-          ))}
-        </Timeline>
+                )}
+                {c.stack && <StackChips items={c.stack} grouped />}
+              </TimelineItem>
+            ))}
+          </Timeline>
+          <MobileMoreToggle htmlFor="experience-more" more="경력 상세 전부 보기" />
+        </div>
       </Section>
 
       <Section eyebrow="Education" title="학력">
@@ -269,11 +266,17 @@ function TimelineItem({ period, current, children }: {
   );
 }
 
-function BulletList({ items }: { items: string[] }) {
+// mobileKeep 을 주면 휴대폰에선 앞 N개만 보이고 나머지는 바깥 group/more 버튼으로 펼침
+function BulletList({ items, mobileKeep }: { items: string[]; mobileKeep?: number }) {
   return (
     <ul className="flex flex-col gap-1.5 text-sm text-muted">
       {items.map((d, i) => (
-        <li key={i} className="relative pl-4 before:absolute before:left-0 before:top-2 before:size-1 before:rounded-full before:bg-accent">
+        <li
+          key={i}
+          className={`relative pl-4 before:absolute before:left-0 before:top-2 before:size-1 before:rounded-full before:bg-accent ${
+            mobileKeep !== undefined && i >= mobileKeep ? MOBILE_OPEN_ONLY_ITEM : ""
+          }`}
+        >
           {d}
         </li>
       ))}
