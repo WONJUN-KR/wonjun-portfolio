@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight, BookOpen, Building2, ChevronDown, Mail } from "lucide-react";
 import ContributionsCalendar from "@/components/ContributionsCalendar";
-import YearSelector from "@/components/YearSelector";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { SectionHeader, StackChips } from "@/components/ui";
 import { getContributions, getPosts, type AboutContent } from "@/lib/api";
@@ -256,11 +255,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
         )}
         {contributions && (
           <div className="rounded-3xl border border-line bg-surface p-6 sm:p-8 flex flex-col gap-4">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold">GitHub Contributions</span>
-              <YearSelector years={availableYears()} />
-            </div>
-            <ContributionsCalendar days={contributions.days} totalCount={contributions.totalCount} />
+            <ContributionsCalendar days={contributions.days} recent={!year} years={availableYears()} />
           </div>
         )}
       </section>

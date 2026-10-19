@@ -11,7 +11,7 @@ type Props = {
 export default function YearSelector({
   paramName = "year",
   years,
-  defaultLabel = "최근 6개월",
+  defaultLabel = "최근 1년",
 }: Props) {
   const router = useRouter();
   const pathname = usePathname();
