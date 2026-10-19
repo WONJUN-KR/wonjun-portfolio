@@ -134,24 +134,14 @@ export type ContributionsResponse = {
 // 잔디에 합산하는 GitHub 계정 (개인 + 회사)
 export const GITHUB_ACCOUNTS = ["WONJUN-KR", "WonJun-Uxn"];
 
-// 두 계정의 날짜별 기여를 더함 (year 없으면 최근 6개월)
-const RECENT_MONTHS = 6;
-
+// 두 계정의 날짜별 기여를 더함 (year 없으면 최근 1년 - 화면에선 폭에 맞춰 6~12개월만 보임)
 export async function getContributions(year?: string): Promise<ContributionsResponse> {
   const perAccount = await Promise.all(GITHUB_ACCOUNTS.map((login) => contributionDays(login, year)));
   const merged = new Map<string, number>();
   for (const days of perAccount) {
     for (const d of days) merged.set(d.date, (merged.get(d.date) ?? 0) + d.count);
   }
-  let days = [...merged.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([date, count]) => ({ date, count }));
-  // 연도를 안 고르면 최근 6개월만 (일요일부터 시작해 주 단위로 깔끔하게)
-  if (!year) {
-    const from = new Date();
-    from.setUTCMonth(from.getUTCMonth() - RECENT_MONTHS);
-    from.setUTCDate(from.getUTCDate() - from.getUTCDay());
-    const fromKey = from.toISOString().slice(0, 10);
-    days = days.filter((d) => d.date >= fromKey);
-  }
+  const days = [...merged.entries()].sort(([a], [b]) => a.localeCompare(b)).map(([date, count]) => ({ date, count }));
   return { totalCount: days.reduce((sum, d) => sum + d.count, 0), days };
 }
 
