@@ -50,7 +50,8 @@ function ProjectVisual({ project }: { project: Project }) {
           width={1002}
           height={558}
           unoptimized
-          className="w-full h-auto block max-sm:h-full max-sm:object-cover max-sm:object-top"
+          // 휴대폰에선 2:1 로 잘리므로 프로젝트별 기준 위치(없으면 위쪽)에 맞춤 - 홈 카드와 같은 값
+          className={`w-full h-auto block max-sm:h-full max-sm:object-cover ${project.mobileThumbPosition ?? "max-sm:object-top"}`}
         />
       </BrowserFrame>
     );
