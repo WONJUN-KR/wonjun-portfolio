@@ -50,7 +50,7 @@ export const PROJECTS: Project[] = [
       { label: "Backend", url: "https://github.com/fcde-project9/GOTCHA-BE" },
     ],
     thumbnail: "/projects/gotcha.png",
-    mobileThumbPosition: "max-sm:object-bottom", // 글자 대신 캐릭터 얼굴이 보이게
+    mobileThumbPosition: "max-sm:object-bottom", // 휴대폰(홈 카드·Projects)에선 글자 대신 캐릭터 얼굴이 보이게
     pinned: true,
     status: "live",
     device: "laptop",
