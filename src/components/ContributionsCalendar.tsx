@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import YearSelector from "@/components/YearSelector";
 import type { ContributionDay } from "@/lib/api";
 import {
   HEATMAP_BG_CLASS,
@@ -14,6 +15,7 @@ type Props = {
   // true = 최근 1년 데이터를 받아서 화면 폭에 들어가는 만큼만 (휴대폰 6개월 ~ 넓은 화면 12개월)
   // false = 고른 연도 전체 (좁으면 가로 스크롤)
   recent?: boolean;
+  years: number[]; // 연도 선택 상자에 넣을 연도들
 };
 
 const CELL = 11;
@@ -23,7 +25,7 @@ const HEADER_H = 20;
 const MIN_WEEKS = 26; // 6개월 - 휴대폰처럼 좁아도 이만큼은 보여줌 (칸이 작아짐)
 const MAX_STEP = 18; // 넓은 화면에서 칸이 너무 커지지 않게
 
-export default function ContributionsCalendar({ days, recent = false }: Props) {
+export default function ContributionsCalendar({ days, recent = false, years }: Props) {
   const boxRef = useRef<HTMLDivElement>(null);
   const [boxWidth, setBoxWidth] = useState<number | null>(null);
 
@@ -34,8 +36,21 @@ export default function ContributionsCalendar({ days, recent = false }: Props) {
     return () => observer.disconnect();
   }, [recent]);
 
+  // 제목 줄 - 선택 상자의 "최근 …" 문구가 지금 보이는 기간을 따라가도록 잔디와 같이 그림
+  const header = (periodLabel: string) => (
+    <div className="flex items-center justify-between gap-3">
+      <span className="whitespace-nowrap text-sm font-semibold">GitHub Contributions</span>
+      <YearSelector years={years} defaultLabel={periodLabel} />
+    </div>
+  );
+
   if (days.length === 0) {
-    return <p className="text-sm text-muted">잔디 데이터를 불러올 수 없습니다.</p>;
+    return (
+      <div className="flex flex-col gap-4">
+        {header("최근 1년")}
+        <p className="text-sm text-muted">잔디 데이터를 불러올 수 없습니다.</p>
+      </div>
+    );
   }
 
   const byDate = new Map(days.map((d) => [d.date, d]));
@@ -123,64 +138,67 @@ export default function ContributionsCalendar({ days, recent = false }: Props) {
     }
   }
 
-  // 보이는 기간 (최근 모드에서만) - 주 수를 개월로 어림
+  // 보이는 기간 (최근 모드) - 주 수를 개월로 어림, 12개월은 "1년"
   const shownMonths = Math.min(12, Math.round(shownWeeks / 4.345));
+  const periodLabel = shownMonths >= 12 ? "최근 1년" : `최근 ${shownMonths}개월`;
 
   return (
-    <div className="flex flex-col gap-2">
-      <div className="flex items-baseline gap-2">
-        <span className="text-sm text-muted">
-          {recent && <span className="mr-1">최근 {shownMonths}개월</span>}
-          <span className="text-lg font-bold text-accent-2">{shownTotal.toLocaleString()}</span>건
-        </span>
-        <span className="text-xs text-muted">(개인 + 회사 계정 합산)</span>
-      </div>
-      <div ref={boxRef} className={recent ? "overflow-hidden" : "overflow-x-auto"}>
-        <svg
-          viewBox={`0 0 ${width} ${height}`}
-          // 폭을 잰 뒤엔 실제 픽셀 크기 그대로 (늘이거나 줄이지 않아 칸·글자가 찌그러지지 않음). 연도 모드는 원래 크기로 스크롤
-          className={measured ? "block" : "w-full h-auto"}
-          width={measured ? width : undefined}
-          height={measured ? height : undefined}
-          style={measured ? undefined : { minWidth: `${width}px` }}
-          role="img"
-          aria-label="GitHub contributions calendar"
-        >
-          {monthDividers.map((x) => (
-            <line
-              key={`div-${x}`}
-              x1={x}
-              y1={HEADER_H - 4}
-              x2={x}
-              y2={height}
-              strokeWidth={1}
-              className="stroke-line"
+    <div className="flex flex-col gap-4">
+      {header(periodLabel)}
+      <div className="flex flex-col gap-2">
+        <div className="flex items-baseline gap-2">
+          <span className="text-sm text-muted">
+            <span className="text-lg font-bold text-accent-2">{shownTotal.toLocaleString()}</span>건
+          </span>
+          <span className="text-xs text-muted">(개인 + 회사 계정 합산)</span>
+        </div>
+        <div ref={boxRef} className={recent ? "overflow-hidden" : "overflow-x-auto"}>
+          <svg
+            viewBox={`0 0 ${width} ${height}`}
+            // 폭을 잰 뒤엔 실제 픽셀 크기 그대로 (늘이거나 줄이지 않아 칸·글자가 찌그러지지 않음). 연도 모드는 원래 크기로 스크롤
+            className={measured ? "block" : "w-full h-auto"}
+            width={measured ? width : undefined}
+            height={measured ? height : undefined}
+            style={measured ? undefined : { minWidth: `${width}px` }}
+            role="img"
+            aria-label="GitHub contributions calendar"
+          >
+            {monthDividers.map((x) => (
+              <line
+                key={`div-${x}`}
+                x1={x}
+                y1={HEADER_H - 4}
+                x2={x}
+                y2={height}
+                strokeWidth={1}
+                className="stroke-line"
+              />
+            ))}
+            {monthLabels.map((m) => (
+              <text
+                key={`m-${m.x}`}
+                x={m.x + 2}
+                y={12}
+                fontSize={10}
+                className="fill-muted"
+              >
+                {m.label}
+              </text>
+            ))}
+            {cells}
+          </svg>
+        </div>
+        <div className="flex items-center gap-1.5 text-xs text-muted self-end">
+          <span>Less</span>
+          {HEATMAP_BG_CLASS.map((cls, i) => (
+            <span
+              key={i}
+              className={`inline-block rounded-[3px] ${cls}`}
+              style={{ width: `${CELL}px`, height: `${CELL}px` }}
             />
           ))}
-          {monthLabels.map((m) => (
-            <text
-              key={`m-${m.x}`}
-              x={m.x + 2}
-              y={12}
-              fontSize={10}
-              className="fill-muted"
-            >
-              {m.label}
-            </text>
-          ))}
-          {cells}
-        </svg>
-      </div>
-      <div className="flex items-center gap-1.5 text-xs text-muted self-end">
-        <span>Less</span>
-        {HEATMAP_BG_CLASS.map((cls, i) => (
-          <span
-            key={i}
-            className={`inline-block rounded-[3px] ${cls}`}
-            style={{ width: `${CELL}px`, height: `${CELL}px` }}
-          />
-        ))}
-        <span>More</span>
+          <span>More</span>
+        </div>
       </div>
     </div>
   );
