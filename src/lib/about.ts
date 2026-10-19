@@ -59,6 +59,7 @@ export const ABOUT: AboutContent = {
   careers: [
     {
       company: "(주)유엑스엔",
+      position: "연구소",
       role: "풀스택 개발",
       period: "2026.03 ~ 재직중",
       isCurrent: true,
@@ -138,8 +139,8 @@ export const ABOUT: AboutContent = {
     },
     {
       company: "상상스토리(주)",
-      position: "연구소 · 주임",
-      role: "웹개발",
+      position: "연구소",
+      role: "풀스택 개발",
       period: "2022.03 ~ 2024.04",
       region: "서울",
       resignReason: "학업",
@@ -274,9 +275,9 @@ export const ABOUT: AboutContent = {
     { title: "GOTCHA Backend", url: "https://github.com/fcde-project9/GOTCHA-BE", period: "2026.01.05 ~ 2026.03.02" },
     { title: "AI Auto Posting Backend", url: "https://github.com/WONJUN-KR/AI-Auto-Posting-Backend", period: "2025.11.17 ~ 2025.12.26" },
     { title: "AI Auto Posting Frontend", url: "https://github.com/WONJUN-KR/AI-Auto-Posting-Frontend", period: "2025.11.17 ~ 2025.12.26" },
-    { title: "Co's House (5인 팀)", url: "https://github.com/WONJUN-KR/Co-s_House", period: "2025.09.08 ~ 2025.10.10", teamSize: 5 },
+    { title: "Co's House (5인 팀)", url: "https://github.com/WONJUN-KR/Co-s_House", period: "2025.09.05 ~ 2025.10.26", teamSize: 5 },
   ],
-  military: { status: "군필", type: "산업기능요원 (복무 만료)", period: "2022.05 ~ 2024.04" },
+  military: { status: "군필", type: "산업기능요원", period: "2022.05 ~ 2024.04" },
   coverLetter: `## 화면부터 배포까지, 데이터를 잃지 않는 서비스를 책임지는 풀스택 개발자
 
 연속혈당측정(CGM) 의료기기 기업에서 의료 데이터 기반 웹 서비스와 사내 실험 데이터 플랫폼을 개발·운영하고 있습니다. 개인용 혈당 모니터링 서비스, 센서 실험 데이터 분석 플랫폼, 파생 서비스, 고객사 IoT 플랫폼, 감도표 관리 도구, 사내 회의록 정리 도구까지 여섯 개 프로젝트를 동시에 담당하며 React·Next.js 화면부터 Spring Boot·Flask 서버, AWS 인프라와 배포까지 직접 맡아 왔습니다.
