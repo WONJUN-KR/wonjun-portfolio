@@ -6,7 +6,7 @@ import { ArrowUpRight, BookOpen, Building2, ChevronDown, Mail } from "lucide-rea
 import ContributionsCalendar from "@/components/ContributionsCalendar";
 import YearSelector from "@/components/YearSelector";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
-import { Chip, SectionHeader } from "@/components/ui";
+import { SectionHeader, StackChips } from "@/components/ui";
 import { getContributions, getPosts, type AboutContent } from "@/lib/api";
 import { HOME_HIGHLIGHTS } from "@/lib/about";
 import { PROJECTS } from "@/lib/projects";
@@ -182,27 +182,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
                       ))}
                     </div>
                   )}
-                  {c.stack && c.stack.length > 0 && (
-                    <>
-                      <div className="flex flex-wrap gap-1.5 max-sm:hidden">
-                        {c.stack.map((s) => (
-                          <Chip key={s}>{s}</Chip>
-                        ))}
-                      </div>
-                      {/* 휴대폰은 칩이 반 화면을 차지해서 접어둠 */}
-                      <details className="group sm:hidden">
-                        <summary className="flex cursor-pointer list-none items-center gap-1.5 text-sm text-muted [&::-webkit-details-marker]:hidden">
-                          기술 스택 {c.stack.length}개
-                          <ChevronDown className="size-4 transition-transform group-open:rotate-180" />
-                        </summary>
-                        <div className="flex flex-wrap gap-1.5 pt-3">
-                          {c.stack.map((s) => (
-                            <Chip key={s}>{s}</Chip>
-                          ))}
-                        </div>
-                      </details>
-                    </>
-                  )}
+                  {c.stack && <StackChips items={c.stack} />}
                 </li>
               );
             })}
