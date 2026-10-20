@@ -67,7 +67,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
             {profile?.email && (
               <a
                 href={`mailto:${profile.email}`}
-                className="inline-flex items-center gap-2 rounded-full bg-accent-strong text-foreground font-bold px-5 py-2.5 text-sm font-semibold hover:opacity-85 transition-opacity"
+                className="inline-flex items-center gap-2 rounded-full border border-transparent bg-accent-strong text-foreground font-bold px-5 py-2.5 text-sm font-semibold hover:opacity-85 transition-opacity"
               >
                 <Mail className="size-4" />
                 연락하기
@@ -217,7 +217,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
                     <div className="flex items-center gap-2 min-w-0">
                       <h3 className="text-xl max-sm:text-lg font-bold tracking-tight truncate">{p.title}</h3>
                       {p.status === "live" && (
-                        <span className="shrink-0 rounded-full bg-accent-soft text-accent-2 px-2 py-0.5 text-xs font-semibold">운영 중</span>
+                        <span className="shrink-0 rounded-full border border-transparent bg-accent-soft text-accent-2 px-2 py-0.5 text-xs font-semibold">운영 중</span>
                       )}
                     </div>
                     <ArrowUpRight className="size-5 shrink-0 text-muted transition-all group-hover:text-accent-2 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
@@ -268,7 +268,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
           {profile?.email && (
             <a
               href={`mailto:${profile.email}`}
-              className="inline-flex items-center gap-2 rounded-full bg-accent-strong text-foreground font-bold px-6 py-3 text-sm font-semibold hover:opacity-85 transition-opacity"
+              className="inline-flex items-center gap-2 rounded-full border border-transparent bg-accent-strong text-foreground font-bold px-6 py-3 text-sm font-semibold hover:opacity-85 transition-opacity"
             >
               <Mail className="size-4" />
               {profile.email}

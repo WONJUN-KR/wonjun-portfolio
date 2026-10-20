@@ -126,7 +126,7 @@ export default function ProjectsPage() {
               <div className="flex flex-col gap-2 max-sm:order-2">
                 <div className="flex flex-wrap items-center gap-2 text-xs text-muted">
                   {p.pinned && (
-                    <span className="rounded-full bg-accent-soft text-accent-2 px-2.5 py-0.5 font-semibold">대표</span>
+                    <span className="rounded-full border border-transparent bg-accent-soft text-accent-2 px-2.5 py-0.5 font-semibold">대표</span>
                   )}
                   {p.status === "live" && (
                     <span className="rounded-full border border-line px-2.5 py-0.5 font-semibold text-foreground">
@@ -134,7 +134,7 @@ export default function ProjectsPage() {
                     </span>
                   )}
                   {p.lead && (
-                    <span className="rounded-full bg-accent-soft text-accent-2 px-2.5 py-0.5 font-semibold">팀장</span>
+                    <span className="rounded-full border border-transparent bg-accent-soft text-accent-2 px-2.5 py-0.5 font-semibold">팀장</span>
                   )}
                   <span className="tabular-nums">{p.period}</span>
                   <span>·</span>
@@ -165,7 +165,7 @@ export default function ProjectsPage() {
                     href={p.liveUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-accent-strong text-foreground px-4 py-2.5 text-sm font-bold hover:opacity-85 transition-opacity max-sm:min-w-0 max-sm:flex-1 max-sm:justify-center max-sm:gap-1 max-sm:px-2 max-sm:text-[13px]"
+                    className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-transparent bg-accent-strong text-foreground px-4 py-2.5 text-sm font-bold hover:opacity-85 transition-opacity max-sm:min-w-0 max-sm:flex-1 max-sm:justify-center max-sm:gap-1 max-sm:px-2 max-sm:text-[13px]"
                   >
                     라이브 보기
                     <ExternalLink className="size-4 max-sm:size-3.5" />
