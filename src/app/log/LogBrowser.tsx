@@ -5,7 +5,7 @@ import { BookOpen, ChevronLeft, ChevronRight, Funnel, FunnelX, Layers, Search } 
 import type { PostListItem } from "@/lib/api";
 import { SectionHeader } from "@/components/ui";
 import { splitSeriesName } from "@/lib/series";
-import { optimized } from "@/lib/img";
+import SafeImage from "@/components/SafeImage";
 
 // 한 페이지 9개 (3칸 x 3줄), 페이지 번호는 네이버 블로그처럼 10개씩 묶음
 const PAGE_SIZE = 9;
@@ -138,7 +138,7 @@ export default function LogBrowser({ posts, seriesList }: { posts: LogPost[]; se
           <p className="text-muted">{posts.length === 0 ? "아직 글이 없습니다." : "조건에 맞는 글이 없어요."}</p>
         ) : (
           <ul className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-            {visible.map((post) => (
+            {visible.map((post, idx) => (
               <li key={post.id}>
                 <a
                   href={post.url}
@@ -148,13 +148,15 @@ export default function LogBrowser({ posts, seriesList }: { posts: LogPost[]; se
                 >
                   <div className="relative aspect-square overflow-hidden border-b border-line bg-background">
                     {post.thumbnail ? (
-                      // 썸네일은 public/blog/naver 에 받아 둔 파일 (빌드 전에 WebP 로 줄인 public/_opt 쪽을 씀)
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img
-                        src={optimized(post.thumbnail)}
+                      // 썸네일은 public/blog/naver 에 받아 둔 파일 (빌드 전에 크기별 WebP 로 줄여 둔 걸 로더가 고름)
+                      // 첫 줄(휴대폰 2칸·PC 3칸)은 첫 화면이라 먼저 불러오고 나머지는 스크롤할 때
+                      <SafeImage
+                        src={post.thumbnail}
                         alt=""
-                        loading="lazy"
-                        className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                        fill
+                        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 320px"
+                        preload={idx < 3}
+                        className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
                       />
                     ) : (
                       <div className="flex size-full items-center justify-center">

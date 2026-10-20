@@ -1,14 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import Link from "next/link";
-import Image from "next/image";
 import { ArrowUpRight, BookOpen, Building2, ChevronDown, Mail } from "lucide-react";
 import ContributionsCalendar from "@/components/ContributionsCalendar";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { SectionHeader, StackChips } from "@/components/ui";
 import { CONTRIBUTIONS_EARLIEST_YEAR, getContributions, getPosts, type AboutContent } from "@/lib/api";
 import { HOME_HIGHLIGHTS } from "@/lib/about";
-import { optimized } from "@/lib/img";
+import SafeImage from "@/components/SafeImage";
 import { PROJECTS } from "@/lib/projects";
 
 const LATEST_POSTS_COUNT = 3;
@@ -68,7 +67,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
             {profile?.email && (
               <a
                 href={`mailto:${profile.email}`}
-                className="inline-flex items-center gap-2 rounded-full bg-accent-strong text-foreground font-bold px-5 py-2.5 text-sm font-semibold hover:opacity-85 transition-opacity"
+                className="inline-flex items-center gap-2 rounded-full border border-transparent bg-accent-strong text-foreground font-bold px-5 py-2.5 text-sm font-semibold hover:opacity-85 transition-opacity"
               >
                 <Mail className="size-4" />
                 연락하기
@@ -109,9 +108,9 @@ export default async function HomeView({ year, about }: { year?: string; about: 
             )}
           </div>
         </div>
-        <div className="shrink-0 size-40 max-sm:size-24 max-sm:rounded-2xl sm:size-60 rounded-3xl overflow-hidden border border-line bg-surface flex items-center justify-center">
+        <div className="relative shrink-0 size-40 max-sm:size-24 max-sm:rounded-2xl sm:size-60 rounded-3xl overflow-hidden border border-line bg-surface flex items-center justify-center">
           {hasProfileImg ? (
-            <Image src={optimized(PROFILE_IMG)} alt={profile?.name ?? "WonJun"} width={416} height={416} unoptimized loading="eager" fetchPriority="high" className="size-full object-cover object-[center_5%]" />
+            <SafeImage src={PROFILE_IMG} alt={profile?.name ?? "WonJun"} width={416} height={416} sizes="(max-width: 640px) 96px, 240px" preload className="size-full object-cover object-[center_5%]" />
           ) : (
             <span className="text-5xl sm:text-7xl font-bold tracking-tight text-muted/40">WJ</span>
           )}
@@ -139,9 +138,9 @@ export default async function HomeView({ year, about }: { year?: string; about: 
               return (
                 <li key={c.company + c.period} className="rounded-3xl border border-line bg-surface p-4 sm:p-8 flex flex-col gap-5 max-sm:rounded-none max-sm:border-x-0 max-sm:border-b-0 max-sm:bg-transparent max-sm:px-0 max-sm:pb-0 max-sm:pt-6">
                   <div className="flex items-start gap-4">
-                    <div className="shrink-0 size-12 rounded-xl bg-white border border-line flex items-center justify-center overflow-hidden p-1.5">
+                    <div className="relative shrink-0 size-12 rounded-xl bg-white border border-line flex items-center justify-center overflow-hidden p-1.5">
                       {logo ? (
-                        <Image src={optimized(logo)} alt={c.company} width={96} height={96} unoptimized className="size-full object-contain" />
+                        <SafeImage src={logo} alt={c.company} width={96} height={96} sizes="48px" className="size-full object-contain" />
                       ) : (
                         <Building2 className="size-6 text-muted" />
                       )}
@@ -204,11 +203,11 @@ export default async function HomeView({ year, about }: { year?: string; about: 
               >
                 {visual && (
                   <div className={`relative aspect-[16/9] max-sm:aspect-[5/2] border-b border-line overflow-hidden ${p.thumbnail ? "bg-background" : "bg-white"}`}>
-                    <Image
-                      src={optimized(visual)}
+                    <SafeImage
+                      src={visual}
                       alt={p.title}
                       fill
-                      unoptimized
+                      sizes="(max-width: 768px) 100vw, 33vw"
                       className={`${p.thumbnail ? `object-cover object-top ${p.mobileThumbPosition ?? ""}` : "object-contain p-6 max-sm:p-3"} transition-transform duration-500 group-hover:scale-[1.03]`}
                     />
                   </div>
@@ -218,7 +217,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
                     <div className="flex items-center gap-2 min-w-0">
                       <h3 className="text-xl max-sm:text-lg font-bold tracking-tight truncate">{p.title}</h3>
                       {p.status === "live" && (
-                        <span className="shrink-0 rounded-full bg-accent-soft text-accent-2 px-2 py-0.5 text-xs font-semibold">운영 중</span>
+                        <span className="shrink-0 rounded-full border border-transparent bg-accent-soft text-accent-2 px-2 py-0.5 text-xs font-semibold">운영 중</span>
                       )}
                     </div>
                     <ArrowUpRight className="size-5 shrink-0 text-muted transition-all group-hover:text-accent-2 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
@@ -269,7 +268,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
           {profile?.email && (
             <a
               href={`mailto:${profile.email}`}
-              className="inline-flex items-center gap-2 rounded-full bg-accent-strong text-foreground font-bold px-6 py-3 text-sm font-semibold hover:opacity-85 transition-opacity"
+              className="inline-flex items-center gap-2 rounded-full border border-transparent bg-accent-strong text-foreground font-bold px-6 py-3 text-sm font-semibold hover:opacity-85 transition-opacity"
             >
               <Mail className="size-4" />
               {profile.email}

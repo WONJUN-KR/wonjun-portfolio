@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import { ExternalLink } from "lucide-react";
 import { PROJECTS, type Project } from "@/lib/projects";
-import { optimized } from "@/lib/img";
+import SafeImage from "@/components/SafeImage";
 import { GithubIcon } from "@/components/icons";
 import { MOBILE_OPEN_ONLY, MobileMoreToggle, PageHeader, StackChips } from "@/components/ui";
 
@@ -34,23 +33,25 @@ function MobileFrame({ children }: { children: React.ReactNode }) {
   );
 }
 
-function ProjectVisual({ project }: { project: Project }) {
+// preload = 첫 카드(첫 화면에서 가장 큰 요소)만 먼저 불러옴
+function ProjectVisual({ project, preload = false }: { project: Project; preload?: boolean }) {
   if (project.thumbnail) {
     if (project.device === "mobile") {
       return (
         <MobileFrame>
-          <Image src={optimized(project.thumbnail)} alt={project.title} fill unoptimized className="object-cover" />
+          <SafeImage src={project.thumbnail} alt={project.title} fill sizes="240px" preload={preload} className="object-cover" />
         </MobileFrame>
       );
     }
     return (
       <BrowserFrame fixedAspect={false}>
-        <Image
-          src={optimized(project.thumbnail)}
+        <SafeImage
+          src={project.thumbnail}
           alt={project.title}
           width={1002}
           height={558}
-          unoptimized
+          sizes="(max-width: 1024px) 100vw, 50vw"
+          preload={preload}
           // 휴대폰에선 2:1 로 잘리므로 프로젝트별 기준 위치(없으면 위쪽)에 맞춤 - 홈 카드와 같은 값
           className={`w-full h-auto block max-sm:h-full max-sm:object-cover ${project.mobileThumbPosition ?? "max-sm:object-top"}`}
         />
@@ -61,12 +62,13 @@ function ProjectVisual({ project }: { project: Project }) {
     return (
       <BrowserFrame>
         <div className="absolute inset-0 bg-white flex items-center justify-center">
-          <Image
-            src={optimized(project.logo)}
+          <SafeImage
+            src={project.logo}
             alt={project.title}
             width={800}
             height={800}
-            unoptimized
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            preload={preload}
             className="w-full h-full object-contain p-8 max-sm:p-4"
           />
         </div>
@@ -93,7 +95,7 @@ export default function ProjectsPage() {
       />
 
       <div className="flex flex-col gap-6">
-        {PROJECTS.map((p) => (
+        {PROJECTS.map((p, i) => (
           <article
             key={p.slug}
             id={p.slug}
@@ -102,7 +104,7 @@ export default function ProjectsPage() {
           >
             {/* 왼쪽: 화면 + 핵심 기능(사용자가 할 수 있는 것) / 오른쪽: 소개 + 내가 맡은 부분 */}
             <div className="flex flex-col gap-6 max-sm:contents">
-              <div className="max-sm:order-1"><ProjectVisual project={p} /></div>
+              <div className="max-sm:order-1"><ProjectVisual project={p} preload={i === 0} /></div>
               <div className="flex flex-col gap-1 max-sm:order-3">
                 <p className="text-base text-muted">{p.subtitle}</p>
                 <p className="text-lg font-semibold leading-snug">{p.tagline}</p>
@@ -124,7 +126,7 @@ export default function ProjectsPage() {
               <div className="flex flex-col gap-2 max-sm:order-2">
                 <div className="flex flex-wrap items-center gap-2 text-xs text-muted">
                   {p.pinned && (
-                    <span className="rounded-full bg-accent-soft text-accent-2 px-2.5 py-0.5 font-semibold">대표</span>
+                    <span className="rounded-full border border-transparent bg-accent-soft text-accent-2 px-2.5 py-0.5 font-semibold">대표</span>
                   )}
                   {p.status === "live" && (
                     <span className="rounded-full border border-line px-2.5 py-0.5 font-semibold text-foreground">
@@ -132,7 +134,7 @@ export default function ProjectsPage() {
                     </span>
                   )}
                   {p.lead && (
-                    <span className="rounded-full bg-accent-soft text-accent-2 px-2.5 py-0.5 font-semibold">팀장</span>
+                    <span className="rounded-full border border-transparent bg-accent-soft text-accent-2 px-2.5 py-0.5 font-semibold">팀장</span>
                   )}
                   <span className="tabular-nums">{p.period}</span>
                   <span>·</span>
@@ -163,7 +165,7 @@ export default function ProjectsPage() {
                     href={p.liveUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full bg-accent-strong text-foreground px-4 py-2.5 text-sm font-bold hover:opacity-85 transition-opacity max-sm:min-w-0 max-sm:flex-1 max-sm:justify-center max-sm:gap-1 max-sm:px-2 max-sm:text-[13px]"
+                    className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-transparent bg-accent-strong text-foreground px-4 py-2.5 text-sm font-bold hover:opacity-85 transition-opacity max-sm:min-w-0 max-sm:flex-1 max-sm:justify-center max-sm:gap-1 max-sm:px-2 max-sm:text-[13px]"
                   >
                     라이브 보기
                     <ExternalLink className="size-4 max-sm:size-3.5" />

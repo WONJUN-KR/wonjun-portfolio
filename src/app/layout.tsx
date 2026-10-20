@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import NavLinks from "@/components/NavLinks";
+// 본문 폰트 Pretendard 를 npm 패키지로 - 예전엔 외부 CSS 를 @import 로 불러서 첫 화면이 그걸 기다렸음 (휴대폰 라이트하우스 점수가 가끔 70·80 으로 튐)
+import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import "./globals.css";
 
 const geistSans = Geist({

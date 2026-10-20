@@ -42,7 +42,7 @@ export default function HistoryPage() {
                     <div className="flex flex-wrap items-center gap-2">
                       <h3 className="font-semibold tracking-tight">{item.title}</h3>
                       {item.status === "IN_PROGRESS" && (
-                        <span className="rounded-full bg-accent-soft px-2 py-0.5 text-xs font-semibold text-accent-2">재직 중</span>
+                        <span className="rounded-full border border-transparent bg-accent-soft px-2 py-0.5 text-xs font-semibold text-accent-2">재직 중</span>
                       )}
                     </div>
                     {item.description && <p className="text-sm text-muted">{item.description}</p>}

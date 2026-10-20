@@ -1,8 +1,11 @@
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css");
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
-/* 제목용 폰트 - 페이퍼로지 (눈누, OFL·웹 임베딩 허용). 쓰는 굵기만 로드 */
+/* 제목용 폰트 - 페이퍼로지 (눈누, OFL·웹 임베딩 허용). 쓰는 굵기만 로드
+   CDN 그대로 둠: 우리 쪽에 두면(굵기당 157KB) 첫 화면 CSS·HTML 과 같은 연결에서 다퉈 휴대폰 FCP 0.9 → 3.5초로 늦어짐(실측)
+   줄이기도 해봄(10/20): 상용 한글 2,350자만 남겨도 157 → 109KB 뿐(한글 글자가 공통 부품 조합이라 부품이 대부분),
+   빈도순 조각+unicode-range 는 범위 목록 CSS 가 100KB 넘어 느린 3G FCP 3.8 → 5.3초로 나빠짐 → 둘 다 안 함.
+   느린 망에선 Pretendard 로 먼저 보이고 받아지면 바뀌는(swap) 게 맞는 동작 */
 @font-face {
   font-family: "Paperozi";
   src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-4Regular.woff2") format("woff2");
