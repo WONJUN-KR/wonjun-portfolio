@@ -46,3 +46,4 @@ next-env.d.ts
 
 # 빌드 전에 만드는 줄인 이미지 (scripts/optimize-images.mjs)
 /public/_opt/
+/src/generated/
