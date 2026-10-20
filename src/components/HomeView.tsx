@@ -108,7 +108,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
             )}
           </div>
         </div>
-        <div className="shrink-0 size-40 max-sm:size-24 max-sm:rounded-2xl sm:size-60 rounded-3xl overflow-hidden border border-line bg-surface flex items-center justify-center">
+        <div className="relative shrink-0 size-40 max-sm:size-24 max-sm:rounded-2xl sm:size-60 rounded-3xl overflow-hidden border border-line bg-surface flex items-center justify-center">
           {hasProfileImg ? (
             <SafeImage src={PROFILE_IMG} alt={profile?.name ?? "WonJun"} width={416} height={416} sizes="(max-width: 640px) 96px, 240px" preload className="size-full object-cover object-[center_5%]" />
           ) : (
@@ -138,7 +138,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
               return (
                 <li key={c.company + c.period} className="rounded-3xl border border-line bg-surface p-4 sm:p-8 flex flex-col gap-5 max-sm:rounded-none max-sm:border-x-0 max-sm:border-b-0 max-sm:bg-transparent max-sm:px-0 max-sm:pb-0 max-sm:pt-6">
                   <div className="flex items-start gap-4">
-                    <div className="shrink-0 size-12 rounded-xl bg-white border border-line flex items-center justify-center overflow-hidden p-1.5">
+                    <div className="relative shrink-0 size-12 rounded-xl bg-white border border-line flex items-center justify-center overflow-hidden p-1.5">
                       {logo ? (
                         <SafeImage src={logo} alt={c.company} width={96} height={96} sizes="48px" className="size-full object-contain" />
                       ) : (
