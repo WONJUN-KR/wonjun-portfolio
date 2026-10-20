@@ -5,6 +5,7 @@ import { BookOpen, ChevronLeft, ChevronRight, Funnel, FunnelX, Layers, Search } 
 import type { PostListItem } from "@/lib/api";
 import { SectionHeader } from "@/components/ui";
 import { splitSeriesName } from "@/lib/series";
+import { optimized } from "@/lib/img";
 
 // 한 페이지 9개 (3칸 x 3줄), 페이지 번호는 네이버 블로그처럼 10개씩 묶음
 const PAGE_SIZE = 9;
@@ -145,10 +146,10 @@ export default function LogBrowser({ posts, seriesList }: { posts: LogPost[]; se
                 >
                   <div className="relative aspect-square overflow-hidden border-b border-line bg-background">
                     {post.thumbnail ? (
-                      // 썸네일은 public/blog/naver 에 받아 둔 파일
+                      // 썸네일은 public/blog/naver 에 받아 둔 파일 (빌드 전에 WebP 로 줄인 public/_opt 쪽을 씀)
                       // eslint-disable-next-line @next/next/no-img-element
                       <img
-                        src={post.thumbnail}
+                        src={optimized(post.thumbnail)}
                         alt=""
                         loading="lazy"
                         className="size-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
