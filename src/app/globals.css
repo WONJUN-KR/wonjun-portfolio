@@ -119,12 +119,12 @@
   --animate-fade-up: fade-up 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 
   @keyframes fade-up {
+    /* 투명(opacity 0)에서 시작하면 브라우저가 첫 화면 글자를 '아직 안 보임'으로 쳐서 LCP 가 애니메이션 끝까지 밀림
+       (휴대폰 라이트하우스 홈 79 → 94, LCP 5.5 → 2.9초 실측) → 위로 올라오는 움직임만 남김 */
     from {
-      opacity: 0;
       transform: translateY(12px);
     }
     to {
-      opacity: 1;
       transform: translateY(0);
     }
   }
