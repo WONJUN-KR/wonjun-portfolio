@@ -116,6 +116,15 @@
   h3 {
     font-family: var(--font-display);
   }
+
+  /* 텍스트 선택(드래그) 색 - 브라우저 기본 파랑 대신 브랜드 brick, 글자는 cream
+     홈 제목처럼 그라데이션 글자(bg-clip-text + text-transparent)는 글자 채움이 투명이라 선택하면 글자가 사라져 보였음
+     → -webkit-text-fill-color 까지 지정해서 선택 중엔 글자가 보이게 */
+  ::selection {
+    background-color: color-mix(in oklab, var(--color-brick) 45%, transparent);
+    color: var(--color-cream);
+    -webkit-text-fill-color: var(--color-cream);
+  }
 }
 
 @theme {
