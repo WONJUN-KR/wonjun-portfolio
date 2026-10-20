@@ -191,7 +191,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
 
       {/* Projects - 같은 크기 카드 3개 나란히 */}
       <section className="flex flex-col gap-8">
-        <SectionHeader eyebrow="Projects" title="포트폴리오" href="/projects" linkLabel="전체 보기" />
+        <SectionHeader eyebrow="Projects" title="포트폴리오" href="/projects" linkLabel="프로젝트 모두 보기" />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-sm:gap-3">
           {featured.map((p) => {
             // 홈은 맛보기(이미지 + 한 줄 소개), 핵심 기능·내가 맡은 부분은 /projects 에서

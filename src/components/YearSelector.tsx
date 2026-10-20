@@ -12,6 +12,7 @@ type Props = {
 export default function YearSelector({ years, value, onChange, defaultLabel = "최근 1년", disabled = false }: Props) {
   return (
     <select
+      aria-label="잔디 기간 선택"
       value={value}
       onChange={(e) => onChange(e.target.value)}
       disabled={disabled}
