@@ -51,6 +51,8 @@ export default function LogBrowser({ posts, seriesList }: { posts: LogPost[]; se
     <>
       {seriesList.length > 0 && (
         <section className="flex flex-col gap-8">
+          {/* 화면엔 안 보이는 구역 제목 - 페이지 제목(h1) 다음에 시리즈 카드 제목(h3)이 바로 오면 제목 단계가 건너뛰어짐 */}
+          <h2 className="sr-only">시리즈</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             {seriesList.map((series) => {
               const active = series.id === seriesId;
