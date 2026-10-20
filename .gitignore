@@ -43,3 +43,6 @@ next-env.d.ts
 # AI context / handoff docs (local only)
 /.ai/
 
+
+# 빌드 전에 만드는 줄인 이미지 (scripts/optimize-images.mjs)
+/public/_opt/

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { ExternalLink } from "lucide-react";
 import { PROJECTS, type Project } from "@/lib/projects";
+import { optimized } from "@/lib/img";
 import { GithubIcon } from "@/components/icons";
 import { MOBILE_OPEN_ONLY, MobileMoreToggle, PageHeader, StackChips } from "@/components/ui";
 
@@ -38,14 +39,14 @@ function ProjectVisual({ project }: { project: Project }) {
     if (project.device === "mobile") {
       return (
         <MobileFrame>
-          <Image src={project.thumbnail} alt={project.title} fill unoptimized className="object-cover" />
+          <Image src={optimized(project.thumbnail)} alt={project.title} fill unoptimized className="object-cover" />
         </MobileFrame>
       );
     }
     return (
       <BrowserFrame fixedAspect={false}>
         <Image
-          src={project.thumbnail}
+          src={optimized(project.thumbnail)}
           alt={project.title}
           width={1002}
           height={558}
@@ -61,7 +62,7 @@ function ProjectVisual({ project }: { project: Project }) {
       <BrowserFrame>
         <div className="absolute inset-0 bg-white flex items-center justify-center">
           <Image
-            src={project.logo}
+            src={optimized(project.logo)}
             alt={project.title}
             width={800}
             height={800}

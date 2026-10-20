@@ -49,7 +49,6 @@ export default async function Image() {
           <div style={{ fontSize: 44, fontWeight: 700, marginTop: 18 }}>{NAME}</div>
           <div style={{ fontSize: 28, fontWeight: 400, color: "#b9aa9c", marginTop: 28 }}>{SUB}</div>
         </div>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={photoSrc}
           alt=""

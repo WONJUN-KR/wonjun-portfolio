@@ -135,6 +135,9 @@ export type ContributionsResponse = {
 export const GITHUB_ACCOUNTS = ["WONJUN-KR", "WonJun-Uxn"];
 
 // 두 계정의 날짜별 기여를 더함 (year 없으면 최근 1년 - 화면에선 폭에 맞춰 6~12개월만 보임)
+// 잔디 연도 선택 범위 시작 (홈 선택 상자와 /api/contributions 가 같이 씀)
+export const CONTRIBUTIONS_EARLIEST_YEAR = 2020;
+
 export async function getContributions(year?: string): Promise<ContributionsResponse> {
   const perAccount = await Promise.all(GITHUB_ACCOUNTS.map((login) => contributionDays(login, year)));
   const merged = new Map<string, number>();
