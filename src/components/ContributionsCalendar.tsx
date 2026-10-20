@@ -11,7 +11,7 @@ import {
 } from "@/lib/heatmap";
 
 type Props = {
-  initialDays: ContributionDay[]; // 서버가 처음 그릴 때 받은 데이터 (주소의 ?year= 기준)
+  initialDays: ContributionDay[]; // 서버가 처음 그릴 때 받은 최근 1년 데이터 (홈은 정적 페이지라 주소의 ?year= 는 안 봄)
   initialYear?: string;
   years: number[]; // 연도 선택 상자에 넣을 연도들
 };
@@ -36,13 +36,7 @@ export default function ContributionsCalendar({ initialDays, initialYear = "", y
 
   // 연도를 바꾸면 페이지 이동 없이 잔디 데이터만 받아서 다시 그림 (스크롤 위치 그대로).
   // 주소의 ?year= 도 같이 바꿔서 새로고침·공유해도 같은 연도로 열림
-  const changeYear = async (next: string) => {
-    setYear(next);
-    const url = new URL(window.location.href);
-    if (next) url.searchParams.set("year", next);
-    else url.searchParams.delete("year");
-    window.history.replaceState(window.history.state, "", url);
-
+  const load = async (next: string) => {
     const id = ++requestId.current;
     setLoading(true);
     try {
@@ -56,6 +50,26 @@ export default function ContributionsCalendar({ initialDays, initialYear = "", y
       if (id === requestId.current) setLoading(false);
     }
   };
+
+  const changeYear = (next: string) => {
+    setYear(next);
+    const url = new URL(window.location.href);
+    if (next) url.searchParams.set("year", next);
+    else url.searchParams.delete("year");
+    window.history.replaceState(window.history.state, "", url);
+    void load(next);
+  };
+
+  // 공유 링크(?year=2025)로 들어오면 그 해로 바꿔 받음 - 서버 HTML 은 항상 최근 1년이라
+  useEffect(() => {
+    const fromUrl = new URL(window.location.href).searchParams.get("year") ?? "";
+    // 선택 상자에 없는 연도(?year=1999 등)는 무시하고 최근 1년 그대로
+    if (!fromUrl || fromUrl === initialYear || !years.includes(Number(fromUrl))) return;
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- 주소 값은 브라우저에서만 알 수 있음
+    setYear(fromUrl);
+    void load(fromUrl);
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- 처음 한 번만
+  }, []);
 
   useEffect(() => {
     if (!recent || !boxRef.current) return;
