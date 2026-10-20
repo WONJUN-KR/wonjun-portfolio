@@ -1,5 +1,9 @@
-// public 이미지 경로 → 빌드 전에 줄여둔 WebP 경로 (scripts/optimize-images.mjs 가 만듦)
-// "/projects/ocp.png" → "/_opt/projects/ocp.webp". 대상 폴더가 아니면 그대로
-export function optimized(src: string): string {
-  return src.replace(/^\/((?:img|projects|logos|blog\/naver)\/.+)\.(png|jpe?g)$/i, "/_opt/$1.webp");
+// 빌드 전에 만든 이미지 목록(src/generated/images.json)에서 로딩 중 보여줄 흐린 미리보기를 꺼냄
+import manifest from "@/generated/images.json";
+
+type Entry = { blur: string };
+const images = manifest as Record<string, Entry>;
+
+export function blurOf(src: string): string | undefined {
+  return images[src]?.blur;
 }
