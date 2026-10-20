@@ -29,9 +29,10 @@ function availableYears(): number[] {
 }
 
 // 홈 본문 - 이력서 데이터는 src/lib/about.ts 하드코딩
-export default async function HomeView({ year, about }: { year?: string; about: AboutContent }) {
+// 정적 페이지(ISR) - 잔디는 최근 1년으로 그리고, 주소의 ?year= 는 잔디 컴포넌트가 브라우저에서 처리
+export default async function HomeView({ about }: { about: AboutContent }) {
   const [contributions, posts] = await Promise.all([
-    getContributions(year).catch(() => null),
+    getContributions().catch(() => null),
     getPosts().catch(() => []),
   ]);
 
@@ -254,7 +255,7 @@ export default async function HomeView({ year, about }: { year?: string; about: 
         )}
         {contributions && (
           <div className="rounded-3xl border border-line bg-surface p-6 sm:p-8 flex flex-col gap-4">
-            <ContributionsCalendar initialDays={contributions.days} initialYear={year} years={availableYears()} />
+            <ContributionsCalendar initialDays={contributions.days} years={availableYears()} />
           </div>
         )}
       </section>
