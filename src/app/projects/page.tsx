@@ -158,7 +158,7 @@ export default function ProjectsPage() {
 
               <MobileMoreToggle className="max-sm:order-7" />
 
-              {/* 링크 버튼은 한 줄로 - 휴대폰은 버튼을 같은 폭으로 나눠 한 줄에 (360px 미만은 GitHub 아이콘 생략) */}
+              {/* 링크 버튼은 한 줄로 - 휴대폰은 버튼을 같은 폭으로 나눠 한 줄에 (360px 미만은 아이콘 생략 - 버튼 3개면 글자만으로 꽉 참) */}
               <div className="flex flex-wrap sm:flex-nowrap gap-2 pt-2 max-sm:order-8 max-sm:flex-nowrap max-sm:gap-1.5 max-sm:pt-0">
                 {p.liveUrl && (
                   <a
@@ -168,7 +168,7 @@ export default function ProjectsPage() {
                     className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-transparent bg-accent-strong text-foreground px-4 py-2.5 text-sm font-bold hover:opacity-85 transition-opacity max-sm:min-w-0 max-sm:flex-1 max-sm:justify-center max-sm:gap-1 max-sm:px-2 max-sm:text-[13px]"
                   >
                     라이브 보기
-                    <ExternalLink className="size-4 max-sm:size-3.5" />
+                    <ExternalLink className="size-4 shrink-0 max-sm:size-3.5 max-[359px]:hidden" />
                   </a>
                 )}
                 {p.repos.map((r) => (
@@ -179,7 +179,7 @@ export default function ProjectsPage() {
                     rel="noreferrer"
                     className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-line px-4 py-2.5 text-sm font-semibold hover:bg-surface-hover transition-colors max-sm:min-w-0 max-sm:flex-1 max-sm:justify-center max-sm:gap-1 max-sm:px-2 max-sm:text-[13px]"
                   >
-                    <GithubIcon className="size-4 max-sm:size-3.5 max-[359px]:hidden" />
+                    <GithubIcon className="size-4 shrink-0 max-sm:size-3.5 max-[359px]:hidden" />
                     {r.label}
                   </a>
                 ))}
