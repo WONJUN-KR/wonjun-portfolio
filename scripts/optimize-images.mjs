@@ -1,9 +1,9 @@
 // 빌드 전에 public 이미지를 화면 크기별 WebP 로 줄여 public/_opt 에 만듦 (npm run build / dev 앞에서 자동 실행)
 // Next 이미지 최적화는 요청 때마다 서버에서 하는 방식이라, 미리 여러 크기로 만들어 두고 next/image 의 사용자 정의 로더가 골라 씀
 // - 크기별 파일: public/_opt/<경로>-<너비>.webp  (예: /_opt/projects/ocp-800.webp)
-// - 목록: src/generated/images.json  (원본 크기 · 만든 너비들 · 로딩 중 보여줄 흐린 미리보기)
+// - 목록: src/generated/images.json  (원본 크기 · 만든 너비들)
 // 원본은 그대로 두고 결과물은 git 에 안 올림. 원본보다 새 결과가 있으면 다시 안 만듦
-import { readdir, stat, mkdir, readFile, writeFile } from "node:fs/promises";
+import { readdir, stat, mkdir, writeFile } from "node:fs/promises";
 import { join, dirname, extname, relative } from "node:path";
 import sharp from "sharp";
 
@@ -26,7 +26,6 @@ async function* walk(dir) {
   }
 }
 
-const old = JSON.parse(await readFile(MANIFEST, "utf8").catch(() => "{}"));
 const manifest = {};
 let made = 0;
 for (const { dir, widths } of TARGETS) {
@@ -48,9 +47,7 @@ for (const { dir, widths } of TARGETS) {
       await sharp(file).resize({ width: w, withoutEnlargement: true }).webp({ quality: 80 }).toFile(out);
       made++;
     }
-    const keep = old[key] && old[key].mtime === s.mtimeMs ? old[key].blur : null;
-    const blur = keep ?? `data:image/webp;base64,${(await sharp(file).resize({ width: 16 }).webp({ quality: 40 }).toBuffer()).toString("base64")}`;
-    manifest[key] = { width: meta.width, height: meta.height, widths: ws, blur, mtime: s.mtimeMs };
+    manifest[key] = { width: meta.width, height: meta.height, widths: ws };
   }
 }
 await mkdir(dirname(MANIFEST), { recursive: true });
