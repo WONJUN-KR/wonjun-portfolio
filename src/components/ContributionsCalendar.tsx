@@ -71,16 +71,18 @@ export default function ContributionsCalendar({ initialDays, initialYear = "", y
     // eslint-disable-next-line react-hooks/exhaustive-deps -- 처음 한 번만
   }, []);
 
+  // 폭은 연도 모드에서도 계속 잼 - 선택 상자의 "최근 …" 문구를 연도를 보고 있을 때도 맞게 보여주려고
   useEffect(() => {
-    if (!recent || !boxRef.current) return;
+    if (!boxRef.current) return;
     const observer = new ResizeObserver(([entry]) => setBoxWidth(entry.contentRect.width));
     observer.observe(boxRef.current);
     return () => observer.disconnect();
-  }, [recent]);
+  }, []);
 
   // 제목 줄 - 선택 상자의 "최근 …" 문구가 지금 보이는 기간을 따라가도록 잔디와 같이 그림
+  // 제목과 선택 상자가 한 줄에 안 들어가는 폭(320px 등)에선 선택 상자를 다음 줄로 내림 (nowrap 제목에 밀려 카드 밖으로 나가던 문제)
   const header = (periodLabel: string) => (
-    <div className="flex items-center justify-between gap-3">
+    <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
       <span className="whitespace-nowrap text-sm font-semibold">GitHub Contributions</span>
       <YearSelector years={years} value={year} onChange={changeYear} defaultLabel={periodLabel} />
     </div>
@@ -180,8 +182,10 @@ export default function ContributionsCalendar({ initialDays, initialYear = "", y
     }
   }
 
-  // 보이는 기간 (최근 모드) - 주 수를 개월로 어림, 12개월은 "1년"
-  const shownMonths = Math.min(12, Math.round(shownWeeks / 4.345));
+  // "최근" 선택지 문구 = 최근 모드로 이 폭에 보일 기간 (주 수를 개월로 어림, 12개월은 "1년")
+  // 연도를 보고 있을 때도 같은 폭 기준으로 계산 - 예전엔 연도 모드의 1년 전체 주 수로 계산돼서 휴대폰에서도 "최근 1년"으로 보였음
+  const recentWeeks = recent ? shownWeeks : boxWidth !== null ? Math.max(MIN_WEEKS, Math.floor(boxWidth / STEP)) : 53;
+  const shownMonths = Math.min(12, Math.round(recentWeeks / 4.345));
   const periodLabel = shownMonths >= 12 ? "최근 1년" : `최근 ${shownMonths}개월`;
 
   return (

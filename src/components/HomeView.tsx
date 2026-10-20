@@ -261,17 +261,18 @@ export default async function HomeView({ about }: { about: AboutContent }) {
       </section>
 
       {/* Contact CTA */}
-      <section className="rounded-3xl border border-line bg-surface px-6 py-14 sm:py-20 flex flex-col items-center text-center gap-6">
+      <section className="rounded-3xl border border-line bg-surface px-6 max-[359px]:px-4 py-14 sm:py-20 flex flex-col items-center text-center gap-6">
         <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-2">Contact</span>
         <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">함께 이야기 나눠요</h2>
         <p className="text-muted max-w-md">궁금한 점이나 제안이 있다면 편하게 연락 주세요.</p>
         <div className="flex flex-wrap justify-center gap-3">
+          {/* 360px 미만은 메일 주소가 버튼 여백·아이콘까지 들어갈 폭이 안 돼서 여백·글자 크기를 줄이고 아이콘 생략 */}
           {profile?.email && (
             <a
               href={`mailto:${profile.email}`}
-              className="inline-flex items-center gap-2 rounded-full border border-transparent bg-accent-strong text-foreground font-bold px-6 py-3 text-sm font-semibold hover:opacity-85 transition-opacity"
+              className="inline-flex max-w-full items-center gap-2 rounded-full border border-transparent bg-accent-strong text-foreground font-bold px-6 py-3 text-sm font-semibold max-[359px]:px-4 max-[359px]:text-[15px] hover:opacity-85 transition-opacity"
             >
-              <Mail className="size-4" />
+              <Mail className="size-4 shrink-0 max-[359px]:hidden" />
               {profile.email}
             </a>
           )}
