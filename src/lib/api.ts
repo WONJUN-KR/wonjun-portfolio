@@ -156,10 +156,18 @@ export async function getGithubContributionAllTime(username: string): Promise<nu
 // kind: 같은 분야(백엔드 등) 안의 세부 묶음 - 언어·프레임워크·라이브러리·데이터베이스
 export type SkillItem = { name: string; kind?: string };
 
+// 이력서 숫자 옆 근거 핀 - 그 숫자를 어떤 방식·환경·시기에 쟀는지
+export type Evidence = { method: string; env: string; when: string };
+export type CareerDetail = string | { text: string; evidence: Evidence };
+
+export function detailText(d: CareerDetail): string {
+  return typeof d === "string" ? d : d.text;
+}
+
 export type CareerProject = {
   title: string;
   period: string;
-  details: string[];
+  details: CareerDetail[];
 };
 
 export type CareerItem = {
