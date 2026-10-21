@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getSeries } from "@/lib/api";
+import { pageMetadata } from "@/lib/seo";
 import { formatDate } from "@/lib/format";
 import { BackLink, Eyebrow } from "@/components/ui";
 import SeriesPostList from "./SeriesPostList";
@@ -10,8 +11,14 @@ type PageProps = {
 };
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const series = await getSeries((await params).slug);
-  return series ? { title: series.name, description: series.description ?? undefined } : {};
+  const { slug } = await params;
+  const series = await getSeries(slug);
+  if (!series) return {};
+  return pageMetadata({
+    title: series.name,
+    description: series.description || `기술 블로그 시리즈 '${series.name}' - 글 ${series.posts.length}편을 순서대로 모아 봅니다.`,
+    path: `/series/${slug}`,
+  });
 }
 
 export default async function SeriesPage({ params }: PageProps) {
