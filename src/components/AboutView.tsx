@@ -34,15 +34,16 @@ export default function AboutView({ about }: { about: AboutContent }) {
           <span className="inline-flex items-center gap-1.5"><Mail className="size-4" />{profile.email}</span>
           <span className="inline-flex items-center gap-1.5"><MapPin className="size-4" />{profile.region}</span>
         </div>
+        {/* 링크 버튼은 한 줄로 - 휴대폰은 같은 폭으로 나눠 한 줄에 (360px 미만은 아이콘 생략, /projects 링크 버튼과 같은 방식) */}
         {links.length > 0 && (
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-2 max-sm:flex-nowrap max-sm:gap-1.5">
             {links.map((l) => (
               <a
                 key={l.label}
                 href={l.href}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm font-semibold hover:bg-surface-hover transition-colors"
+                className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-line px-4 py-2 text-sm font-semibold hover:bg-surface-hover transition-colors max-sm:min-w-0 max-sm:flex-1 max-sm:justify-center max-sm:gap-1.5 max-sm:px-2 max-sm:text-[15px] [&>svg]:shrink-0 max-[359px]:[&>svg]:hidden"
               >
                 {l.icon}
                 {l.label}
