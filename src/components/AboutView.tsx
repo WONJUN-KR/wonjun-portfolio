@@ -1,7 +1,7 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import { BookOpen, ChevronDown, ExternalLink, Mail, MapPin } from "lucide-react";
-import type { AboutContent } from "@/lib/api";
+import { detailText, type AboutContent, type CareerDetail, type Evidence } from "@/lib/api";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import SkillGroups from "@/components/SkillGroups";
 import { Eyebrow, MOBILE_OPEN_ONLY_INLINE, MOBILE_OPEN_ONLY_ITEM, MOBILE_TOGGLE, MobileMoreInput, MobileMoreToggle, StackChips } from "@/components/ui";
@@ -264,7 +264,7 @@ function TimelineItem({ period, current, children }: {
 }
 
 // mobileKeep 을 주면 휴대폰에선 앞 N개만 보이고 나머지는 바깥 group/more 버튼으로 펼침
-function BulletList({ items, mobileKeep }: { items: string[]; mobileKeep?: number }) {
+function BulletList({ items, mobileKeep }: { items: CareerDetail[]; mobileKeep?: number }) {
   return (
     <ul className="flex flex-col gap-1.5 text-sm text-muted">
       {items.map((d, i) => (
@@ -274,9 +274,39 @@ function BulletList({ items, mobileKeep }: { items: string[]; mobileKeep?: numbe
             mobileKeep !== undefined && i >= mobileKeep ? MOBILE_OPEN_ONLY_ITEM : ""
           }`}
         >
-          {d}
+          {detailText(d)}
+          {typeof d !== "string" && <EvidencePin evidence={d.evidence} />}
         </li>
       ))}
     </ul>
+  );
+}
+
+// 숫자 줄 끝의 ⓘ - 누르면 측정 방식·환경·시기가 아래로 펼쳐짐 (details/summary 라 JS 없이 동작, 키보드 Enter/Space 로도 열림)
+function EvidencePin({ evidence }: { evidence: Evidence }) {
+  const rows: [string, string][] = [
+    ["방식", evidence.method],
+    ["환경", evidence.env],
+    ["시기", evidence.when],
+  ];
+  return (
+    <details className="group/pin inline">
+      <summary
+        aria-label="측정 근거 보기"
+        className="ml-1 inline-flex size-5 cursor-pointer list-none items-center justify-center rounded-full border border-accent-2 align-[1px] text-[12px] font-bold leading-none text-accent-2 transition-colors group-open/pin:bg-accent-2 group-open/pin:text-background [&::-webkit-details-marker]:hidden"
+      >
+        i
+      </summary>
+      <div className="mt-2 mb-1 rounded-[10px] border border-line border-l-[3px] border-l-accent bg-surface max-sm:bg-background px-3.5 py-3 text-[14px] text-foreground">
+        <dl className="grid grid-cols-[3.25rem_1fr] gap-x-2.5 gap-y-1 m-0">
+          {rows.map(([k, v]) => (
+            <div key={k} className="contents">
+              <dt className="text-muted">{k}</dt>
+              <dd className="m-0">{v}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+    </details>
   );
 }
