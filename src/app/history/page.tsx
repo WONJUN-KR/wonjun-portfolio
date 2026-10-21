@@ -1,9 +1,14 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import type { RoadmapItem } from "@/lib/api";
 import { HISTORY } from "@/lib/history";
 import { PageHeader } from "@/components/ui";
 
-export const metadata: Metadata = { title: "연혁" };
+export const metadata: Metadata = pageMetadata({
+  title: "연혁",
+  description: "연혁",
+  path: "/history",
+});
 
 // period "2024.11" → 연도별로 묶고, 연도·항목 모두 최신이 위
 function groupByYear(items: RoadmapItem[]): { year: string; items: RoadmapItem[] }[] {

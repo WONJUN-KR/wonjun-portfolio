@@ -1,11 +1,16 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { ExternalLink } from "lucide-react";
 import { PROJECTS, type Project } from "@/lib/projects";
 import SafeImage from "@/components/SafeImage";
 import { GithubIcon } from "@/components/icons";
 import { MOBILE_OPEN_ONLY, MobileMoreToggle, PageHeader, StackChips } from "@/components/ui";
 
-export const metadata: Metadata = { title: "포트폴리오" };
+export const metadata: Metadata = pageMetadata({
+  title: "포트폴리오",
+  description: "개인 프로젝트",
+  path: "/projects",
+});
 
 function BrowserFrame({ children, fixedAspect = true }: { children: React.ReactNode; fixedAspect?: boolean }) {
   return (
