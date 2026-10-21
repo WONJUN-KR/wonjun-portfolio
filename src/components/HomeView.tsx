@@ -5,7 +5,7 @@ import { ArrowUpRight, BookOpen, Building2, ChevronDown, Mail } from "lucide-rea
 import ContributionsCalendar from "@/components/ContributionsCalendar";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { SectionHeader, StackChips } from "@/components/ui";
-import { CONTRIBUTIONS_EARLIEST_YEAR, getContributions, getPosts, type AboutContent } from "@/lib/api";
+import { CONTRIBUTIONS_EARLIEST_YEAR, detailText, getContributions, getPosts, type AboutContent } from "@/lib/api";
 import { HOME_HIGHLIGHTS } from "@/lib/about";
 import SafeImage from "@/components/SafeImage";
 import { PROJECTS } from "@/lib/projects";
@@ -171,7 +171,7 @@ export default async function HomeView({ about }: { about: AboutContent }) {
                             </span>
                           </summary>
                           <ul className="flex flex-col gap-2 px-4 sm:px-5 pb-5 text-sm text-muted">
-                            {proj.details.map((d) => (
+                            {proj.details.map(detailText).map((d) => (
                               <li key={d} className="relative pl-4 before:absolute before:left-0 before:top-2 before:size-1 before:rounded-full before:bg-accent">
                                 {d}
                               </li>
