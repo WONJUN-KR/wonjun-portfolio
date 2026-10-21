@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
+import { pageMetadata } from "@/lib/seo";
 import { getPosts, getSeries, getSeriesList } from "@/lib/api";
 import { formatDate } from "@/lib/format";
 import { PageHeader } from "@/components/ui";
 import LogBrowser, { type LogPost, type LogSeries } from "./LogBrowser";
 
-export const metadata: Metadata = { title: "기록" };
+export const metadata: Metadata = pageMetadata({
+  title: "기록",
+  description: "기술 블로그",
+  path: "/log",
+});
 
 export default async function LogPage() {
   const [seriesList, posts] = await Promise.all([getSeriesList(), getPosts()]);
