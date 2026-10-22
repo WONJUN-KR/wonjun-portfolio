@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
 import NavLinks from "@/components/NavLinks";
 // 본문 폰트 Pretendard 를 npm 패키지로 - 예전엔 외부 CSS 를 @import 로 불러서 첫 화면이 그걸 기다렸음 (휴대폰 라이트하우스 점수가 가끔 70·80 으로 튐)
 import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
@@ -43,6 +44,8 @@ export default function RootLayout({
           </nav>
         </header>
         <main className="flex-1 w-full max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12">{children}</main>
+        {/* 방문 통계 (Vercel Web Analytics) - 쿠키 없이 페이지뷰·유입 경로·기기만 집계, Vercel 배포에서만 수집 */}
+        <Analytics />
       </body>
     </html>
   );
