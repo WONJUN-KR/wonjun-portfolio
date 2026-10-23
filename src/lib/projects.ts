@@ -16,6 +16,7 @@ export type Project = {
   tagline: string;
   features: string[];
   myPart: string[];
+  // 순서: 언어 → 프레임워크 → 라이브러리 → DB → 인프라, 같은 종류 안에서는 백엔드 → 프론트엔드 (이력서 경력 스택과 같은 규칙)
   stack: string[];
   liveUrl?: string;
   repos: Repo[];
@@ -50,7 +51,7 @@ export const PROJECTS: Project[] = [
       "[FE+BE] 신고·차단, Web Push 알림(구독 화면 + 발송 서버)",
       "초기 세팅·GitHub Actions CI/CD, 웹 성능 최적화(Critical CSS·폰트·preconnect)",
     ],
-    stack: ["Java", "TypeScript", "Spring Boot", "Next.js", "카카오맵", "Vercel", "PostgreSQL"],
+    stack: ["Java", "TypeScript", "Spring Boot", "Next.js", "카카오맵", "PostgreSQL", "Vercel"],
     liveUrl: "https://gotcha.it.com/",
     repos: [
       { label: "Frontend", url: "https://github.com/fcde-project9/GOTCHA-FE" },
@@ -80,7 +81,7 @@ export const PROJECTS: Project[] = [
       "[FE] 원본 화면 구조(메가 메뉴 · Best 픽 · 떠나기 좋은 도시 · 글쓰기)를 반응형으로 재구성",
       "[개발 환경] docker-compose + local 프로필로 한 번에 실행, headless 브라우저 검수 스크립트",
     ],
-    stack: ["Next.js", "React", "TypeScript", "Tailwind CSS", "TanStack Query", "Zustand", "Spring Boot", "Java", "PostgreSQL", "Docker"],
+    stack: ["Java", "TypeScript", "Spring Boot", "Next.js", "React", "Tailwind CSS", "TanStack Query", "Zustand", "PostgreSQL", "Docker"],
     repos: [
       { label: "Frontend", url: "https://github.com/WONJUN-KR/Eureka-FE" },
       { label: "Backend", url: "https://github.com/WONJUN-KR/Eureka-BE" },
@@ -128,7 +129,7 @@ export const PROJECTS: Project[] = [
       "[BE] 관리자 사용자 관리(본인·관리자 정지 방지), 공통코드 관리",
       "[FE] 관리자 대시보드 추이 그래프·통계 테이블 페이징·공통코드 페이지",
     ],
-    stack: ["Java", "Spring Boot", "React", "JPA", "RabbitMQ", "PostgreSQL"],
+    stack: ["Java", "TypeScript", "Spring Boot", "JPA", "RabbitMQ", "React", "PostgreSQL"],
     repos: [
       { label: "Frontend", url: "https://github.com/WONJUN-KR/AI-Auto-Posting-Frontend" },
       { label: "Backend", url: "https://github.com/WONJUN-KR/AI-Auto-Posting-Backend" },
@@ -213,7 +214,7 @@ export const PROJECTS: Project[] = [
       "[2026 복원] 코드에 박혀 있던 DB 접속 정보를 환경변수 설정으로 분리",
       "[2026 복원] Tomcat 9 + Oracle 한 줄 실행 스크립트, 화면 캡처 · 흐름 영상 정리",
     ],
-    stack: ["Java", "JSP", "Servlet", "Tomcat", "jQuery", "Oracle", "JDBC"],
+    stack: ["Java", "Servlet", "JSP", "JDBC", "jQuery", "Oracle", "Tomcat"],
     repos: [{ label: "Repo", url: "https://github.com/WONJUN-KR/Eureka-2021" }],
     // 원본 배너 사진(흐림·어둡게) + 원본 흰색 헤더 로고로 합성한 썸네일
     thumbnail: "/projects/mockups/eureka-2021/thumb.jpg",
