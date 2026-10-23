@@ -196,7 +196,8 @@ export const PROJECTS: Project[] = [
     ],
     stack: ["Java", "JSP", "Servlet", "Tomcat", "jQuery", "Oracle", "JDBC"],
     repos: [{ label: "Repo", url: "https://github.com/WONJUN-KR/FootPrint-2021" }],
-    thumbnail: "/projects/mockups/footprint-2021/01-main-banner.jpg",
+    // 원본 배너 사진(흐림·어둡게) + 원본 흰색 헤더 로고로 합성한 썸네일
+    thumbnail: "/projects/mockups/footprint-2021/thumb.jpg",
     status: "local",
     device: "laptop",
     mockup: {
