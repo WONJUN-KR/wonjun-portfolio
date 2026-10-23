@@ -196,7 +196,7 @@ export const PROJECTS: Project[] = [
     ],
     stack: ["Java", "JSP", "Servlet", "Tomcat", "jQuery", "Oracle", "JDBC"],
     repos: [{ label: "Repo", url: "https://github.com/WONJUN-KR/FootPrint-2021" }],
-    logo: "/projects/eureka-logo.svg", // 2021 원본 헤더 로고(blackLogo.png)를 벡터로 트레이싱 - 어떤 크기에서도 선명
+    thumbnail: "/projects/mockups/footprint-2021/01-main-banner.jpg",
     status: "local",
     device: "laptop",
     mockup: {
