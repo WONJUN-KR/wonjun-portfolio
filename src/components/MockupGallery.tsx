@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useRef, useState, type PointerEvent } from "react";
-import { ArrowLeftRight, ChevronLeft, ChevronRight, Images, Play, X } from "lucide-react";
+import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
+import { ArrowLeftRight, ChevronLeft, ChevronRight, Play, X } from "lucide-react";
 import type { Mockup } from "@/lib/projects";
 import SafeImage from "@/components/SafeImage";
+import { trackEvent } from "@/lib/analytics";
 
 type Slide =
   | { kind: "video"; webm: string; mp4: string; poster: string; caption: string }
@@ -20,11 +21,11 @@ const SWIPE_THRESHOLD = 50; // px - 이보다 짧게 밀면 넘기지 않음
 // 짝 프로젝트 팝업으로 넘어갈 때 쓰는 이벤트 - detail 에 열 프로젝트 slug
 const OPEN_EVENT = "mockup:open";
 
-// 프로젝트 화면 둘러보기 - 버튼만 먼저 그리고, 팝업(<dialog>)을 열 때 처음으로 슬라이드를 렌더해서 그때부터 받음
+// 프로젝트 화면 둘러보기 - 썸네일을 버튼으로 감싸 먼저 그리고, 팝업(<dialog>)을 열 때 처음으로 슬라이드를 렌더해서 그때부터 받음
 // → /projects 첫 로드에는 이미지·영상 요청이 0개 (페이지 무게·라이트하우스 점수 영향 없음)
 // 슬라이드는 현재 장과 바로 옆 장만 이미지를 렌더(나머지는 빈 자리)하고, 영상은 현재 장일 때만 <video> 를 붙여 받고 재생
 // 넘기기: ‹ › 버튼 · 키보드 ← → · 터치 스와이프 · 하단 점 / prefers-reduced-motion 이면 슬라이드 전환 애니메이션 없음
-export default function MockupGallery({ slug, title, mockup }: { slug: string; title: string; mockup: Mockup }) {
+export default function MockupGallery({ slug, title, mockup, children }: { slug: string; title: string; mockup: Mockup; children: ReactNode }) {
   const ref = useRef<HTMLDialogElement>(null);
   const startX = useRef<number | null>(null);
   const [open, setOpen] = useState(false);
@@ -36,13 +37,16 @@ export default function MockupGallery({ slug, title, mockup }: { slug: string; t
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
+    if (open && !dialog.open) {
+      dialog.showModal();
+      trackEvent("mockup_open", { project: slug });
+    }
     // 팝업이 열려 있는 동안 뒤 페이지 스크롤 고정
     document.documentElement.style.overflow = open ? "hidden" : "";
     return () => {
       document.documentElement.style.overflow = "";
     };
-  }, [open]);
+  }, [open, slug]);
 
   // 다른 카드의 팝업에서 '○○ 보기'를 누르면 이 팝업을 첫 장부터 열기
   useEffect(() => {
@@ -77,18 +81,23 @@ export default function MockupGallery({ slug, title, mockup }: { slug: string; t
 
   return (
     <>
+      {/* 썸네일(children)을 감싼 버튼 - 누르면 팝업. 오른쪽 아래 배지는 항상 보여서 휴대폰(마우스 없음)에서도 누를 수 있다는 게 보임 */}
       <button
         type="button"
         onClick={() => {
           setIndex(0);
           setOpen(true);
         }}
-        className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-line px-4 py-2.5 text-sm font-semibold hover:bg-surface-hover transition-colors"
+        aria-label={`${title} 화면 둘러보기 - 스크린샷 ${mockup.shots.length}장 · 영상 ${mockup.videos.length}개`}
+        className="group/shot relative block w-full cursor-pointer rounded-2xl text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
       >
-        <Images className="size-4 shrink-0" />
-        화면 둘러보기
-        <span className="text-xs font-normal text-muted">
-          스크린샷 {mockup.shots.length} · 영상 {mockup.videos.length}
+        {children}
+        <span className="pointer-events-none absolute right-3 bottom-3 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-black/65 px-3.5 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur transition-colors group-hover/shot:bg-black/80 max-sm:right-2 max-sm:bottom-2 max-sm:px-3 max-sm:py-1.5 max-sm:text-[13px]">
+          <Play className="size-4 fill-current max-sm:size-3.5" />
+          화면 둘러보기
+          <span className="font-normal text-white/75">
+            · {mockup.shots.length}장{mockup.videos.length > 0 && ` · 영상 ${mockup.videos.length}`}
+          </span>
         </span>
       </button>
 

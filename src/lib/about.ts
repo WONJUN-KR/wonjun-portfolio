@@ -172,10 +172,12 @@ export const ABOUT: AboutContent = {
           ],
         },
       ],
+      // 순서: 언어 → 프레임워크 → 라이브러리 → DB → 인프라, 같은 종류 안에서는 백엔드 → 프론트엔드 (projects.ts 스택과 같은 규칙)
       stack: [
-        "Java", "Python", "JavaScript", "TypeScript", "Spring Boot", "Flask", "React", "Next.js",
-        "Spring Security", "JPA", "Tailwind CSS", "Zustand", "ApexCharts",
-        "AWS", "Docker", "nginx", "GitHub Actions", "FCM", "PostgreSQL",
+        "Java", "Python", "TypeScript", "JavaScript",
+        "Spring Boot", "Flask", "Next.js",
+        "Spring Security", "JPA", "FCM", "React", "Tailwind CSS", "Zustand", "ApexCharts",
+        "PostgreSQL", "AWS", "Docker", "nginx", "GitHub Actions",
       ],
       sortOrder: 1,
     },
@@ -212,8 +214,10 @@ export const ABOUT: AboutContent = {
         },
       ],
       stack: [
-        "Java", "JavaScript", "Spring Framework", "Spring Boot", "eGovFramework", "JSP",
-        "Spring Security", "MyBatis", "jQuery", "Linux(CentOS)", "Docker", "Oracle", "MySQL",
+        "Java", "JavaScript",
+        "Spring Framework", "Spring Boot", "eGovFramework",
+        "Spring Security", "MyBatis", "JSP", "jQuery",
+        "Oracle", "MySQL", "Linux(CentOS)", "Docker",
       ],
       sortOrder: 2,
     },

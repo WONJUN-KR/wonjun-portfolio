@@ -4,7 +4,14 @@ import { BookOpen, ChevronDown, ExternalLink, Mail, MapPin } from "lucide-react"
 import { detailText, type AboutContent, type CareerDetail, type Evidence } from "@/lib/api";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import SkillGroups from "@/components/SkillGroups";
+import PrintButton from "@/components/PrintButton";
 import { Eyebrow, MOBILE_OPEN_ONLY_INLINE, MOBILE_OPEN_ONLY_ITEM, MOBILE_TOGGLE, MobileMoreInput, MobileMoreToggle, StackChips } from "@/components/ui";
+
+// 헤더 링크 · PDF 저장 버튼 공통 모양 (색은 따로 - 링크는 테두리만, PDF 저장은 크림색 바탕으로 눈에 띄게)
+const HEADER_BUTTON =
+  "inline-flex items-center gap-2 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold max-sm:min-w-0 max-sm:flex-1 max-sm:justify-center max-sm:gap-1.5 max-sm:px-2 max-sm:text-[15px] [&>svg]:shrink-0 max-[359px]:[&>svg]:hidden";
+const LINK_BUTTON = `${HEADER_BUTTON} border-line hover:bg-surface-hover transition-colors`;
+const PDF_BUTTON = `${HEADER_BUTTON} cursor-pointer border-transparent bg-foreground text-background font-bold hover:opacity-85 transition-opacity`;
 
 // resume 페이지 본문 - 데이터는 src/lib/about.ts
 export default function AboutView({ about }: { about: AboutContent }) {
@@ -35,22 +42,16 @@ export default function AboutView({ about }: { about: AboutContent }) {
           <span className="inline-flex items-center gap-1.5"><MapPin className="size-4" />{profile.region}</span>
         </div>
         {/* 링크 버튼은 한 줄로 - 휴대폰은 같은 폭으로 나눠 한 줄에 (360px 미만은 아이콘 생략, /projects 링크 버튼과 같은 방식) */}
-        {links.length > 0 && (
-          <div className="flex flex-wrap gap-2 max-sm:flex-nowrap max-sm:gap-1.5">
-            {links.map((l) => (
-              <a
-                key={l.label}
-                href={l.href}
-                target="_blank"
-                rel="noreferrer"
-                className="inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-line px-4 py-2 text-sm font-semibold hover:bg-surface-hover transition-colors max-sm:min-w-0 max-sm:flex-1 max-sm:justify-center max-sm:gap-1.5 max-sm:px-2 max-sm:text-[15px] [&>svg]:shrink-0 max-[359px]:[&>svg]:hidden"
-              >
-                {l.icon}
-                {l.label}
-              </a>
-            ))}
-          </div>
-        )}
+        {/* 끝에 PDF 저장 버튼 - 휴대폰은 한 줄에 4개가 안 들어가서 다음 줄에 꽉 차게(basis-full). 인쇄물에선 버튼 줄 전체를 숨김 */}
+        <div className="flex flex-wrap gap-2 max-sm:gap-1.5 print:hidden">
+          {links.map((l) => (
+            <a key={l.label} href={l.href} target="_blank" rel="noreferrer" className={LINK_BUTTON}>
+              {l.icon}
+              {l.label}
+            </a>
+          ))}
+          <PrintButton fileName={`${profile.name}_이력서`} className={`${PDF_BUTTON} max-sm:basis-full`} />
+        </div>
       </header>
 
       {/* 정보 박스 */}
@@ -230,7 +231,8 @@ function Section({ eyebrow, title, sub, children }: {
 }) {
   return (
     <section className="flex flex-col gap-8">
-      <div className="flex flex-col gap-1.5">
+      {/* 인쇄할 때 영문 소제목 · 제목이 페이지 끝에 떨어져 남지 않게 다음 내용과 붙임 */}
+      <div className="flex flex-col gap-1.5 print:break-inside-avoid print:break-after-avoid">
         <Eyebrow>{eyebrow}</Eyebrow>
         <div className="flex items-baseline gap-3">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">{title}</h2>
