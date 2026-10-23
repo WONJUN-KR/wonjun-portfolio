@@ -169,3 +169,67 @@ body {
   /* 마지막 줄에 한두 단어만 남지 않게 - 윗줄을 꽉 채우고 아랫줄이 짧게 끝남 */
   text-wrap: pretty;
 }
+
+/* 인쇄 · PDF 저장 (이력서 'PDF 저장' 버튼) - 종이에 맞게 흰 바탕 · 진한 글자로 토큰만 바꿔서 컴포넌트는 그대로 씀
+   A4 인쇄 폭(약 700px)은 sm 이상이라 휴대폰용 접기는 적용되지 않고 전부 펼친 상태로 나옴 */
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm 12mm;
+  }
+  :root {
+    color-scheme: light;
+    --background: #fff;
+    --foreground: #1a1a1a;
+    --surface: #fff;
+    --surface-hover: #fff;
+    --line: #d9d4ce;
+    --muted: #555;
+    --accent-2: #7a4f3a;
+    --accent-soft: transparent;
+  }
+  /* 글자 · 여백이 전부 rem 이라 기준 크기만 줄이면 화면 비율 그대로 종이에 맞게 작아짐 (16px → 11px) */
+  html {
+    font-size: 11px;
+  }
+  body {
+    background: #fff;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  /* 상단 메뉴 · ⓘ 측정 근거 버튼은 종이에선 의미 없음 */
+  body > header,
+  details > summary {
+    display: none;
+  }
+  main {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .animate-fade-up {
+    animation: none;
+  }
+  /* 상자 · 항목이 페이지 경계에서 잘리지 않게, 제목이 페이지 끝에 혼자 남지 않게 */
+  li,
+  .rounded-2xl {
+    break-inside: avoid;
+  }
+  /* 자기소개서 마크다운(prose-invert)은 밝은 글자용 색이라 인쇄용 진한 색으로 */
+  .prose-invert {
+    --tw-prose-invert-body: var(--foreground);
+    --tw-prose-invert-headings: var(--foreground);
+    --tw-prose-invert-bold: var(--foreground);
+    --tw-prose-invert-links: var(--accent-2);
+    --tw-prose-invert-bullets: var(--muted);
+    --tw-prose-invert-counters: var(--muted);
+    --tw-prose-invert-quotes: var(--foreground);
+    --tw-prose-invert-quote-borders: var(--line);
+    --tw-prose-invert-hr: var(--line);
+    --tw-prose-invert-code: var(--foreground);
+  }
+  h2,
+  h3,
+  h4 {
+    break-after: avoid;
+  }
+}
