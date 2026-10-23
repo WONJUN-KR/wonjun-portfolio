@@ -65,8 +65,10 @@ export function MobileMoreToggle({ more = "자세히 보기", less = "접기", h
   );
 }
 
+// sm 이상은 항상 펼쳐져 있고 이 체크박스를 여는 버튼(label)도 숨겨져서, 체크박스도 같이 숨김(sm:hidden)
+// 안 숨기면 이름 없는 체크박스가 키보드 · 스크린리더에 그대로 잡힘 (라이트하우스 접근성 'label' 감점)
 export function MobileMoreInput({ id }: { id: string }) {
-  return <input id={id} type="checkbox" className="peer sr-only" />;
+  return <input id={id} type="checkbox" className="peer sr-only sm:hidden" />;
 }
 
 // 기술 칩 - 휴대폰은 칩이 화면을 많이 차지해서 '기술 스택 N개'로 접어둠
