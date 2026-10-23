@@ -121,8 +121,14 @@ export default function ProjectsPage() {
             {/* 왼쪽: 화면 + 핵심 기능(사용자가 할 수 있는 것) / 오른쪽: 소개 + 내가 맡은 부분 */}
             <div className="flex flex-col gap-6 max-sm:contents">
               <div className="flex flex-col gap-3 max-sm:order-1">
-                <ProjectVisual project={p} preload={i === 0} />
-                {p.mockup && <MockupGallery slug={p.slug} title={p.title} mockup={p.mockup} />}
+                {/* 목업이 있으면 썸네일 자체가 '화면 둘러보기' 버튼 */}
+                {p.mockup ? (
+                  <MockupGallery slug={p.slug} title={p.title} mockup={p.mockup}>
+                    <ProjectVisual project={p} preload={i === 0} />
+                  </MockupGallery>
+                ) : (
+                  <ProjectVisual project={p} preload={i === 0} />
+                )}
               </div>
               <div className="flex flex-col gap-1 max-sm:order-3">
                 <p className="text-base text-muted">{p.subtitle}</p>

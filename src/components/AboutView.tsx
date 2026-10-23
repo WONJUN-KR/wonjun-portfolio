@@ -7,9 +7,11 @@ import SkillGroups from "@/components/SkillGroups";
 import PrintButton from "@/components/PrintButton";
 import { Eyebrow, MOBILE_OPEN_ONLY_INLINE, MOBILE_OPEN_ONLY_ITEM, MOBILE_TOGGLE, MobileMoreInput, MobileMoreToggle, StackChips } from "@/components/ui";
 
-// 헤더 링크 · PDF 저장 버튼 공통 모양
-const LINK_BUTTON =
-  "inline-flex items-center gap-2 whitespace-nowrap rounded-full border border-line px-4 py-2 text-sm font-semibold hover:bg-surface-hover transition-colors max-sm:min-w-0 max-sm:flex-1 max-sm:justify-center max-sm:gap-1.5 max-sm:px-2 max-sm:text-[15px] [&>svg]:shrink-0 max-[359px]:[&>svg]:hidden";
+// 헤더 링크 · PDF 저장 버튼 공통 모양 (색은 따로 - 링크는 테두리만, PDF 저장은 크림색 바탕으로 눈에 띄게)
+const HEADER_BUTTON =
+  "inline-flex items-center gap-2 whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold max-sm:min-w-0 max-sm:flex-1 max-sm:justify-center max-sm:gap-1.5 max-sm:px-2 max-sm:text-[15px] [&>svg]:shrink-0 max-[359px]:[&>svg]:hidden";
+const LINK_BUTTON = `${HEADER_BUTTON} border-line hover:bg-surface-hover transition-colors`;
+const PDF_BUTTON = `${HEADER_BUTTON} cursor-pointer border-transparent bg-foreground text-background font-bold hover:opacity-85 transition-opacity`;
 
 // resume 페이지 본문 - 데이터는 src/lib/about.ts
 export default function AboutView({ about }: { about: AboutContent }) {
@@ -48,7 +50,7 @@ export default function AboutView({ about }: { about: AboutContent }) {
               {l.label}
             </a>
           ))}
-          <PrintButton fileName={`${profile.name}_이력서`} className={`cursor-pointer ${LINK_BUTTON} max-sm:basis-full`} />
+          <PrintButton fileName={`${profile.name}_이력서`} className={`${PDF_BUTTON} max-sm:basis-full`} />
         </div>
       </header>
 
