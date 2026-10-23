@@ -3,6 +3,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ExternalLink } from "lucide-react";
 import { PROJECTS, type Project } from "@/lib/projects";
 import SafeImage from "@/components/SafeImage";
+import MockupGallery from "@/components/MockupGallery";
 import { GithubIcon } from "@/components/icons";
 import { MOBILE_OPEN_ONLY, MobileMoreToggle, PageHeader, StackChips } from "@/components/ui";
 
@@ -109,7 +110,10 @@ export default function ProjectsPage() {
           >
             {/* 왼쪽: 화면 + 핵심 기능(사용자가 할 수 있는 것) / 오른쪽: 소개 + 내가 맡은 부분 */}
             <div className="flex flex-col gap-6 max-sm:contents">
-              <div className="max-sm:order-1"><ProjectVisual project={p} preload={i === 0} /></div>
+              <div className="flex flex-col gap-3 max-sm:order-1">
+                <ProjectVisual project={p} preload={i === 0} />
+                {p.mockup && <MockupGallery title={p.title} mockup={p.mockup} />}
+              </div>
               <div className="flex flex-col gap-1 max-sm:order-3">
                 <p className="text-base text-muted">{p.subtitle}</p>
                 <p className="text-lg font-semibold leading-snug">{p.tagline}</p>

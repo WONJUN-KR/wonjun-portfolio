@@ -1,5 +1,10 @@
 export type Repo = { label: string; url: string };
 
+// 프로젝트 화면 둘러보기(팝업) - 로컬에서 띄워 찍은 스크린샷과 짧은 흐름 영상. 팝업을 열 때만 불러옴
+export type MockupShot = { src: string; caption: string };
+export type MockupVideo = { webm: string; mp4: string; poster: string; caption: string };
+export type Mockup = { shots: MockupShot[]; videos: MockupVideo[]; note?: string };
+
 export type Project = {
   slug: string;
   title: string;
@@ -21,6 +26,7 @@ export type Project = {
   lead?: boolean; // 팀장 - projects 페이지에 '팀장' 배지
   status: "live" | "local";
   device: "mobile" | "laptop";
+  mockup?: Mockup;
 };
 
 export const PROJECTS: Project[] = [
@@ -83,6 +89,21 @@ export const PROJECTS: Project[] = [
     logo: "/projects/ocp.png",
     status: "local",
     device: "laptop",
+    mockup: {
+      videos: [
+        { webm: "/projects/mockups/ai-auto-posting/flow-1-register-and-run.webm", mp4: "/projects/mockups/ai-auto-posting/flow-1-register-and-run.mp4", poster: "/projects/mockups/ai-auto-posting/02-workflow-settings.jpg", caption: "워크플로우 설정 → 테스트 실행 → 진행 중 → 완료 → 등록" },
+        { webm: "/projects/mockups/ai-auto-posting/flow-2-result.webm", mp4: "/projects/mockups/ai-auto-posting/flow-2-result.mp4", poster: "/projects/mockups/ai-auto-posting/05-generated-post.jpg", caption: "생성된 글 확인 → 단계별 실행 로그" },
+      ],
+      shots: [
+        { src: "/projects/mockups/ai-auto-posting/01-home.jpg", caption: "메인" },
+        { src: "/projects/mockups/ai-auto-posting/02-workflow-settings.jpg", caption: "워크플로우 설정 - 사이트 · 반복 규칙 · 상품 카테고리 · 블로그" },
+        { src: "/projects/mockups/ai-auto-posting/03-run-in-progress.jpg", caption: "테스트 실행 - 진행 중" },
+        { src: "/projects/mockups/ai-auto-posting/04-run-completed.jpg", caption: "테스트 완료 - AI 글 생성 · 블로그 업로드 성공" },
+        { src: "/projects/mockups/ai-auto-posting/05-generated-post.jpg", caption: "생성된 글 - 선택 상품 · 트렌드 키워드 · 제목 · 본문" },
+        { src: "/projects/mockups/ai-auto-posting/06-step-logs.jpg", caption: "단계별 실행 로그 - 크롤링 → 상품 추출 → AI 콘텐츠 생성 → 블로그 포스팅" },
+      ],
+      note: "OpenAI 키 없이 로컬에서 띄워 시연용 데이터로 찍은 화면이에요. 생성 결과는 예시 데이터입니다.",
+    },
   },
   {
     slug: "cos-house",
