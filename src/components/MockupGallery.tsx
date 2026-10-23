@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type PointerEvent } from "react";
-import { ChevronLeft, ChevronRight, Images, Play, X } from "lucide-react";
+import { ArrowLeftRight, ChevronLeft, ChevronRight, Images, Play, X } from "lucide-react";
 import type { Mockup } from "@/lib/projects";
 import SafeImage from "@/components/SafeImage";
 
@@ -17,12 +17,14 @@ function toSlides(mockup: Mockup): Slide[] {
 }
 
 const SWIPE_THRESHOLD = 50; // px - 이보다 짧게 밀면 넘기지 않음
+// 짝 프로젝트 팝업으로 넘어갈 때 쓰는 이벤트 - detail 에 열 프로젝트 slug
+const OPEN_EVENT = "mockup:open";
 
 // 프로젝트 화면 둘러보기 - 버튼만 먼저 그리고, 팝업(<dialog>)을 열 때 처음으로 슬라이드를 렌더해서 그때부터 받음
 // → /projects 첫 로드에는 이미지·영상 요청이 0개 (페이지 무게·라이트하우스 점수 영향 없음)
 // 슬라이드는 현재 장과 바로 옆 장만 이미지를 렌더(나머지는 빈 자리)하고, 영상은 현재 장일 때만 <video> 를 붙여 받고 재생
 // 넘기기: ‹ › 버튼 · 키보드 ← → · 터치 스와이프 · 하단 점 / prefers-reduced-motion 이면 슬라이드 전환 애니메이션 없음
-export default function MockupGallery({ title, mockup }: { title: string; mockup: Mockup }) {
+export default function MockupGallery({ slug, title, mockup }: { slug: string; title: string; mockup: Mockup }) {
   const ref = useRef<HTMLDialogElement>(null);
   const startX = useRef<number | null>(null);
   const [open, setOpen] = useState(false);
@@ -41,6 +43,24 @@ export default function MockupGallery({ title, mockup }: { title: string; mockup
       document.documentElement.style.overflow = "";
     };
   }, [open]);
+
+  // 다른 카드의 팝업에서 '○○ 보기'를 누르면 이 팝업을 첫 장부터 열기
+  useEffect(() => {
+    const onOpen = (e: Event) => {
+      if ((e as CustomEvent<string>).detail !== slug) return;
+      setIndex(0);
+      setOpen(true);
+    };
+    window.addEventListener(OPEN_EVENT, onOpen);
+    return () => window.removeEventListener(OPEN_EVENT, onOpen);
+  }, [slug]);
+
+  // 지금 팝업을 닫고, 뒤 페이지도 짝 카드 위치로 옮긴 뒤 짝 팝업을 엶
+  const openRelated = (target: string) => {
+    ref.current?.close();
+    document.getElementById(target)?.scrollIntoView({ block: "start" });
+    window.dispatchEvent(new CustomEvent(OPEN_EVENT, { detail: target }));
+  };
 
   const onPointerDown = (e: PointerEvent) => {
     if (e.pointerType !== "mouse") startX.current = e.clientX;
@@ -90,6 +110,16 @@ export default function MockupGallery({ title, mockup }: { title: string; mockup
               <div className="flex flex-col gap-1">
                 <h3 className="text-xl font-bold tracking-tight max-sm:text-lg">{title}</h3>
                 {mockup.note && <p className="text-sm text-muted max-sm:text-[13px]">{mockup.note}</p>}
+                {mockup.related && (
+                  <button
+                    type="button"
+                    onClick={() => openRelated(mockup.related!.slug)}
+                    className="mt-1 inline-flex w-fit items-center gap-1.5 rounded-full border border-transparent bg-accent-soft px-3 py-1.5 text-sm font-semibold text-accent-2 hover:opacity-85 transition-opacity"
+                  >
+                    <ArrowLeftRight className="size-4 shrink-0" />
+                    {mockup.related.label}
+                  </button>
+                )}
               </div>
               <div className="flex shrink-0 items-center gap-3">
                 <span className="text-sm tabular-nums text-muted" aria-live="polite">

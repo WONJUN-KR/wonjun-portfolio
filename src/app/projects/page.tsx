@@ -112,7 +112,7 @@ export default function ProjectsPage() {
             <div className="flex flex-col gap-6 max-sm:contents">
               <div className="flex flex-col gap-3 max-sm:order-1">
                 <ProjectVisual project={p} preload={i === 0} />
-                {p.mockup && <MockupGallery title={p.title} mockup={p.mockup} />}
+                {p.mockup && <MockupGallery slug={p.slug} title={p.title} mockup={p.mockup} />}
               </div>
               <div className="flex flex-col gap-1 max-sm:order-3">
                 <p className="text-base text-muted">{p.subtitle}</p>
