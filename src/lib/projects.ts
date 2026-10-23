@@ -176,6 +176,24 @@ export const PROJECTS: Project[] = [
     logo: "/projects/coshouse.png",
     status: "local",
     device: "laptop",
+    mockup: {
+      videos: [
+        { webm: "/projects/mockups/cos-house/shop-flow.webm", mp4: "/projects/mockups/cos-house/shop-flow.mp4", poster: "/projects/mockups/cos-house/03-shop.jpg", caption: "홈 → 쇼핑 → 상품 상세(옵션 · 리뷰) → 장바구니 담기 → 장바구니" },
+        { webm: "/projects/mockups/cos-house/community-flow.webm", mp4: "/projects/mockups/cos-house/community-flow.mp4", poster: "/projects/mockups/cos-house/19-post-detail.jpg", caption: "집들이 목록 → 글 상세 → 사진 넘기기 → 댓글 · 답글" },
+      ],
+      shots: [
+        { src: "/projects/mockups/cos-house/01-home.jpg", caption: "메인" },
+        { src: "/projects/mockups/cos-house/03-shop.jpg", caption: "쇼핑 - 카테고리 탭 · 상품 목록" },
+        { src: "/projects/mockups/cos-house/04-product-detail.jpg", caption: "상품 상세 - 옵션 · 장바구니 / 구매" },
+        { src: "/projects/mockups/cos-house/18-community.jpg", caption: "커뮤니티 - 집들이 목록" },
+        { src: "/projects/mockups/cos-house/19-post-detail.jpg", caption: "집들이 상세 - 사진 슬라이드 · 댓글" },
+        { src: "/projects/mockups/cos-house/14-mypage-reviews.jpg", caption: "마이페이지 - 내가 쓴 구매 후기 (담당)" },
+        { src: "/projects/mockups/cos-house/20-admin.jpg", caption: "관리자 대시보드" },
+        { src: "/projects/mockups/cos-house/21-admin-products.jpg", caption: "관리자 상품 관리 · 검색 (담당)" },
+        { src: "/projects/mockups/cos-house/26-mobile-home.jpg", caption: "휴대폰 화면 (390px)" },
+      ],
+      note: "로컬에서 띄워 시연용 데이터로 찍은 화면이에요. 상품 사진은 외부 판매자 이미지라 흐리게 처리했고, 집들이 사진은 Unsplash 무료 이미지입니다.",
+    },
   },
   {
     slug: "footprint-2021",
