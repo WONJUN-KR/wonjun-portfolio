@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type PointerEvent } from "react";
 import { ArrowLeftRight, ChevronLeft, ChevronRight, Images, Play, X } from "lucide-react";
 import type { Mockup } from "@/lib/projects";
 import SafeImage from "@/components/SafeImage";
+import { trackEvent } from "@/lib/analytics";
 
 type Slide =
   | { kind: "video"; webm: string; mp4: string; poster: string; caption: string }
@@ -36,13 +37,16 @@ export default function MockupGallery({ slug, title, mockup }: { slug: string; t
   useEffect(() => {
     const dialog = ref.current;
     if (!dialog) return;
-    if (open && !dialog.open) dialog.showModal();
+    if (open && !dialog.open) {
+      dialog.showModal();
+      trackEvent("mockup_open", { project: slug });
+    }
     // 팝업이 열려 있는 동안 뒤 페이지 스크롤 고정
     document.documentElement.style.overflow = open ? "hidden" : "";
     return () => {
       document.documentElement.style.overflow = "";
     };
-  }, [open]);
+  }, [open, slug]);
 
   // 다른 카드의 팝업에서 '○○ 보기'를 누르면 이 팝업을 첫 장부터 열기
   useEffect(() => {
