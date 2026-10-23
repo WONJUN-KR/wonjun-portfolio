@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Pin } from "lucide-react";
 import { PROJECTS, type Project } from "@/lib/projects";
 import SafeImage from "@/components/SafeImage";
 import MockupGallery from "@/components/MockupGallery";
@@ -106,8 +106,18 @@ export default function ProjectsPage() {
             key={p.slug}
             id={p.slug}
             // 홈 카드에서 /projects#slug 로 오면 해당 카드로 스크롤 (상단 고정 헤더만큼 여백) + 테두리 강조
-            className="scroll-mt-24 target:border-accent/60 rounded-3xl border border-line bg-surface p-4 sm:p-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start max-sm:flex max-sm:flex-col max-sm:items-stretch max-sm:gap-4 group/more"
+            className="relative scroll-mt-24 target:border-accent/60 rounded-3xl border border-line bg-surface p-4 sm:p-10 grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start max-sm:flex max-sm:flex-col max-sm:items-stretch max-sm:gap-4 group/more"
           >
+            {/* 대표(고정) 프로젝트 - 카드 왼쪽 위 모서리에 꽂힌 핀 */}
+            {p.pinned && (
+              <span
+                role="img"
+                aria-label="대표 프로젝트로 고정"
+                className="absolute -left-3 -top-3 z-10 flex size-10 -rotate-12 items-center justify-center rounded-full border border-line bg-accent-strong text-foreground shadow-lg shadow-black/30 max-sm:-left-2 max-sm:-top-2 max-sm:size-8"
+              >
+                <Pin className="size-5 fill-current max-sm:size-4" />
+              </span>
+            )}
             {/* 왼쪽: 화면 + 핵심 기능(사용자가 할 수 있는 것) / 오른쪽: 소개 + 내가 맡은 부분 */}
             <div className="flex flex-col gap-6 max-sm:contents">
               <div className="flex flex-col gap-3 max-sm:order-1">
