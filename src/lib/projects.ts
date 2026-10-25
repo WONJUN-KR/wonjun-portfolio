@@ -76,6 +76,7 @@ export const PROJECTS: Project[] = [
         { src: "/projects/mockups/gotcha/05-detail.jpg", caption: "매장 상세 - 매장 사진 모아보기" },
         { src: "/projects/mockups/gotcha/06-report-map.jpg", caption: "제보하기 - 지도에서 위치를 찍으면 주소가 자동으로" },
         { src: "/projects/mockups/gotcha/07-report-form.jpg", caption: "매장 정보 등록 - 매장명 · 위치 힌트 · 영업 정보" },
+        { src: "/projects/mockups/gotcha/08-mobile-home.jpg", caption: "휴대폰 화면 (390px)" },
       ],
       note: "서비스를 내리기 전 운영 사이트에서 게스트(비로그인)로 찍은 화면이에요. 제보는 등록 직전까지만 진행했고, 리뷰 작성자 닉네임은 흐리게 처리했습니다.",
     },
