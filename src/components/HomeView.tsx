@@ -217,8 +217,10 @@ export default async function HomeView({ about }: { about: AboutContent }) {
                   <div className="flex items-start justify-between gap-3">
                     <div className="flex items-center gap-2 min-w-0">
                       <h3 className="text-xl max-sm:text-lg font-bold tracking-tight truncate">{p.title}</h3>
-                      {p.status === "live" && (
-                        <span className="shrink-0 rounded-full border border-transparent bg-accent-soft text-accent-2 px-2 py-0.5 text-xs font-semibold">운영 중</span>
+                      {p.status !== "local" && (
+                        <span className="shrink-0 rounded-full border border-transparent bg-accent-soft text-accent-2 px-2 py-0.5 text-xs font-semibold">
+                          {p.status === "live" ? "운영 중" : "앱 출시"}
+                        </span>
                       )}
                     </div>
                     <ArrowUpRight className="size-5 shrink-0 text-muted transition-all group-hover:text-accent-2 group-hover:-translate-y-0.5 group-hover:translate-x-0.5" />
