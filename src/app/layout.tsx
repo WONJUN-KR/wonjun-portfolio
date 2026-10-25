@@ -2,13 +2,12 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
-import { GoogleAnalytics } from "@next/third-parties/google";
 import NavLinks from "@/components/NavLinks";
 // 본문 폰트 Pretendard 를 npm 패키지로 - 예전엔 외부 CSS 를 @import 로 불러서 첫 화면이 그걸 기다렸음 (휴대폰 라이트하우스 점수가 가끔 70·80 으로 튐)
 import "pretendard/dist/web/variable/pretendardvariable-dynamic-subset.css";
 import "./globals.css";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, pageMetadata } from "@/lib/seo";
-import { GA_ID } from "@/lib/analytics";
+import GoogleAnalytics from "@/components/GoogleAnalytics";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -53,9 +52,9 @@ export default function RootLayout({
         {/* 방문 통계 (Vercel Web Analytics) - 쿠키 없이 페이지뷰·유입 경로·기기만 집계, Vercel 배포에서만 수집 */}
         <Analytics />
       </body>
-      {/* 방문 통계 (Google Analytics 4) - 체류 시간 · 스크롤 · 클릭까지. 화면이 뜬 뒤(hydration 후) 받아서 첫 화면엔 영향 없음
+      {/* 방문 통계 (Google Analytics 4) - 체류 시간 · 스크롤 · 클릭까지. 페이지 로드가 끝난 뒤 받아서 첫 화면엔 영향 없음
           운영 배포에서만 넣음 - 로컬 · 미리보기 방문이 통계에 섞이지 않게 */}
-      {process.env.VERCEL_ENV === "production" && <GoogleAnalytics gaId={GA_ID} />}
+      {process.env.VERCEL_ENV === "production" && <GoogleAnalytics />}
     </html>
   );
 }
