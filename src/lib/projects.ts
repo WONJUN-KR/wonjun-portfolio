@@ -63,11 +63,7 @@ export const PROJECTS: Project[] = [
     status: "released",
     device: "laptop",
     mockup: {
-      videos: [
-        { webm: "/projects/mockups/gotcha/find-flow.webm", mp4: "/projects/mockups/gotcha/find-flow.mp4", poster: "/projects/mockups/gotcha/01-first.jpg", caption: "첫 화면 → 게스트로 둘러보기 → 위치 검색 → 핀 미리보기 → 매장 상세" },
-        { webm: "/projects/mockups/gotcha/map-flow.webm", mp4: "/projects/mockups/gotcha/map-flow.mp4", poster: "/projects/mockups/gotcha/04-pin-preview.jpg", caption: "지도 옮기고 이 지역 재검색 → 바텀시트 3단(중간 · 전체 · 접기) → 상세 → 뒤로가기 시 보던 지도 그대로" },
-        { webm: "/projects/mockups/gotcha/report-flow.webm", mp4: "/projects/mockups/gotcha/report-flow.mp4", poster: "/projects/mockups/gotcha/06-report-map.jpg", caption: "제보하기 → 50m 안 중복 가챠샵 확인 → 매장 정보 입력" },
-      ],
+      videos: [],
       shots: [
         { src: "/projects/mockups/gotcha/01-first.jpg", caption: "첫 화면 - 카카오 · Google · Apple 로그인, 게스트로 둘러보기" },
         { src: "/projects/mockups/gotcha/02-search.jpg", caption: "위치 검색 - 입력하는 대로 장소 자동완성" },
