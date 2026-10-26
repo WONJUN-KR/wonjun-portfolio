@@ -155,7 +155,7 @@ export default function ProjectsPage() {
                   )}
                   {p.status !== "local" && (
                     <span className="rounded-full border border-line px-2.5 py-0.5 font-semibold text-foreground">
-                      {p.status === "live" ? "운영 중" : "앱 출시"}
+                      {p.status === "live" ? "운영 중" : "앱 배포"}
                     </span>
                   )}
                   {p.lead && (

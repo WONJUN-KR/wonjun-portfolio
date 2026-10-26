@@ -317,8 +317,8 @@ export const ABOUT: AboutContent = {
     ],
   },
   portfolios: [
-    { title: "GOTCHA Frontend", url: "https://github.com/fcde-project9/GOTCHA-FE", period: "2026.01.05 ~ 2026.03.02" },
-    { title: "GOTCHA Backend", url: "https://github.com/fcde-project9/GOTCHA-BE", period: "2026.01.05 ~ 2026.03.02" },
+    { title: "GOTCHA Frontend", url: "https://github.com/fcde-project9/GOTCHA-FE", period: "2026.01.05 ~ 2026.03.02", teamSize: 9 },
+    { title: "GOTCHA Backend", url: "https://github.com/fcde-project9/GOTCHA-BE", period: "2026.01.05 ~ 2026.03.02", teamSize: 9 },
     { title: "AI Auto Posting Backend", url: "https://github.com/WONJUN-KR/AI-Auto-Posting-Backend", period: "2025.11.17 ~ 2025.12.26" },
     { title: "AI Auto Posting Frontend", url: "https://github.com/WONJUN-KR/AI-Auto-Posting-Frontend", period: "2025.11.17 ~ 2025.12.26" },
     { title: "Co's House (5인 팀)", url: "https://github.com/WONJUN-KR/Co-s_House", period: "2025.09.05 ~ 2025.10.26", teamSize: 5 },
