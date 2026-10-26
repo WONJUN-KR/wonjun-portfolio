@@ -1,11 +1,13 @@
 import type { AboutContent, CareerItem, SkillItem } from "@/lib/api";
+import { monthIn, yearIn } from "@/lib/time";
 
 // "2022.05 ~ 2024.04" / "2026.03 ~ 재직중" → 시작·끝 달 포함 개월 수 (잡사이트와 같은 셈법)
 function careerMonths(period: string, now: Date): number {
   const m = period.match(/(\d{4})\.(\d{1,2})\s*~\s*(?:(\d{4})\.(\d{1,2})|재직중)/);
   if (!m) return 0;
   const start = Number(m[1]) * 12 + Number(m[2]);
-  const end = m[3] ? Number(m[3]) * 12 + Number(m[4]) : now.getFullYear() * 12 + now.getMonth() + 1;
+  // 재직중은 사이트 기준 시간대(KST)의 이번 달까지 - 서버 시계(UTC) 기준이면 매월 1일 00~09시에 한 달 덜 셈
+  const end = m[3] ? Number(m[3]) * 12 + Number(m[4]) : yearIn(undefined, now) * 12 + monthIn(undefined, now);
   return Math.max(0, end - start + 1);
 }
 

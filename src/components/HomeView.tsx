@@ -9,6 +9,7 @@ import { CONTRIBUTIONS_EARLIEST_YEAR, detailText, getContributions, getPosts, ty
 import { HOME_HIGHLIGHTS } from "@/lib/about";
 import SafeImage from "@/components/SafeImage";
 import { PROJECTS } from "@/lib/projects";
+import { yearIn } from "@/lib/time";
 
 const LATEST_POSTS_COUNT = 3;
 const FEATURED_PROJECTS_COUNT = 3;
@@ -22,7 +23,7 @@ const PROFILE_IMG = "/img/profile.jpg";
 const hasProfileImg = fs.existsSync(path.join(process.cwd(), "public", PROFILE_IMG));
 
 function availableYears(): number[] {
-  const now = new Date().getFullYear();
+  const now = yearIn();
   const years: number[] = [];
   for (let y = now; y >= CONTRIBUTIONS_EARLIEST_YEAR; y--) years.push(y);
   return years;
@@ -293,7 +294,7 @@ export default async function HomeView({ about }: { about: AboutContent }) {
       </section>
 
       <footer className="text-center text-xs text-muted pb-4">
-        © {new Date().getFullYear()} WonJun. All rights reserved.
+        © {yearIn()} WonJun. All rights reserved.
       </footer>
     </div>
   );
