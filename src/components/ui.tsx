@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, ChevronDown } from "lucide-react";
 import type { Tag } from "@/lib/api";
+import { t, type Lang } from "@/i18n";
 
 // 페이지 공용 UI 조각 - 색은 globals.css 토큰만 사용
 
@@ -46,12 +47,16 @@ export const MOBILE_OPEN_ONLY_ITEM = "max-sm:hidden max-sm:group-has-[:checked]/
 export const MOBILE_OPEN_ONLY_INLINE = "max-sm:hidden max-sm:group-has-[:checked]/more:inline";
 
 // htmlFor 를 주면 같은 체크박스를 여는 버튼을 위·아래 두 군데 둘 수 있음 (체크박스는 MobileMoreInput 으로 앞에 한 번)
-export function MobileMoreToggle({ more = "자세히 보기", less = "접기", htmlFor, className = "" }: {
+// more · less 를 안 주면 언어별 기본 문구(자세히 보기 · 접기 / More · Less)
+export function MobileMoreToggle({ more, less, htmlFor, className = "", lang = "ko" }: {
   more?: string;
   less?: string;
   htmlFor?: string;
   className?: string;
+  lang?: Lang;
 }) {
+  more ??= t(lang, "toggle.more");
+  less ??= t(lang, "toggle.less");
   // 체크박스가 버튼 안에 있으면 peer, 밖(htmlFor)에 있으면 바깥 group/more 의 :has 로 글자·화살표를 바꿈
   const [moreCls, lessCls, iconCls] = htmlFor
     ? ["group-has-[:checked]/more:hidden", "hidden group-has-[:checked]/more:inline", "group-has-[:checked]/more:rotate-180"]
@@ -74,7 +79,7 @@ export function MobileMoreInput({ id }: { id: string }) {
 
 // 기술 칩 - 휴대폰은 칩이 화면을 많이 차지해서 '기술 스택 N개'로 접어둠
 // grouped 면 자체 버튼 없이 바깥 group/more 버튼으로 같이 펼쳐짐
-export function StackChips({ items, grouped = false }: { items: string[]; grouped?: boolean }) {
+export function StackChips({ items, grouped = false, lang = "ko" }: { items: string[]; grouped?: boolean; lang?: Lang }) {
   if (items.length === 0) return null;
   const chips = items.map((s) => <Chip key={s}>{s}</Chip>);
   if (grouped) return <div className={`flex flex-wrap gap-1.5 ${MOBILE_OPEN_ONLY}`}>{chips}</div>;
@@ -83,7 +88,7 @@ export function StackChips({ items, grouped = false }: { items: string[]; groupe
       <div className="flex flex-wrap gap-1.5 max-sm:hidden">{chips}</div>
       <details className="group sm:hidden">
         <summary data-more-toggle="" className={`list-none [&::-webkit-details-marker]:hidden ${MOBILE_TOGGLE}`}>
-          기술 스택 {items.length}개
+          {t(lang, "stack.count", { n: items.length })}
           <ChevronDown className="size-3.5 transition-transform group-open:rotate-180" />
         </summary>
         <div className="flex flex-wrap gap-1.5 pt-3">{chips}</div>
