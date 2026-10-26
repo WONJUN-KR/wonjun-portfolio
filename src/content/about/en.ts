@@ -10,7 +10,7 @@ import { ABOUT_KO } from "./ko";
 export const HOME_HIGHLIGHTS_EN: { label: string; value: string; basis: string }[] = [
   { label: "Built from scratch", value: "3 tools", basis: "Glucose, sensor, notes" },
   { label: "Zero-downtime", value: "3 services", basis: "0 outages during deploys" },
-  { label: "Lossless AWS moves", value: "2", basis: "0 medical records lost" },
+  { label: "Lossless AWS moves", value: "2", basis: "Zero data loss" },
 ];
 
 // 이력서 데이터 - 홈(/en)과 Resume(/en/resume)이 함께 씀
@@ -43,7 +43,7 @@ export const ABOUT_EN: AboutContent = {
       role: "Full-stack Developer",
       period: "Mar 2026 – Present",
       isCurrent: true,
-      summary: "Own 6 concurrent projects across CGM medical device web services, an internal data platform, and an IoT platform, from development to infrastructure and deployment",
+      summary: "Responsible for 6 concurrent projects across CGM medical device web services, an internal data platform, and an IoT platform, from development to infrastructure and deployment",
       projects: [
         {
           title: "Personal CGM Monitoring Service: AWS migration, deployments, and a new admin console",
@@ -106,7 +106,7 @@ export const ABOUT_EN: AboutContent = {
                 when: "Sep 2026, still run on every deploy",
               },
             },
-            "Overhauled access control and session security in two phases (monitor, then block) with no disruption to daily work",
+            "Tightened access control and session security in two phases (monitor, then block) with no disruption to daily work",
             "Introduced version control and code review to a legacy Flask platform",
             "Built a sensor data pipeline and ApexCharts comparison views (up to 10 overlaid lines), with a 100% match on chart and CSV output",
           ],
@@ -163,7 +163,7 @@ export const ABOUT_EN: AboutContent = {
       role: "Full-stack Developer",
       period: "Mar 2022 – Apr 2024",
       region: "Seoul",
-      resignReason: "Returned to school",
+      resignReason: "To pursue studies",
       summary: "Developed and operated 3 Spring-based web systems (portal, LMS, facility management)",
       projects: [
         {
@@ -201,7 +201,7 @@ export const ABOUT_EN: AboutContent = {
       school: "Academic Credit Bank (NILE)",
       department: "Bachelor's in ICT",
       period: "May 2022 – Feb 2024",
-      status: "Graduated",
+      status: "Graduated (transfer)",
       region: "Seoul",
       gpa: "3.75/4.5",
       sortOrder: 1,
