@@ -62,7 +62,7 @@ export const PROJECTS: Project[] = [
     device: "laptop",
     mockup: {
       videos: [
-        { webm: "/projects/mockups/eureka-2026/main-scroll.webm", mp4: "/projects/mockups/eureka-2026/main-scroll.mp4", poster: "/projects/mockups/eureka-2026/01-main-banner.jpg", caption: "메인 화면 - 배너 · 장점 · Best 픽 · 떠나기 좋은 도시" },
+        { webm: "/projects/mockups/eureka-2026/main-scroll.webm", mp4: "/projects/mockups/eureka-2026/main-scroll.mp4", poster: "/projects/mockups/eureka-2026/01-main-banner.jpg", caption: "메인 화면 - 배너 · Best 픽 · 추천 도시" },
         { webm: "/projects/mockups/eureka-2026/write-flow.webm", mp4: "/projects/mockups/eureka-2026/write-flow.mp4", poster: "/projects/mockups/eureka-2026/14-write.jpg", caption: "글쓰기 → 사진 2장 업로드 → 등록 → 상세" },
       ],
       shots: [
@@ -75,7 +75,7 @@ export const PROJECTS: Project[] = [
         { src: "/projects/mockups/eureka-2026/14-write.jpg", caption: "글쓰기 - 사진 업로드" },
         { src: "/projects/mockups/eureka-2026/15-mobile-home.jpg", caption: "휴대폰 화면 (390px)" },
       ],
-      note: "로컬에서 띄워 시연용 데이터로 찍은 화면이에요. 사진은 Unsplash 무료 이미지입니다.",
+      note: "로컬 시연 데이터로 찍었어요. 사진은 Unsplash 무료 이미지예요.",
       related: { slug: "eureka-2021", label: "2021 원본 보기" },
     },
   },
@@ -109,26 +109,26 @@ export const PROJECTS: Project[] = [
     device: "laptop",
     mockup: {
       videos: [
-        { webm: "/projects/mockups/gotcha/flow-1-first-launch.webm", mp4: "/projects/mockups/gotcha/flow-1-first-launch.mp4", poster: "/projects/mockups/gotcha/01-login.jpg", caption: "첫 실행 - 시작 화면 → 게스트로 둘러보기 → 약관 동의 → 알림 권한 → 홈 지도" },
-        { webm: "/projects/mockups/gotcha/flow-2-find.webm", mp4: "/projects/mockups/gotcha/flow-2-find.mp4", poster: "/projects/mockups/gotcha/08-pin-preview.jpg", caption: "찾기 - 위치 검색 → 주변 가챠샵 → 핀 미리보기 → 매장 상세 · 리뷰" },
-        { webm: "/projects/mockups/gotcha/flow-3-map.webm", mp4: "/projects/mockups/gotcha/flow-3-map.mp4", poster: "/projects/mockups/gotcha/13b-list-expanded.jpg", caption: "지도 탐색 - 지도 이동 · 이 지역 다시 검색 → 목록 펼치기 → 다른 매장 상세 → 돌아와도 지도 그대로" },
-        { webm: "/projects/mockups/gotcha/flow-4-report.webm", mp4: "/projects/mockups/gotcha/flow-4-report.mp4", poster: "/projects/mockups/gotcha/16-report-form-filled.jpg", caption: "제보 - 지도에서 위치 지정 → 중복 확인 → 매장 정보 입력 (등록 직전까지)" },
+        { webm: "/projects/mockups/gotcha/flow-1-first-launch.webm", mp4: "/projects/mockups/gotcha/flow-1-first-launch.mp4", poster: "/projects/mockups/gotcha/01-login.jpg", caption: "첫 실행 - 게스트 → 약관 → 알림 → 홈" },
+        { webm: "/projects/mockups/gotcha/flow-2-find.webm", mp4: "/projects/mockups/gotcha/flow-2-find.mp4", poster: "/projects/mockups/gotcha/08-pin-preview.jpg", caption: "찾기 - 위치 검색 → 핀 미리보기 → 상세 · 리뷰" },
+        { webm: "/projects/mockups/gotcha/flow-3-map.webm", mp4: "/projects/mockups/gotcha/flow-3-map.mp4", poster: "/projects/mockups/gotcha/13b-list-expanded.jpg", caption: "지도 탐색 - 재검색 → 목록 → 지도 유지" },
+        { webm: "/projects/mockups/gotcha/flow-4-report.webm", mp4: "/projects/mockups/gotcha/flow-4-report.mp4", poster: "/projects/mockups/gotcha/16-report-form-filled.jpg", caption: "제보 - 위치 지정 → 중복 확인 → 정보 입력" },
       ],
       shots: [
-        { src: "/projects/mockups/gotcha/01-login.jpg", caption: "첫 화면 - 카카오 · Google · Apple 로그인, 게스트로 둘러보기" },
+        { src: "/projects/mockups/gotcha/01-login.jpg", caption: "첫 화면 - 소셜 로그인 · 게스트 둘러보기" },
         { src: "/projects/mockups/gotcha/04-home.jpg", caption: "홈 - 지도에 주변 가챠샵 핀 + 아래 목록(거리순)" },
         { src: "/projects/mockups/gotcha/06-search-typing.jpg", caption: "위치 검색 - 입력하는 대로 장소 자동완성" },
         { src: "/projects/mockups/gotcha/07-search-result.jpg", caption: "검색한 위치 주변 가챠샵 - 영업 중 · 거리 표시" },
-        { src: "/projects/mockups/gotcha/08-pin-preview.jpg", caption: "핀을 누르면 미리보기 - 주소 · 영업일 · 영업 시간 · 매장 사진" },
+        { src: "/projects/mockups/gotcha/08-pin-preview.jpg", caption: "핀 미리보기 - 주소 · 영업 시간 · 사진" },
         { src: "/projects/mockups/gotcha/09-detail.jpg", caption: "매장 상세 - 영업 정보 · 매장 사진 · 방문 리뷰" },
         { src: "/projects/mockups/gotcha/11-detail-reviews.jpg", caption: "방문 리뷰 - 사진과 함께" },
         { src: "/projects/mockups/gotcha/13b-list-expanded.jpg", caption: "목록을 끝까지 올려 주변 매장 한눈에" },
-        { src: "/projects/mockups/gotcha/14-report-map.jpg", caption: "제보하기 - 지도에서 위치를 찍으면 주소 자동 입력" },
-        { src: "/projects/mockups/gotcha/15-report-duplicate.jpg", caption: "50m 안에 이미 등록된 가챠샵이 있으면 먼저 확인" },
+        { src: "/projects/mockups/gotcha/14-report-map.jpg", caption: "제보 - 위치를 찍으면 주소 자동 입력" },
+        { src: "/projects/mockups/gotcha/15-report-duplicate.jpg", caption: "50m 안 중복 가챠샵 먼저 확인" },
         { src: "/projects/mockups/gotcha/16-report-form-filled.jpg", caption: "매장 정보 등록 - 매장명 · 위치 힌트 · 영업일" },
         { src: "/projects/mockups/gotcha/19-community.jpg", caption: "커뮤니티 - 갓챠일상 · 궁금해요 · 거래해요" },
       ],
-      note: "iOS 앱(시뮬레이터, iPhone 화면)에서 게스트(비로그인)로 찍었어요. 제보는 등록 직전까지만 진행했고, 리뷰 · 커뮤니티 작성자 닉네임과 프로필 사진은 흐리게 처리했습니다.",
+      note: "iOS 앱에서 게스트로 찍었어요. 작성자 닉네임은 흐리게 처리했어요.",
     },
   },
   {
@@ -161,18 +161,18 @@ export const PROJECTS: Project[] = [
     device: "laptop",
     mockup: {
       videos: [
-        { webm: "/projects/mockups/ai-auto-posting/flow-1-register-and-run.webm", mp4: "/projects/mockups/ai-auto-posting/flow-1-register-and-run.mp4", poster: "/projects/mockups/ai-auto-posting/02-workflow-settings.jpg", caption: "워크플로우 설정 → 테스트 실행 → 진행 중 → 완료 → 등록" },
+        { webm: "/projects/mockups/ai-auto-posting/flow-1-register-and-run.webm", mp4: "/projects/mockups/ai-auto-posting/flow-1-register-and-run.mp4", poster: "/projects/mockups/ai-auto-posting/02-workflow-settings.jpg", caption: "설정 → 테스트 실행 → 완료 → 등록" },
         { webm: "/projects/mockups/ai-auto-posting/flow-2-result.webm", mp4: "/projects/mockups/ai-auto-posting/flow-2-result.mp4", poster: "/projects/mockups/ai-auto-posting/05-generated-post.jpg", caption: "생성된 글 확인 → 단계별 실행 로그" },
       ],
       shots: [
         { src: "/projects/mockups/ai-auto-posting/01-home.jpg", caption: "메인" },
-        { src: "/projects/mockups/ai-auto-posting/02-workflow-settings.jpg", caption: "워크플로우 설정 - 사이트 · 반복 규칙 · 상품 카테고리 · 블로그" },
+        { src: "/projects/mockups/ai-auto-posting/02-workflow-settings.jpg", caption: "워크플로우 설정 - 반복 규칙 · 카테고리" },
         { src: "/projects/mockups/ai-auto-posting/03-run-in-progress.jpg", caption: "테스트 실행 - 진행 중" },
         { src: "/projects/mockups/ai-auto-posting/04-run-completed.jpg", caption: "테스트 완료 - AI 글 생성 · 블로그 업로드 성공" },
-        { src: "/projects/mockups/ai-auto-posting/05-generated-post.jpg", caption: "생성된 글 - 선택 상품 · 트렌드 키워드 · 제목 · 본문" },
-        { src: "/projects/mockups/ai-auto-posting/06-step-logs.jpg", caption: "단계별 실행 로그 - 크롤링 → 상품 추출 → AI 콘텐츠 생성 → 블로그 포스팅" },
+        { src: "/projects/mockups/ai-auto-posting/05-generated-post.jpg", caption: "생성된 글 - 상품 · 키워드 · 본문" },
+        { src: "/projects/mockups/ai-auto-posting/06-step-logs.jpg", caption: "실행 로그 - 크롤링 → AI 생성 → 포스팅" },
       ],
-      note: "OpenAI 키 없이 로컬에서 띄워 시연용 데이터로 찍은 화면이에요. 생성 결과는 예시 데이터입니다.",
+      note: "OpenAI 키 없이 로컬 시연 데이터로 찍었어요. 생성 결과는 예시예요.",
     },
   },
   {
@@ -202,8 +202,8 @@ export const PROJECTS: Project[] = [
     device: "laptop",
     mockup: {
       videos: [
-        { webm: "/projects/mockups/cos-house/shop-flow.webm", mp4: "/projects/mockups/cos-house/shop-flow.mp4", poster: "/projects/mockups/cos-house/03-shop.jpg", caption: "홈 → 쇼핑 → 상품 상세(옵션 · 리뷰) → 장바구니 담기 → 장바구니" },
-        { webm: "/projects/mockups/cos-house/community-flow.webm", mp4: "/projects/mockups/cos-house/community-flow.mp4", poster: "/projects/mockups/cos-house/19-post-detail.jpg", caption: "집들이 목록 → 글 상세 → 사진 넘기기 → 댓글 · 답글" },
+        { webm: "/projects/mockups/cos-house/shop-flow.webm", mp4: "/projects/mockups/cos-house/shop-flow.mp4", poster: "/projects/mockups/cos-house/03-shop.jpg", caption: "쇼핑 → 상품 상세 → 장바구니" },
+        { webm: "/projects/mockups/cos-house/community-flow.webm", mp4: "/projects/mockups/cos-house/community-flow.mp4", poster: "/projects/mockups/cos-house/19-post-detail.jpg", caption: "집들이 목록 → 글 상세 → 댓글" },
       ],
       shots: [
         { src: "/projects/mockups/cos-house/01-home.jpg", caption: "메인" },
@@ -216,7 +216,7 @@ export const PROJECTS: Project[] = [
         { src: "/projects/mockups/cos-house/21-admin-products.jpg", caption: "관리자 상품 관리 · 검색 (담당)" },
         { src: "/projects/mockups/cos-house/26-mobile-home.jpg", caption: "휴대폰 화면 (390px)" },
       ],
-      note: "로컬에서 띄워 시연용 데이터로 찍은 화면이에요. 상품 사진은 외부 판매자 이미지라 흐리게 처리했고, 집들이 사진은 Unsplash 무료 이미지입니다.",
+      note: "로컬 시연 데이터로 찍었어요. 외부 상품 사진은 흐리게 처리했어요.",
     },
   },
   {
@@ -244,8 +244,8 @@ export const PROJECTS: Project[] = [
     device: "laptop",
     mockup: {
       videos: [
-        { webm: "/projects/mockups/eureka-2021/main-scroll.webm", mp4: "/projects/mockups/eureka-2021/main-scroll.mp4", poster: "/projects/mockups/eureka-2021/01-main-banner.jpg", caption: "메인 화면 - 배너 · 메가 메뉴 · Best 픽 · 떠나기 좋은 도시" },
-        { webm: "/projects/mockups/eureka-2021/write-flow.webm", mp4: "/projects/mockups/eureka-2021/write-flow.mp4", poster: "/projects/mockups/eureka-2021/14-write-modal.jpg", caption: "단계별 글쓰기 → 사진 업로드 → 저장 → 목록 → 읽기 창" },
+        { webm: "/projects/mockups/eureka-2021/main-scroll.webm", mp4: "/projects/mockups/eureka-2021/main-scroll.mp4", poster: "/projects/mockups/eureka-2021/01-main-banner.jpg", caption: "메인 화면 - 배너 · 메뉴 · Best 픽" },
+        { webm: "/projects/mockups/eureka-2021/write-flow.webm", mp4: "/projects/mockups/eureka-2021/write-flow.mp4", poster: "/projects/mockups/eureka-2021/14-write-modal.jpg", caption: "단계별 글쓰기 → 저장 → 읽기 창" },
       ],
       shots: [
         { src: "/projects/mockups/eureka-2021/01-main-banner.jpg", caption: "메인 배너" },
@@ -256,7 +256,7 @@ export const PROJECTS: Project[] = [
         { src: "/projects/mockups/eureka-2021/10-read-popup.jpg", caption: "읽기 창" },
         { src: "/projects/mockups/eureka-2021/14-write-modal.jpg", caption: "단계별 글쓰기 창" },
       ],
-      note: "2021년 원본 코드를 2026년에 로컬(Tomcat 9 + Oracle)로 다시 띄워 찍은 화면이에요.",
+      note: "2021년 원본을 2026년에 로컬로 다시 띄워 찍었어요.",
       related: { slug: "eureka-2026", label: "2026 리빌드 보기" },
     },
   },
