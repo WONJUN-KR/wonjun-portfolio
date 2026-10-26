@@ -12,7 +12,7 @@ const ORDER_OPTIONS: { value: Order; label: string }[] = [
   { value: "asc", label: "오래된 순" },
 ];
 
-export default function SeriesPostList({ posts }: { posts: SeriesPostItem[] }) {
+export default function SeriesPostList({ posts, locale = "ko-KR" }: { posts: SeriesPostItem[]; locale?: string }) {
   const [order, setOrder] = useState<Order>("desc");
 
   const sorted = useMemo(() => {
@@ -54,7 +54,7 @@ export default function SeriesPostList({ posts }: { posts: SeriesPostItem[] }) {
                 <h2 className="text-lg font-bold tracking-tight group-hover:text-accent-2 transition-colors">{post.title}</h2>
                 {post.excerpt && <p className="text-sm text-muted line-clamp-2">{post.excerpt}</p>}
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                  {post.publishedAt && <LocalDate iso={post.publishedAt} className="text-xs tabular-nums text-muted" />}
+                  {post.publishedAt && <LocalDate iso={post.publishedAt} locale={locale} className="text-xs tabular-nums text-muted" />}
                   <TagList tags={post.tags} />
                 </div>
               </div>

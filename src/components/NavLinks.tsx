@@ -2,17 +2,19 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { localizedPath, pathWithoutLang, t, type DictKey, type Lang } from "@/i18n";
 
 // 상단 메뉴 - 지금 보고 있는 페이지 탭은 마우스를 올린 상태처럼 계속 강조
-const NAV_ITEMS = [
-  { href: "/resume", label: "Resume", match: ["/resume"] },
-  { href: "/projects", label: "Projects", match: ["/projects"] },
-  { href: "/log", label: "Log", match: ["/log", "/series"] },
-  { href: "/history", label: "History", match: ["/history"] },
+// 주소는 언어 앞부분 없는 형태로 두고, 그릴 때 언어 주소로(localizedPath) - 현재 탭 판단도 언어 앞부분을 뗀 주소로
+const NAV_ITEMS: { href: string; label: DictKey; match: string[] }[] = [
+  { href: "/resume", label: "nav.resume", match: ["/resume"] },
+  { href: "/projects", label: "nav.projects", match: ["/projects"] },
+  { href: "/log", label: "nav.log", match: ["/log", "/series"] },
+  { href: "/history", label: "nav.history", match: ["/history"] },
 ];
 
-export default function NavLinks() {
-  const pathname = usePathname();
+export default function NavLinks({ lang }: { lang: Lang }) {
+  const pathname = pathWithoutLang(usePathname());
 
   return (
     <div className="flex items-center gap-0.5 max-[359px]:gap-0 sm:gap-1 text-[13px] max-[359px]:text-[12px] sm:text-sm font-semibold text-accent-2">
@@ -21,13 +23,13 @@ export default function NavLinks() {
         return (
           <Link
             key={item.href}
-            href={item.href}
+            href={localizedPath(lang, item.href)}
             aria-current={active ? "page" : undefined}
             className={`px-2 max-[359px]:px-1 sm:px-3 py-1.5 rounded-full transition-colors ${
               active ? "text-foreground bg-surface-hover" : "hover:text-foreground hover:bg-surface-hover"
             }`}
           >
-            {item.label}
+            {t(lang, item.label)}
           </Link>
         );
       })}

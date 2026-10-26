@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
+import { DATE_LOCALE, t, type Lang } from "@/i18n";
 import { getPosts, getSeries, getSeriesList } from "@/lib/api";
 import { PageHeader } from "@/components/ui";
-import LogBrowser, { type LogPost, type LogSeries } from "./LogBrowser";
+import LogBrowser, { type LogPost, type LogSeries } from "@/components/LogBrowser";
 
-export const metadata: Metadata = pageMetadata({
-  title: "기록",
-  description: "기술 블로그",
-  path: "/log",
-});
+export function logMetadata(lang: Lang): Metadata {
+  return pageMetadata({ title: t(lang, "meta.log.title"), description: t(lang, "meta.log.description"), path: "/log", lang });
+}
 
-export default async function LogPage() {
+// 기록 페이지 본문 - 한국어 · 영어 페이지가 같이 씀
+export default async function LogView({ lang }: { lang: Lang }) {
   const [seriesList, posts] = await Promise.all([getSeriesList(), getPosts()]);
 
   // 시리즈 필터용 - 글 id 마다 속한 시리즈 id
@@ -32,7 +32,7 @@ export default async function LogPage() {
   return (
     <div className="flex flex-col gap-20 py-6">
       <PageHeader eyebrow="Log" title="기록" />
-      <LogBrowser posts={logPosts} seriesList={logSeries} />
+      <LogBrowser posts={logPosts} seriesList={logSeries} locale={DATE_LOCALE[lang]} />
     </div>
   );
 }

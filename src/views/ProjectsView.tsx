@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
+import { t, type Lang } from "@/i18n";
 import { ExternalLink, Pin } from "lucide-react";
 import { PROJECTS, type Project } from "@/lib/projects";
 import SafeImage from "@/components/SafeImage";
@@ -7,11 +8,9 @@ import MockupGallery from "@/components/MockupGallery";
 import { GithubIcon } from "@/components/icons";
 import { MOBILE_OPEN_ONLY, MobileMoreToggle, PageHeader, StackChips } from "@/components/ui";
 
-export const metadata: Metadata = pageMetadata({
-  title: "포트폴리오",
-  description: "개인 프로젝트",
-  path: "/projects",
-});
+export function projectsMetadata(lang: Lang): Metadata {
+  return pageMetadata({ title: t(lang, "meta.projects.title"), description: t(lang, "meta.projects.description"), path: "/projects", lang });
+}
 
 function BrowserFrame({ children, fixedAspect = true }: { children: React.ReactNode; fixedAspect?: boolean }) {
   return (
@@ -92,7 +91,9 @@ function ProjectVisual({ project, preload = false }: { project: Project; preload
   );
 }
 
-export default function ProjectsPage() {
+// 프로젝트 페이지 본문 - 한국어(/projects) · 영어(/en/projects) 페이지가 같이 씀
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function ProjectsView({ lang }: { lang: Lang }) {
   return (
     <div className="flex flex-col gap-16 py-6">
       <PageHeader

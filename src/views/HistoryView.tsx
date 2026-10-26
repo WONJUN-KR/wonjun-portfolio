@@ -1,14 +1,13 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
+import { t, type Lang } from "@/i18n";
 import type { RoadmapItem } from "@/lib/api";
 import { HISTORY } from "@/lib/history";
 import { PageHeader } from "@/components/ui";
 
-export const metadata: Metadata = pageMetadata({
-  title: "연혁",
-  description: "연혁",
-  path: "/history",
-});
+export function historyMetadata(lang: Lang): Metadata {
+  return pageMetadata({ title: t(lang, "meta.history.title"), description: t(lang, "meta.history.description"), path: "/history", lang });
+}
 
 // period "2024.11" → 연도별로 묶고, 연도·항목 모두 최신이 위
 function groupByYear(items: RoadmapItem[]): { year: string; items: RoadmapItem[] }[] {
@@ -24,7 +23,9 @@ function groupByYear(items: RoadmapItem[]): { year: string; items: RoadmapItem[]
     .map(([year, list]) => ({ year, items: list.sort(newestFirst) }));
 }
 
-export default function HistoryPage() {
+// 연혁 페이지 본문 - 한국어 · 영어 페이지가 같이 씀
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function HistoryView({ lang }: { lang: Lang }) {
   const years = groupByYear(HISTORY);
 
   return (
