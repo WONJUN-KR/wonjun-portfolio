@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import type { SeriesPostItem } from "@/lib/api";
-import { formatDate } from "@/lib/format";
+import LocalDate from "@/components/LocalDate";
 import { TagList } from "@/components/ui";
 
 type Order = "asc" | "desc";
@@ -54,7 +54,7 @@ export default function SeriesPostList({ posts }: { posts: SeriesPostItem[] }) {
                 <h2 className="text-lg font-bold tracking-tight group-hover:text-accent-2 transition-colors">{post.title}</h2>
                 {post.excerpt && <p className="text-sm text-muted line-clamp-2">{post.excerpt}</p>}
                 <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                  <time className="text-xs tabular-nums text-muted">{formatDate(post.publishedAt)}</time>
+                  {post.publishedAt && <LocalDate iso={post.publishedAt} className="text-xs tabular-nums text-muted" />}
                   <TagList tags={post.tags} />
                 </div>
               </div>

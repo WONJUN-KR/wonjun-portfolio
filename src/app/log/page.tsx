@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import { getPosts, getSeries, getSeriesList } from "@/lib/api";
-import { formatDate } from "@/lib/format";
 import { PageHeader } from "@/components/ui";
 import LogBrowser, { type LogPost, type LogSeries } from "./LogBrowser";
 
@@ -22,12 +21,12 @@ export default async function LogPage() {
     for (const p of d.posts) seriesOf.set(p.id, [...(seriesOf.get(p.id) ?? []), d.id]);
   }
 
-  const logPosts: LogPost[] = posts.map((p) => ({ ...p, date: formatDate(p.publishedAt), seriesIds: seriesOf.get(p.id) ?? [] }));
+  const logPosts: LogPost[] = posts.map((p) => ({ ...p, seriesIds: seriesOf.get(p.id) ?? [] }));
   const logSeries: LogSeries[] = seriesList.map((s) => ({
     id: s.id,
     name: s.name,
     postsCount: s.postsCount,
-    updated: formatDate(s.updatedAt),
+    updatedAt: s.updatedAt,
   }));
 
   return (
