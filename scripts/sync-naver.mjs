@@ -32,12 +32,9 @@ const tag = (xml, name) => {
   return m ? unescape(m[1]) : "";
 };
 
-// "Mon, 26 Jan 2026 17:34:54 +0900" → "2026-01-26T17:34:54+09:00" (네이버 시간 그대로)
-function toIsoKst(pubDate) {
-  const m = pubDate.match(/(\d{1,2}) (\w{3}) (\d{4}) (\d{2}:\d{2}:\d{2}) ([+-]\d{2})(\d{2})/);
-  if (!m) return new Date(pubDate).toISOString();
-  const months = { Jan: "01", Feb: "02", Mar: "03", Apr: "04", May: "05", Jun: "06", Jul: "07", Aug: "08", Sep: "09", Oct: "10", Nov: "11", Dec: "12" };
-  return `${m[3]}-${months[m[2]]}-${m[1].padStart(2, "0")}T${m[4]}${m[5]}:${m[6]}`;
+// "Mon, 26 Jan 2026 17:34:54 +0900" → "2026-01-26T08:34:54Z" - 시각은 UTC 로 저장하고 화면에서 보는 사람 시간대로 바꿈
+function toIsoUtc(pubDate) {
+  return new Date(pubDate).toISOString().replace(/\.\d{3}Z$/, "Z");
 }
 
 // RSS 썸네일(blogthumb)은 정사각형으로 잘린 365px 라, 같은 경로를 본문용 서버(mblogthumb-phinf)에서
@@ -75,7 +72,7 @@ for (const it of items) {
     // 네이버 말머리 "[IT산업체/보충역]" 는 사이트에선 뺌
     title: tag(it, "title").replace(/^\s*\[[^\]]*\]\s*/, ""),
     excerpt: text ? text.slice(0, 120) : null,
-    publishedAt: toIsoKst(tag(it, "pubDate")),
+    publishedAt: toIsoUtc(tag(it, "pubDate")),
     thumbnail: imgSrc ? await downloadThumb(imgSrc, id) : null,
     tags: tag(it, "tag").split(",").map((t) => t.trim()).filter(Boolean),
     category,
@@ -89,5 +86,5 @@ if (added.length === 0) {
   data.posts = [...data.posts, ...added].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt));
   await fs.writeFile(DATA_FILE, JSON.stringify(data, null, 2) + "\n");
   console.log(`새 글 ${added.length}개 추가:`);
-  for (const p of added) console.log(`- ${p.publishedAt.slice(0, 10)} ${p.title}`);
+  for (const p of added) console.log(`- ${p.publishedAt} ${p.title}`);
 }

@@ -100,12 +100,14 @@ export default function ContributionsCalendar({ initialDays, initialYear = "", y
   const byDate = new Map(days.map((d) => [d.date, d]));
   const thresholds = quartileThresholds(days);
 
+  // 'YYYY-MM-DD' 는 날짜만 있는 값(GitHub 기준) - new Date 가 UTC 자정으로 읽으니 요일 · 월 · 날짜 계산도 전부 UTC 메서드로
+  // (로컬 메서드를 섞으면 UTC 보다 늦은 시간대(미국 등)에서 하루 전 요일로 계산돼 칸이 한 줄씩 밀리고, 서버 렌더와도 달라짐)
   const first = new Date(days[0].date);
   const last = new Date(days[days.length - 1].date);
   const start = new Date(first);
-  start.setDate(start.getDate() - start.getDay());
+  start.setUTCDate(start.getUTCDate() - start.getUTCDay());
   const end = new Date(last);
-  end.setDate(end.getDate() + (6 - end.getDay()));
+  end.setUTCDate(end.getUTCDate() + (6 - end.getUTCDay()));
 
   const totalDays = Math.round((end.getTime() - start.getTime()) / 86400000) + 1;
   const totalWeeks = Math.ceil(totalDays / 7);
@@ -123,7 +125,7 @@ export default function ContributionsCalendar({ initialDays, initialYear = "", y
 
   const dateAt = (week: number, dow: number) => {
     const d = new Date(start);
-    d.setDate(d.getDate() + week * 7 + dow);
+    d.setUTCDate(d.getUTCDate() + week * 7 + dow);
     return d;
   };
 
@@ -144,7 +146,7 @@ export default function ContributionsCalendar({ initialDays, initialYear = "", y
       }
     }
     if (!dataDay) continue;
-    const month = dataDay.getMonth();
+    const month = dataDay.getUTCMonth();
     if (month !== lastMonth) {
       const x = (week - offset) * step;
       if (lastMonth !== -1) monthDividers.push(x - gap / 2);

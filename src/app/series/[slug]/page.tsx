@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getSeries } from "@/lib/api";
 import { pageMetadata } from "@/lib/seo";
-import { formatDate } from "@/lib/format";
+import LocalDate from "@/components/LocalDate";
 import { BackLink, Eyebrow } from "@/components/ui";
 import SeriesPostList from "./SeriesPostList";
 
@@ -39,7 +39,7 @@ export default async function SeriesPage({ params }: PageProps) {
           {series.updatedAt && (
             <>
               <span>·</span>
-              <span>{formatDate(series.updatedAt)} 업데이트</span>
+              <span><LocalDate iso={series.updatedAt} /> 업데이트</span>
             </>
           )}
         </div>
