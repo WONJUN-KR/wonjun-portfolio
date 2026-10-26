@@ -153,9 +153,9 @@ export default function ProjectsPage() {
                   {p.pinned && (
                     <span className="rounded-full border border-transparent bg-accent-soft text-accent-2 px-2.5 py-0.5 font-semibold">대표</span>
                   )}
-                  {p.status === "live" && (
+                  {p.status !== "local" && (
                     <span className="rounded-full border border-line px-2.5 py-0.5 font-semibold text-foreground">
-                      운영 중
+                      {p.status === "live" ? "운영 중" : "앱 출시"}
                     </span>
                   )}
                   {p.lead && (
