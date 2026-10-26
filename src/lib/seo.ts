@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { alt as ogImageAlt, size as ogImageSize } from "@/app/opengraph-image";
-import { DEFAULT_LANG, LANGS, OG_LOCALE, localizedPath, t, type Lang } from "@/i18n";
+import { DEFAULT_LANG, LANGS, OG_LOCALE, hasPage, localizedPath, t, type Lang } from "@/i18n";
 
 // 링크 미리보기 이미지 등 절대 주소의 기준 - 도메인 바꾸면 여기만 수정
 export const SITE_URL = "https://wonjun.page";
@@ -23,7 +23,7 @@ export function pageMetadata({ title, description, path, lang = DEFAULT_LANG }: 
     description,
     alternates: {
       canonical: url,
-      languages: { ...Object.fromEntries(LANGS.map((l) => [l, localizedPath(l, path)])), "x-default": localizedPath(DEFAULT_LANG, path) },
+      languages: { ...Object.fromEntries(LANGS.filter((l) => hasPage(l, path)).map((l) => [l, localizedPath(l, path)])), "x-default": localizedPath(DEFAULT_LANG, path) },
     },
     openGraph: { type: "website", siteName, locale: OG_LOCALE[lang], images: [OG_IMAGE], title: fullTitle, description, url },
     twitter: { card: "summary_large_image", title: fullTitle, description, images: [OG_IMAGE] },

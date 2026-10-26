@@ -4,15 +4,17 @@ import { useMemo, useState } from "react";
 import type { SeriesPostItem } from "@/lib/api";
 import LocalDate from "@/components/LocalDate";
 import { TagList } from "@/components/ui";
+import { DATE_LOCALE, t, type Lang } from "@/i18n";
 
 type Order = "asc" | "desc";
 
-const ORDER_OPTIONS: { value: Order; label: string }[] = [
-  { value: "desc", label: "최신 순" },
-  { value: "asc", label: "오래된 순" },
-];
+const ORDER_OPTIONS = [
+  { value: "desc", label: "series.newest" },
+  { value: "asc", label: "series.oldest" },
+] as const satisfies readonly { value: Order; label: string }[];
 
-export default function SeriesPostList({ posts, locale = "ko-KR" }: { posts: SeriesPostItem[]; locale?: string }) {
+export default function SeriesPostList({ posts, lang = "ko" }: { posts: SeriesPostItem[]; lang?: Lang }) {
+  const locale = DATE_LOCALE[lang];
   const [order, setOrder] = useState<Order>("desc");
 
   const sorted = useMemo(() => {
@@ -33,7 +35,7 @@ export default function SeriesPostList({ posts, locale = "ko-KR" }: { posts: Ser
               order === o.value ? "bg-surface-hover text-foreground font-semibold" : "text-muted hover:text-foreground"
             }`}
           >
-            {o.label}
+            {t(lang, o.label)}
           </button>
         ))}
       </div>
