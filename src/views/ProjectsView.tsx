@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import { t, type Lang } from "@/i18n";
 import { ExternalLink, Pin } from "lucide-react";
-import { PROJECTS, type Project } from "@/lib/projects";
+import { getProjects, type Project } from "@/lib/projects";
 import SafeImage from "@/components/SafeImage";
 import MockupGallery from "@/components/MockupGallery";
 import { GithubIcon } from "@/components/icons";
@@ -92,17 +92,16 @@ function ProjectVisual({ project, preload = false }: { project: Project; preload
 }
 
 // 프로젝트 페이지 본문 - 한국어(/projects) · 영어(/en/projects) 페이지가 같이 씀
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function ProjectsView({ lang }: { lang: Lang }) {
   return (
     <div className="flex flex-col gap-16 py-6">
       <PageHeader
         eyebrow="Projects"
-        title="포트폴리오"
+        title={t(lang, "projects.title")}
       />
 
       <div className="flex flex-col gap-6">
-        {PROJECTS.map((p, i) => (
+        {getProjects(lang).map((p, i) => (
           <article
             key={p.slug}
             id={p.slug}
@@ -113,7 +112,7 @@ export default function ProjectsView({ lang }: { lang: Lang }) {
             {p.pinned && (
               <span
                 role="img"
-                aria-label="대표 프로젝트로 고정"
+                aria-label={t(lang, "projects.pinnedAria")}
                 className="absolute -left-3 -top-3 z-10 flex size-10 -rotate-12 items-center justify-center rounded-full border border-line bg-accent-strong text-foreground shadow-lg shadow-black/30 max-sm:-left-2 max-sm:-top-2 max-sm:size-8"
               >
                 <Pin className="size-5 fill-current max-sm:size-4" />
@@ -124,7 +123,7 @@ export default function ProjectsView({ lang }: { lang: Lang }) {
               <div className="flex flex-col gap-3 max-sm:order-1">
                 {/* 목업이 있으면 썸네일 자체가 '화면 둘러보기' 버튼 */}
                 {p.mockup ? (
-                  <MockupGallery slug={p.slug} title={p.title} mockup={p.mockup}>
+                  <MockupGallery slug={p.slug} title={p.title} mockup={p.mockup} lang={lang}>
                     <ProjectVisual project={p} preload={i === 0} />
                   </MockupGallery>
                 ) : (
@@ -137,7 +136,7 @@ export default function ProjectsView({ lang }: { lang: Lang }) {
               </div>
               {/* 휴대폰은 카드마다 '자세히 보기' 버튼 하나로 핵심 기능·맡은 부분·기술을 같이 펼침 */}
               <div className={`flex flex-col gap-2 max-sm:order-4 ${MOBILE_OPEN_ONLY} max-sm:flex-col`}>
-                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-2">핵심 기능</span>
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-2">{t(lang, "projects.features")}</span>
                 <ul className="flex flex-col gap-1.5 text-sm leading-relaxed">
                   {p.features.map((f) => (
                     <li key={f} className="relative pl-4 before:absolute before:left-0 before:top-2 before:size-1 before:rounded-full before:bg-accent">
@@ -152,15 +151,15 @@ export default function ProjectsView({ lang }: { lang: Lang }) {
               <div className="flex flex-col gap-2 max-sm:order-2">
                 <div className="flex flex-wrap items-center gap-2 text-xs text-muted">
                   {p.pinned && (
-                    <span className="rounded-full border border-transparent bg-accent-soft text-accent-2 px-2.5 py-0.5 font-semibold">대표</span>
+                    <span className="rounded-full border border-transparent bg-accent-soft text-accent-2 px-2.5 py-0.5 font-semibold">{t(lang, "projects.pinned")}</span>
                   )}
                   {p.status !== "local" && (
                     <span className="rounded-full border border-line px-2.5 py-0.5 font-semibold text-foreground">
-                      {p.status === "live" ? "운영 중" : "앱 배포"}
+                      {t(lang, p.status === "live" ? "status.live" : "status.released")}
                     </span>
                   )}
                   {p.lead && (
-                    <span className="rounded-full border border-transparent bg-accent-soft text-accent-2 px-2.5 py-0.5 font-semibold">팀장</span>
+                    <span className="rounded-full border border-transparent bg-accent-soft text-accent-2 px-2.5 py-0.5 font-semibold">{t(lang, "projects.lead")}</span>
                   )}
                   <span className="tabular-nums">{p.period}</span>
                   <span>·</span>
@@ -170,7 +169,7 @@ export default function ProjectsView({ lang }: { lang: Lang }) {
               </div>
 
               <div className={`flex flex-col gap-2 rounded-2xl border border-line bg-background p-4 max-sm:order-5 max-sm:rounded-none max-sm:border-0 max-sm:bg-transparent max-sm:p-0 ${MOBILE_OPEN_ONLY} max-sm:flex-col`}>
-                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">내가 맡은 부분</span>
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">{t(lang, "projects.myPart")}</span>
                 <ul className="flex flex-col gap-1.5 text-sm leading-relaxed text-muted">
                   {p.myPart.map((m) => (
                     <li key={m}>{m}</li>
@@ -179,10 +178,10 @@ export default function ProjectsView({ lang }: { lang: Lang }) {
               </div>
 
               <div className={`max-sm:order-6 ${MOBILE_OPEN_ONLY}`}>
-                <StackChips items={p.stack} grouped />
+                <StackChips items={p.stack} grouped lang={lang} />
               </div>
 
-              <MobileMoreToggle className="max-sm:order-7" />
+              <MobileMoreToggle className="max-sm:order-7" lang={lang} />
 
               {/* 링크 버튼은 한 줄로 - 휴대폰은 버튼을 같은 폭으로 나눠 한 줄에 (360px 미만은 아이콘 생략 - 버튼 3개면 글자만으로 꽉 참) */}
               <div className="flex flex-wrap sm:flex-nowrap gap-2 pt-2 max-sm:order-8 max-sm:flex-nowrap max-sm:gap-1.5 max-sm:pt-0">
@@ -193,7 +192,7 @@ export default function ProjectsView({ lang }: { lang: Lang }) {
                     rel="noreferrer"
                     className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-transparent bg-accent-strong text-foreground px-4 py-2.5 text-sm font-bold hover:opacity-85 transition-opacity max-sm:min-w-0 max-sm:flex-1 max-sm:justify-center max-sm:gap-1 max-sm:px-2 max-sm:text-[13px]"
                   >
-                    라이브 보기
+                    {t(lang, "projects.live")}
                     <ExternalLink className="size-4 shrink-0 max-sm:size-3.5 max-[359px]:hidden" />
                   </a>
                 )}
