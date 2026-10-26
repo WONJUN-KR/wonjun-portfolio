@@ -63,7 +63,12 @@ export const PROJECTS: Project[] = [
     status: "released",
     device: "laptop",
     mockup: {
-      videos: [],
+      videos: [
+        { webm: "/projects/mockups/gotcha/flow-1-first-launch.webm", mp4: "/projects/mockups/gotcha/flow-1-first-launch.mp4", poster: "/projects/mockups/gotcha/01-login.jpg", caption: "첫 실행 - 시작 화면 → 게스트로 둘러보기 → 약관 동의 → 알림 권한 → 홈 지도" },
+        { webm: "/projects/mockups/gotcha/flow-2-find.webm", mp4: "/projects/mockups/gotcha/flow-2-find.mp4", poster: "/projects/mockups/gotcha/08-pin-preview.jpg", caption: "찾기 - 위치 검색 → 주변 가챠샵 → 핀 미리보기 → 매장 상세 · 리뷰" },
+        { webm: "/projects/mockups/gotcha/flow-3-map.webm", mp4: "/projects/mockups/gotcha/flow-3-map.mp4", poster: "/projects/mockups/gotcha/13-research.jpg", caption: "지도 탐색 - 지도 이동 · 이 지역 다시 검색 → 목록 펼치기 → 다른 매장 상세 → 돌아와도 지도 그대로" },
+        { webm: "/projects/mockups/gotcha/flow-4-report.webm", mp4: "/projects/mockups/gotcha/flow-4-report.mp4", poster: "/projects/mockups/gotcha/16-report-form-filled.jpg", caption: "제보 - 지도에서 위치 지정 → 중복 확인 → 매장 정보 입력 (등록 직전까지)" },
+      ],
       shots: [
         { src: "/projects/mockups/gotcha/01-login.jpg", caption: "첫 화면 - 카카오 · Google · Apple 로그인, 게스트로 둘러보기" },
         { src: "/projects/mockups/gotcha/02-terms.jpg", caption: "게스트로 시작할 때 이용약관 동의" },
