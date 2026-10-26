@@ -7,6 +7,7 @@ import "./globals.css";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, pageMetadata } from "@/lib/seo";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import WebFontLoader from "@/components/WebFontLoader";
+import MoreToggleScrollRestore from "@/components/MoreToggleScrollRestore";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -52,6 +53,8 @@ export default function RootLayout({
         <Analytics />
         {/* 웹폰트(페이퍼로지 · Pretendard)는 첫 페인트 뒤에 등록 */}
         <WebFontLoader />
+        {/* 휴대폰 접기 버튼: 접으면 펼쳤던 화면 위치로 */}
+        <MoreToggleScrollRestore />
       </body>
       {/* 방문 통계 (Google Analytics 4) - 체류 시간 · 스크롤 · 클릭까지. 페이지 로드가 끝난 뒤 받아서 첫 화면엔 영향 없음
           운영 배포에서만 넣음 - 로컬 · 미리보기 방문이 통계에 섞이지 않게 */}

@@ -24,7 +24,8 @@ const OPEN_EVENT = "mockup:open";
 // 프로젝트 화면 둘러보기 - 썸네일을 버튼으로 감싸 먼저 그리고, 팝업(<dialog>)을 열 때 처음으로 슬라이드를 렌더해서 그때부터 받음
 // → /projects 첫 로드에는 이미지·영상 요청이 0개 (페이지 무게·라이트하우스 점수 영향 없음)
 // 슬라이드는 현재 장과 바로 옆 장만 이미지를 렌더(나머지는 빈 자리)하고, 영상은 현재 장일 때만 <video> 를 붙여 받고 재생
-// 넘기기: ‹ › 버튼 · 키보드 ← → · 터치 스와이프 · 하단 점 / prefers-reduced-motion 이면 슬라이드 전환 애니메이션 없음
+// 넘기기: ‹ › 버튼 · 키보드 ← → · 터치 스와이프, 위치는 오른쪽 위 'n / 전체' (하단 점은 장 수가 많으면 휴대폰에서 두 줄로 넘쳐서 뺌)
+// prefers-reduced-motion 이면 슬라이드 전환 애니메이션 없음
 export default function MockupGallery({ slug, title, mockup, children }: { slug: string; title: string; mockup: Mockup; children: ReactNode }) {
   const ref = useRef<HTMLDialogElement>(null);
   const startX = useRef<number | null>(null);
@@ -209,23 +210,6 @@ export default function MockupGallery({ slug, title, mockup, children }: { slug:
               {current.kind === "video" && <Play className="size-3.5 shrink-0 text-accent-2" />}
               {current.caption}
             </p>
-
-            <div className="flex flex-wrap justify-center gap-0.5" role="tablist" aria-label="슬라이드 선택">
-              {slides.map((s, i) => (
-                <button
-                  key={s.kind === "video" ? s.mp4 : s.src}
-                  type="button"
-                  role="tab"
-                  aria-selected={i === index}
-                  aria-label={`${i + 1}번째: ${s.caption}`}
-                  onClick={() => go(i)}
-                  // 점은 작아도 누르는 영역은 넉넉하게(패딩) - 휴대폰 터치
-                  className="group/dot p-1.5"
-                >
-                  <span className={`block h-2 rounded-full transition-all motion-reduce:transition-none ${i === index ? "w-6 bg-accent" : "w-2 bg-line group-hover/dot:bg-muted"}`} />
-                </button>
-              ))}
-            </div>
           </div>
         )}
       </dialog>
