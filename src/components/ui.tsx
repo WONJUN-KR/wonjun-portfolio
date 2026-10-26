@@ -35,6 +35,7 @@ export function Chip({ children }: { children: React.ReactNode }) {
 }
 
 // 휴대폰 접기·펼치기 버튼 - 본문 글자와 헷갈리지 않게 강조색 테두리 알약 모양
+// data-more-toggle 을 붙이면 접을 때 펼쳤던 화면 위치로 돌아감(components/MoreToggleScrollRestore)
 export const MOBILE_TOGGLE =
   "inline-flex w-fit cursor-pointer select-none items-center gap-1 rounded-full border border-accent/40 bg-accent-soft px-3 py-1.5 text-xs font-semibold text-accent-2 transition-colors hover:border-accent/70";
 
@@ -56,7 +57,7 @@ export function MobileMoreToggle({ more = "자세히 보기", less = "접기", h
     ? ["group-has-[:checked]/more:hidden", "hidden group-has-[:checked]/more:inline", "group-has-[:checked]/more:rotate-180"]
     : ["peer-checked:hidden", "hidden peer-checked:inline", "peer-checked:rotate-180"];
   return (
-    <label htmlFor={htmlFor} className={`sm:hidden ${MOBILE_TOGGLE} ${className}`}>
+    <label htmlFor={htmlFor} data-more-toggle="" className={`sm:hidden ${MOBILE_TOGGLE} ${className}`}>
       {!htmlFor && <input type="checkbox" className="peer sr-only" />}
       <span className={moreCls}>{more}</span>
       <span className={lessCls}>{less}</span>
@@ -81,7 +82,7 @@ export function StackChips({ items, grouped = false }: { items: string[]; groupe
     <>
       <div className="flex flex-wrap gap-1.5 max-sm:hidden">{chips}</div>
       <details className="group sm:hidden">
-        <summary className={`list-none [&::-webkit-details-marker]:hidden ${MOBILE_TOGGLE}`}>
+        <summary data-more-toggle="" className={`list-none [&::-webkit-details-marker]:hidden ${MOBILE_TOGGLE}`}>
           기술 스택 {items.length}개
           <ChevronDown className="size-3.5 transition-transform group-open:rotate-180" />
         </summary>

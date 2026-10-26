@@ -81,7 +81,7 @@ export default function AboutView({ about }: { about: AboutContent }) {
                 <ReactMarkdown remarkPlugins={[remarkGfm]}>{coverLetter}</ReactMarkdown>
               </div>
             </div>
-            <label className={`sm:hidden mt-3 ${MOBILE_TOGGLE}`}>
+            <label data-more-toggle="" className={`sm:hidden mt-3 ${MOBILE_TOGGLE}`}>
               <input type="checkbox" className="peer sr-only" />
               <span className="peer-checked:hidden">전체 읽기</span>
               <span className="hidden peer-checked:inline">접기</span>
@@ -96,7 +96,7 @@ export default function AboutView({ about }: { about: AboutContent }) {
       </Section>
 
       <Section eyebrow="Experience" title="경력" sub={profile.careerPeriod}>
-        {/* 휴대폰은 회사마다 프로젝트 제목만 - 기간·상세(작은 글씨)·기술은 회사 이름 옆 버튼으로 그 회사만 펼침, 펼치면 위 버튼은 사라지고 끝에 접기 */}
+        {/* 휴대폰은 회사마다 프로젝트 제목만 - 기간·상세(작은 글씨)·기술은 내용 아래 '자세히 보기'로 그 회사만 펼침, 같은 버튼이 '접기'로 바뀜 */}
         <Timeline>
           {sortedCareers.map((c, idx) => (
             <TimelineItem key={idx} period={c.period} current={c.isCurrent}>
@@ -105,7 +105,6 @@ export default function AboutView({ about }: { about: AboutContent }) {
                 <div className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
                   <h3 className="text-lg font-bold tracking-tight">{c.company}</h3>
                   <span className="text-sm text-muted">{[c.position, c.role].filter(Boolean).join(" · ")}</span>
-                  <MobileMoreToggle htmlFor={`career-more-${idx}`} more="상세 보기" className="ml-auto self-center max-sm:group-has-[:checked]/more:hidden" />
                 </div>
                 {c.summary && <p className="text-sm leading-relaxed">{c.summary}</p>}
                 {c.projects && c.projects.length > 0 && (
@@ -122,8 +121,8 @@ export default function AboutView({ about }: { about: AboutContent }) {
                   </div>
                 )}
                 {c.stack && <StackChips items={c.stack} grouped />}
-                {/* 펼친 뒤엔 내용 끝에도 접기 버튼 */}
-                <MobileMoreToggle htmlFor={`career-more-${idx}`} more="접기" className="max-sm:hidden max-sm:group-has-[:checked]/more:inline-flex" />
+                {/* 자기소개서 '전체 읽기'처럼 내용 아래 버튼 하나 - 자세히 보기 ↔ 접기, 접으면 이 버튼 자리로 화면 복귀 */}
+                <MobileMoreToggle htmlFor={`career-more-${idx}`} more="자세히 보기" />
               </div>
             </TimelineItem>
           ))}
