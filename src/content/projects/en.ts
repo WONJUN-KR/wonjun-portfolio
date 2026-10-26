@@ -10,7 +10,7 @@ export const PROJECTS_EN_TEXT = {
     subtitle: "Travel spot sharing community, a 2021 team project rebuilt on a modern stack (personal project)",
     period: "Jan 2026 – Present",
     role: "Solo full-stack developer",
-    tagline: "Rebuilt a 2021 team project in Next.js 16 and Spring Boot 3.5, preserving the original screen structure in a responsive layout",
+    tagline: "2021 team project rebuilt in Next.js 16 and Spring Boot 3.5, now responsive",
     features: [
       "Keeps region, city, and theme filters in the URL query string, so refreshes and shared links show the same view",
       "Supports sign-in, token refresh, likes, and photo posts, with S3 or local-disk storage switched by profile",
@@ -46,7 +46,7 @@ export const PROJECTS_EN_TEXT = {
     subtitle: "Gacha shop finder on the App Store",
     period: "Jan – Nov 2026",
     role: "Full-stack developer, team of 9",
-    tagline: "A map app for finding nearby gacha shops, kept up to date by user reviews and reports",
+    tagline: "A map of nearby gacha shops, built up by user reviews",
     features: [
       "Finds nearby gacha shops on a map, with pin previews and search-this-area",
       "Shows shop info, reviews, and favorites",
@@ -88,7 +88,7 @@ export const PROJECTS_EN_TEXT = {
     subtitle: "Automated blog publishing platform",
     period: "Nov – Dec 2025",
     role: "Full-stack developer, team of 6",
-    tagline: "Generates blog posts from trending keywords with AI and publishes them to connected blogs automatically",
+    tagline: "AI blog posts from trending keywords, auto-published",
     features: [
       "Connects blogs and schedules workflows",
       "Turns trending keywords into AI posts",
