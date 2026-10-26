@@ -10,6 +10,7 @@ import { HOME_HIGHLIGHTS } from "@/lib/about";
 import SafeImage from "@/components/SafeImage";
 import { PROJECTS } from "@/lib/projects";
 import { yearIn } from "@/lib/time";
+import LocalDate from "@/components/LocalDate";
 
 const LATEST_POSTS_COUNT = 3;
 const FEATURED_PROJECTS_COUNT = 3;
@@ -247,7 +248,7 @@ export default async function HomeView({ about }: { about: AboutContent }) {
                 rel="noreferrer"
                 className="group flex flex-col gap-3 rounded-3xl border border-line bg-surface p-6 transition-all hover:-translate-y-1 hover:border-accent/40 max-sm:gap-1.5 max-sm:rounded-2xl max-sm:p-4"
               >
-                <span className="text-xs tabular-nums text-muted">{post.publishedAt?.slice(0, 10) ?? ""}</span>
+                {post.publishedAt && <LocalDate iso={post.publishedAt} numeric className="text-xs tabular-nums text-muted" />}
                 <h3 className="font-bold tracking-tight leading-snug line-clamp-2 group-hover:text-accent-2 transition-colors">
                   {post.title}
                 </h3>

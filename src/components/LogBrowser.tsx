@@ -17,7 +17,7 @@ export type LogPost = PostListItem & { seriesIds: string[] };
 export type LogSeries = { id: string; name: string; postsCount: number; updatedAt: string | null };
 
 // 기록 목록 - 시리즈 카드는 필터, 검색어는 제목·요약·태그에서 찾음, 썸네일 갤러리를 페이지로 나눔
-export default function LogBrowser({ posts, seriesList }: { posts: LogPost[]; seriesList: LogSeries[] }) {
+export default function LogBrowser({ posts, seriesList, locale = "ko-KR" }: { posts: LogPost[]; seriesList: LogSeries[]; locale?: string }) {
   const [seriesId, setSeriesId] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
@@ -90,7 +90,7 @@ export default function LogBrowser({ posts, seriesList }: { posts: LogPost[]; se
                     {series.updatedAt && (
                       <>
                         <span>·</span>
-                        <span className="max-sm:truncate"><LocalDate iso={series.updatedAt} /><span className="max-[359px]:hidden"> 업데이트</span></span>
+                        <span className="max-sm:truncate"><LocalDate iso={series.updatedAt} locale={locale} /><span className="max-[359px]:hidden"> 업데이트</span></span>
                       </>
                     )}
                   </div>
@@ -169,7 +169,7 @@ export default function LogBrowser({ posts, seriesList }: { posts: LogPost[]; se
                     <h3 className="text-sm font-bold tracking-tight line-clamp-2 group-hover:text-accent-2 transition-colors">
                       {post.title}
                     </h3>
-                    {post.publishedAt && <LocalDate iso={post.publishedAt} className="text-xs tabular-nums text-muted" />}
+                    {post.publishedAt && <LocalDate iso={post.publishedAt} locale={locale} className="text-xs tabular-nums text-muted" />}
                   </div>
                 </a>
               </li>

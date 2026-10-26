@@ -5,7 +5,8 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   // CSS 를 <link> 대신 HTML 안 <style> 로 - 첫 화면이 CSS 파일 요청(렌더 차단)을 기다리지 않음
   // 느린 망에서 HTML → CSS 왕복 한 번이 통째로 사라짐. Tailwind 라 CSS 가 작아서(약 27KB, 압축 전송) HTML 증가가 감당할 만함
-  experimental: { inlineCss: true },
+  // globalNotFound: 루트 레이아웃이 언어별로 둘이라 '어느 주소에도 안 맞음' 404 는 app/global-not-found.tsx 가 받음
+  experimental: { inlineCss: true, globalNotFound: true },
   // 이미지는 빌드 전에 scripts/optimize-images.mjs 가 크기별로 만들어 두고, 로더가 화면에 맞는 크기를 고름 (요청 때 서버 최적화 안 씀)
   images: { loader: "custom", loaderFile: "./src/lib/image-loader.ts" },
   // 이름이 바뀐 페이지의 예전 주소는 새 주소로 (about → resume, 로드맵 → 연혁)
@@ -16,6 +17,11 @@ const nextConfig: NextConfig = {
       { source: "/roadmap/:slug", destination: "/history", permanent: true },
       // 글 상세는 네이버 원문으로 옮겨서, 예전 글 주소는 목록으로
       { source: "/log/:slug", destination: "/log", permanent: false },
+      // 영어 주소(/en)도 같은 규칙
+      { source: "/en/about", destination: "/en/resume", permanent: true },
+      { source: "/en/roadmap", destination: "/en/history", permanent: true },
+      { source: "/en/roadmap/:slug", destination: "/en/history", permanent: true },
+      { source: "/en/log/:slug", destination: "/en/log", permanent: false },
     ];
   },
 };
