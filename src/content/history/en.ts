@@ -7,7 +7,7 @@ export const HISTORY_EN: RoadmapItem[] = [
   { id: 17, slug: "hta-backend-bootcamp", title: "Started Joongang HTA backend course", description: "Government-funded backend bootcamp", period: "2021.07", story: null, status: "LEARNED", targetDate: null, sortOrder: 4 },
   { id: 16, slug: "jeongsan-sanup-pass", title: "Industrial Engineer Information Processing", description: "HRD Korea", period: "2021.08", story: null, status: "SUCCEEDED", targetDate: null, sortOrder: 5 },
   { id: 21, slug: "hta-complete", title: "Completed Joongang HTA", description: "Applied Software Engineering for Web Content Development", period: "2022.01", story: null, status: "SUCCEEDED", targetDate: null, sortOrder: 5 },
-  { id: 15, slug: "sangsang-join", title: "Joined Sangsang Story", description: "First job, junior backend developer", period: "2022.03", story: null, status: "SUCCEEDED", targetDate: null, sortOrder: 6 },
+  { id: 15, slug: "sangsang-join", title: "Joined Sangsang Story", description: "First job, junior full-stack developer", period: "2022.03", story: null, status: "SUCCEEDED", targetDate: null, sortOrder: 6 },
   { id: 14, slug: "credit-bank-start", title: "Started Academic Credit Bank", description: "Working toward a bachelor's degree", period: "2022.05", story: null, status: "LEARNED", targetDate: null, sortOrder: 7 },
   { id: 13, slug: "jeongsan-gisa", title: "Engineer Information Processing", description: "HRD Korea", period: "2023.06", story: null, status: "SUCCEEDED", targetDate: null, sortOrder: 8 },
   { id: 11, slug: "network-admin", title: "Network Administrator Level 2", description: "ICQA", period: "2023.10", story: null, status: "SUCCEEDED", targetDate: null, sortOrder: 10 },

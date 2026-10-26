@@ -7,7 +7,7 @@ export const HISTORY_KO: RoadmapItem[] = [
   { id: 17, slug: "hta-backend-bootcamp", title: "중앙 HTA 백엔드 과정", description: "국비 백엔드 부트캠프", period: "2021.07", story: null, status: "LEARNED", targetDate: null, sortOrder: 4 },
   { id: 16, slug: "jeongsan-sanup-pass", title: "정보처리산업기사 취득", description: "한국산업인력공단", period: "2021.08", story: null, status: "SUCCEEDED", targetDate: null, sortOrder: 5 },
   { id: 21, slug: "hta-complete", title: "중앙 HTA 수료", description: "웹 콘텐츠 개발을 위한 응용SW엔지니어링 양성과정", period: "2022.01", story: null, status: "SUCCEEDED", targetDate: null, sortOrder: 5 },
-  { id: 15, slug: "sangsang-join", title: "상상스토리 입사", description: "첫 회사, 백엔드 신입", period: "2022.03", story: null, status: "SUCCEEDED", targetDate: null, sortOrder: 6 },
+  { id: 15, slug: "sangsang-join", title: "상상스토리 입사", description: "첫 회사, 풀스택 개발 신입", period: "2022.03", story: null, status: "SUCCEEDED", targetDate: null, sortOrder: 6 },
   { id: 14, slug: "credit-bank-start", title: "학점은행제 시작", description: "학사 학위 준비", period: "2022.05", story: null, status: "LEARNED", targetDate: null, sortOrder: 7 },
   { id: 13, slug: "jeongsan-gisa", title: "정보처리기사 취득", description: "한국산업인력공단", period: "2023.06", story: null, status: "SUCCEEDED", targetDate: null, sortOrder: 8 },
   { id: 11, slug: "network-admin", title: "네트워크 관리사 2급", description: "한국정보통신자격협회", period: "2023.10", story: null, status: "SUCCEEDED", targetDate: null, sortOrder: 10 },
