@@ -70,7 +70,7 @@ export default function AboutView({ about, lang = "ko" }: { about: AboutContent;
         <InfoBox label={t(lang, "resume.info.education")} value={t(lang, "resume.info.educationValue")} sub={t(lang, "resume.info.educationSub")} />
         <InfoBox
           label={t(lang, "resume.info.certs")}
-          value={certifications.slice(0, 2).map((c) => c.name.replace(/\s*\(.*\)$/, "")).join(" · ")}
+          value={certifications.slice(0, 2).map((c) => c.short ?? c.name.replace(/\s*\(.*\)$/, "")).join(" · ")}
           sub={certifications.length > 2 ? t(lang, "resume.info.certsMore", { n: certifications.length - 2 }) : undefined}
         />
       </section>

@@ -248,10 +248,10 @@ export const ABOUT_EN: AboutContent = {
     },
   ],
   certifications: [
-    { name: "Engineer Information Processing", issuer: "HRD Korea", acquiredAt: "Jun 2023" },
-    { name: "SQL Developer (SQLD)", issuer: "Korea Data Agency", acquiredAt: "Apr 2024" },
-    { name: "Network Administrator Level 2", issuer: "ICQA", acquiredAt: "Oct 2023" },
-    { name: "Industrial Engineer Information Processing", issuer: "HRD Korea", acquiredAt: "Aug 2021" },
+    { name: "Engineer Information Processing", short: "Info Processing Engineer", issuer: "HRD Korea", acquiredAt: "Jun 2023" },
+    { name: "SQL Developer (SQLD)", short: "SQLD", issuer: "Korea Data Agency", acquiredAt: "Apr 2024" },
+    { name: "Network Administrator Level 2", short: "Network Admin L2", issuer: "ICQA", acquiredAt: "Oct 2023" },
+    { name: "Industrial Engineer Information Processing", short: "Info Processing Industrial Eng.", issuer: "HRD Korea", acquiredAt: "Aug 2021" },
   ],
   // 키 순서대로 그려짐: 백엔드 → 프론트엔드 → DevOps. 분야 안에서는 kind(언어·프레임워크·라이브러리·데이터베이스) 순서대로 묶음
   skills: {

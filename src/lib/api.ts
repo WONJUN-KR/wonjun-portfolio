@@ -210,6 +210,7 @@ export type TrainingItem = {
 
 export type CertificationItem = {
   name: string;
+  short?: string; // 이력서 요약 칸에 쓰는 짧은 이름 (없으면 name 에서 괄호 뺀 것)
   issuer: string;
   acquiredAt: string;
 };
