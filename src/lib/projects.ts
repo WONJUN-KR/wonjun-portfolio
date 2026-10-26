@@ -26,75 +26,13 @@ export type Project = {
   logo?: string;
   pinned?: boolean;
   lead?: boolean; // 팀장 - projects 페이지에 '팀장' 배지
-  // live = 운영 중 / released = 앱 출시(서버는 내려감) / local = 로컬 실행
+  // live = 운영 중 / released = 앱 배포(서버는 내려감) / local = 로컬 실행
   status: "live" | "released" | "local";
   device: "mobile" | "laptop";
   mockup?: Mockup;
 };
 
 export const PROJECTS: Project[] = [
-  {
-    slug: "gotcha",
-    title: "GOTCHA",
-    subtitle: "가챠샵 지도 서비스 · App Store 출시",
-    period: "2026.01 ~ 진행중",
-    role: "9인 팀(디자인 포함) · 풀스택",
-    tagline: "근처 가챠샵을 지도에서 찾고, 리뷰와 제보로 함께 채워가는 서비스",
-    features: [
-      "지도에서 주변 가챠샵 찾기 - 핀을 누르면 미리보기, 이 지역 다시 검색",
-      "매장 정보·리뷰 보고 즐겨찾기",
-      "새 가챠샵 제보 - 지도에서 위치를 찍으면 주소가 자동으로",
-      "새 소식 알림 받기",
-    ],
-    myPart: [
-      "[FE] 홈 지도 탐색 - 핀 미리보기 바텀시트(3단 스냅), 뒤로가기 시 위치·줌 복원",
-      "[FE] 제보 등록 흐름 전체, 마이페이지·내가 제보한 업체",
-      "[FE+BE] 신고·차단, Web Push 알림(구독 화면 + 발송 서버)",
-      "초기 세팅·GitHub Actions CI/CD, 웹 성능 최적화(Critical CSS·폰트·preconnect)",
-    ],
-    stack: ["Java", "TypeScript", "Spring Boot", "Next.js", "Capacitor", "Spring Security", "JPA", "React", "Tailwind CSS", "TanStack Query", "Zustand", "카카오맵", "PostgreSQL", "Redis", "Docker", "GitHub Actions", "AWS S3", "Vercel", "Sentry"],
-    repos: [
-      { label: "Frontend", url: "https://github.com/fcde-project9/GOTCHA-FE" },
-      { label: "Backend", url: "https://github.com/fcde-project9/GOTCHA-BE" },
-    ],
-    thumbnail: "/projects/gotcha.png",
-    mobileThumbPosition: "max-sm:object-bottom", // 휴대폰(홈 카드·Projects)에선 글자 대신 캐릭터 얼굴이 보이게
-    pinned: true,
-    status: "released",
-    device: "laptop",
-    mockup: {
-      videos: [
-        { webm: "/projects/mockups/gotcha/flow-1-first-launch.webm", mp4: "/projects/mockups/gotcha/flow-1-first-launch.mp4", poster: "/projects/mockups/gotcha/01-login.jpg", caption: "첫 실행 - 시작 화면 → 게스트로 둘러보기 → 약관 동의 → 알림 권한 → 홈 지도" },
-        { webm: "/projects/mockups/gotcha/flow-2-find.webm", mp4: "/projects/mockups/gotcha/flow-2-find.mp4", poster: "/projects/mockups/gotcha/08-pin-preview.jpg", caption: "찾기 - 위치 검색 → 주변 가챠샵 → 핀 미리보기 → 매장 상세 · 리뷰" },
-        { webm: "/projects/mockups/gotcha/flow-3-map.webm", mp4: "/projects/mockups/gotcha/flow-3-map.mp4", poster: "/projects/mockups/gotcha/13-research.jpg", caption: "지도 탐색 - 지도 이동 · 이 지역 다시 검색 → 목록 펼치기 → 다른 매장 상세 → 돌아와도 지도 그대로" },
-        { webm: "/projects/mockups/gotcha/flow-4-report.webm", mp4: "/projects/mockups/gotcha/flow-4-report.mp4", poster: "/projects/mockups/gotcha/16-report-form-filled.jpg", caption: "제보 - 지도에서 위치 지정 → 중복 확인 → 매장 정보 입력 (등록 직전까지)" },
-      ],
-      shots: [
-        { src: "/projects/mockups/gotcha/01-login.jpg", caption: "첫 화면 - 카카오 · Google · Apple 로그인, 게스트로 둘러보기" },
-        { src: "/projects/mockups/gotcha/02-terms.jpg", caption: "게스트로 시작할 때 이용약관 동의" },
-        { src: "/projects/mockups/gotcha/03-home.jpg", caption: "첫 실행 - 알림 권한 요청" },
-        { src: "/projects/mockups/gotcha/04-home.jpg", caption: "홈 - 지도에 주변 가챠샵 핀 + 아래 목록(거리순)" },
-        { src: "/projects/mockups/gotcha/06-search-typing.jpg", caption: "위치 검색 - 입력하는 대로 장소 자동완성" },
-        { src: "/projects/mockups/gotcha/07-search-result.jpg", caption: "검색한 위치 주변 가챠샵 - 영업 중 · 거리 표시" },
-        { src: "/projects/mockups/gotcha/08-pin-preview.jpg", caption: "핀을 누르면 미리보기 - 주소 · 영업일 · 영업 시간 · 매장 사진" },
-        { src: "/projects/mockups/gotcha/09-detail.jpg", caption: "매장 상세 - 영업 정보 · 매장 사진 · 방문 리뷰" },
-        { src: "/projects/mockups/gotcha/11-detail-reviews.jpg", caption: "방문 리뷰 - 사진과 함께" },
-        { src: "/projects/mockups/gotcha/22-photos-all.jpg", caption: "매장 사진 전체보기" },
-        { src: "/projects/mockups/gotcha/12-back-to-map.jpg", caption: "상세에서 돌아오면 보던 지도 위치 · 선택한 핀 그대로" },
-        { src: "/projects/mockups/gotcha/13-research.jpg", caption: "지도를 옮긴 뒤 이 지역 다시 검색" },
-        { src: "/projects/mockups/gotcha/13b-list-expanded.jpg", caption: "목록을 끝까지 올려 주변 매장 한눈에" },
-        { src: "/projects/mockups/gotcha/14-report-map.jpg", caption: "제보하기 - 지도에서 위치를 찍으면 주소 자동 입력" },
-        { src: "/projects/mockups/gotcha/15-report-duplicate.jpg", caption: "50m 안에 이미 등록된 가챠샵이 있으면 먼저 확인" },
-        { src: "/projects/mockups/gotcha/16-report-form-filled.jpg", caption: "매장 정보 등록 - 매장명 · 위치 힌트 · 영업일" },
-        { src: "/projects/mockups/gotcha/17-report-form-hours.jpg", caption: "영업 시간 - '매일' · '24시간'은 한 번에" },
-        { src: "/projects/mockups/gotcha/18-report-form-bottom.jpg", caption: "영업 정보 여러 개 추가 · 매장 사진 업로드" },
-        { src: "/projects/mockups/gotcha/19-community.jpg", caption: "커뮤니티 - 갓챠일상 · 궁금해요 · 거래해요" },
-        { src: "/projects/mockups/gotcha/20-community-scroll.jpg", caption: "커뮤니티 글 목록" },
-        { src: "/projects/mockups/gotcha/21-mypage.jpg", caption: "마이페이지 - 관심 매장 · 제보한 매장 · 작성한 리뷰" },
-      ],
-      note: "iOS 앱(시뮬레이터, iPhone 화면)에서 게스트(비로그인)로 찍었어요. 제보는 등록 직전까지만 진행했고, 리뷰 · 커뮤니티 작성자 닉네임과 프로필 사진은 흐리게 처리했습니다.",
-    },
-  },
   {
     slug: "eureka-2026",
     title: "유레카 (2026 리빌드)",
@@ -139,6 +77,58 @@ export const PROJECTS: Project[] = [
       ],
       note: "로컬에서 띄워 시연용 데이터로 찍은 화면이에요. 사진은 Unsplash 무료 이미지입니다.",
       related: { slug: "eureka-2021", label: "2021 원본 보기" },
+    },
+  },
+  {
+    slug: "gotcha",
+    title: "GOTCHA",
+    subtitle: "가챠샵 지도 서비스 · App Store 출시",
+    period: "2026.01 ~ 2026.11",
+    role: "9인 팀(디자인 포함) · 풀스택",
+    tagline: "근처 가챠샵을 지도에서 찾고, 리뷰와 제보로 함께 채워가는 서비스",
+    features: [
+      "지도에서 주변 가챠샵 찾기 - 핀을 누르면 미리보기, 이 지역 다시 검색",
+      "매장 정보·리뷰 보고 즐겨찾기",
+      "새 가챠샵 제보 - 지도에서 위치를 찍으면 주소가 자동으로",
+      "새 소식 알림 받기",
+    ],
+    myPart: [
+      "[FE] 홈 지도 탐색 - 핀 미리보기 바텀시트(3단 스냅), 뒤로가기 시 위치·줌 복원",
+      "[FE] 제보 등록 흐름 전체, 마이페이지·내가 제보한 업체",
+      "[FE+BE] 신고·차단, Web Push 알림(구독 화면 + 발송 서버)",
+      "초기 세팅·GitHub Actions CI/CD, 웹 성능 최적화(Critical CSS·폰트·preconnect)",
+    ],
+    stack: ["Java", "TypeScript", "Spring Boot", "Next.js", "Capacitor", "Spring Security", "JPA", "React", "Tailwind CSS", "TanStack Query", "Zustand", "카카오맵", "PostgreSQL", "Redis", "Docker", "GitHub Actions", "AWS S3", "Vercel", "Sentry"],
+    repos: [
+      { label: "Frontend", url: "https://github.com/fcde-project9/GOTCHA-FE" },
+      { label: "Backend", url: "https://github.com/fcde-project9/GOTCHA-BE" },
+    ],
+    thumbnail: "/projects/gotcha.png",
+    mobileThumbPosition: "max-sm:object-bottom", // 휴대폰(홈 카드·Projects)에선 글자 대신 캐릭터 얼굴이 보이게
+    status: "released",
+    device: "laptop",
+    mockup: {
+      videos: [
+        { webm: "/projects/mockups/gotcha/flow-1-first-launch.webm", mp4: "/projects/mockups/gotcha/flow-1-first-launch.mp4", poster: "/projects/mockups/gotcha/01-login.jpg", caption: "첫 실행 - 시작 화면 → 게스트로 둘러보기 → 약관 동의 → 알림 권한 → 홈 지도" },
+        { webm: "/projects/mockups/gotcha/flow-2-find.webm", mp4: "/projects/mockups/gotcha/flow-2-find.mp4", poster: "/projects/mockups/gotcha/08-pin-preview.jpg", caption: "찾기 - 위치 검색 → 주변 가챠샵 → 핀 미리보기 → 매장 상세 · 리뷰" },
+        { webm: "/projects/mockups/gotcha/flow-3-map.webm", mp4: "/projects/mockups/gotcha/flow-3-map.mp4", poster: "/projects/mockups/gotcha/13b-list-expanded.jpg", caption: "지도 탐색 - 지도 이동 · 이 지역 다시 검색 → 목록 펼치기 → 다른 매장 상세 → 돌아와도 지도 그대로" },
+        { webm: "/projects/mockups/gotcha/flow-4-report.webm", mp4: "/projects/mockups/gotcha/flow-4-report.mp4", poster: "/projects/mockups/gotcha/16-report-form-filled.jpg", caption: "제보 - 지도에서 위치 지정 → 중복 확인 → 매장 정보 입력 (등록 직전까지)" },
+      ],
+      shots: [
+        { src: "/projects/mockups/gotcha/01-login.jpg", caption: "첫 화면 - 카카오 · Google · Apple 로그인, 게스트로 둘러보기" },
+        { src: "/projects/mockups/gotcha/04-home.jpg", caption: "홈 - 지도에 주변 가챠샵 핀 + 아래 목록(거리순)" },
+        { src: "/projects/mockups/gotcha/06-search-typing.jpg", caption: "위치 검색 - 입력하는 대로 장소 자동완성" },
+        { src: "/projects/mockups/gotcha/07-search-result.jpg", caption: "검색한 위치 주변 가챠샵 - 영업 중 · 거리 표시" },
+        { src: "/projects/mockups/gotcha/08-pin-preview.jpg", caption: "핀을 누르면 미리보기 - 주소 · 영업일 · 영업 시간 · 매장 사진" },
+        { src: "/projects/mockups/gotcha/09-detail.jpg", caption: "매장 상세 - 영업 정보 · 매장 사진 · 방문 리뷰" },
+        { src: "/projects/mockups/gotcha/11-detail-reviews.jpg", caption: "방문 리뷰 - 사진과 함께" },
+        { src: "/projects/mockups/gotcha/13b-list-expanded.jpg", caption: "목록을 끝까지 올려 주변 매장 한눈에" },
+        { src: "/projects/mockups/gotcha/14-report-map.jpg", caption: "제보하기 - 지도에서 위치를 찍으면 주소 자동 입력" },
+        { src: "/projects/mockups/gotcha/15-report-duplicate.jpg", caption: "50m 안에 이미 등록된 가챠샵이 있으면 먼저 확인" },
+        { src: "/projects/mockups/gotcha/16-report-form-filled.jpg", caption: "매장 정보 등록 - 매장명 · 위치 힌트 · 영업일" },
+        { src: "/projects/mockups/gotcha/19-community.jpg", caption: "커뮤니티 - 갓챠일상 · 궁금해요 · 거래해요" },
+      ],
+      note: "iOS 앱(시뮬레이터, iPhone 화면)에서 게스트(비로그인)로 찍었어요. 제보는 등록 직전까지만 진행했고, 리뷰 · 커뮤니티 작성자 닉네임과 프로필 사진은 흐리게 처리했습니다.",
     },
   },
   {

@@ -219,7 +219,7 @@ export default async function HomeView({ about }: { about: AboutContent }) {
                       <h3 className="text-xl max-sm:text-lg font-bold tracking-tight truncate">{p.title}</h3>
                       {p.status !== "local" && (
                         <span className="shrink-0 rounded-full border border-transparent bg-accent-soft text-accent-2 px-2 py-0.5 text-xs font-semibold">
-                          {p.status === "live" ? "운영 중" : "앱 출시"}
+                          {p.status === "live" ? "운영 중" : "앱 배포"}
                         </span>
                       )}
                     </div>
