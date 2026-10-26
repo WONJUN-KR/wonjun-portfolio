@@ -69,6 +69,7 @@ export const ko = {
   "resume.info.educationSub": "정보통신학과",
   "resume.info.certs": "자격증",
   "resume.info.certsMore": "외 {n}개",
+  "resume.coverLetterEyebrow": "Cover Letter",
   "resume.coverLetter": "자기소개서",
   "resume.readAll": "전체 읽기",
   "resume.skills": "역량",

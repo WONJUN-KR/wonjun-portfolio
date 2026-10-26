@@ -70,6 +70,7 @@ export const en = {
   "resume.info.educationSub": "ICT major",
   "resume.info.certs": "Certifications",
   "resume.info.certsMore": "+{n} more",
+  "resume.coverLetterEyebrow": "Summary",
   "resume.coverLetter": "About",
   "resume.readAll": "Read all",
   "resume.skills": "Skills",
