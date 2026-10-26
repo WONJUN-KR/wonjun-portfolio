@@ -6,7 +6,7 @@ import ContributionsCalendar from "@/components/ContributionsCalendar";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { SectionHeader, StackChips } from "@/components/ui";
 import { CONTRIBUTIONS_EARLIEST_YEAR, detailText, getContributions, getPosts, type AboutContent } from "@/lib/api";
-import { HOME_HIGHLIGHTS } from "@/lib/about";
+import { getHomeHighlights } from "@/lib/about";
 import SafeImage from "@/components/SafeImage";
 import { getProjects } from "@/lib/projects";
 import { localizedPath, t, type Lang } from "@/i18n";
@@ -16,10 +16,6 @@ import LocalDate from "@/components/LocalDate";
 const LATEST_POSTS_COUNT = 3;
 const FEATURED_PROJECTS_COUNT = 3;
 
-const COMPANY_LOGOS: Record<string, string> = {
-  "(주)유엑스엔": "/logos/uxn.jpg",
-  "상상스토리(주)": "/logos/sangs.jpg",
-};
 
 const PROFILE_IMG = "/img/profile.jpg";
 const hasProfileImg = fs.existsSync(path.join(process.cwd(), "public", PROFILE_IMG));
@@ -48,7 +44,7 @@ export default async function HomeView({ about, lang }: { about: AboutContent; l
   // 숫자 카드 - 커밋 수 같은 활동량 대신 결과 지표 + 근거 한 줄
   const stats = [
     { label: t(lang, "home.stat.career"), value: profile?.careerPeriod ?? "-", basis: t(lang, "home.stat.careerBasis") },
-    ...HOME_HIGHLIGHTS,
+    ...getHomeHighlights(lang),
   ];
 
   return (
@@ -138,9 +134,9 @@ export default async function HomeView({ about, lang }: { about: AboutContent; l
           <SectionHeader eyebrow="Experience" title={t(lang, "home.experience.title")} href={localizedPath(lang, "/resume")} linkLabel={t(lang, "home.experience.link")} />
           <ol className="relative flex flex-col gap-4 max-sm:gap-10">
             {careers.map((c) => {
-              const logo = COMPANY_LOGOS[c.company];
+              const logo = c.logo; // 회사 로고는 이력서 데이터의 logo 필드(회사명이 언어마다 달라서)
               return (
-                <li key={c.company + c.period} className="rounded-3xl border border-line bg-surface p-4 sm:p-8 flex flex-col gap-5 max-sm:rounded-none max-sm:border-x-0 max-sm:border-b-0 max-sm:bg-transparent max-sm:px-0 max-sm:pb-0 max-sm:pt-6">
+                <li key={c.id ?? c.company + c.period} className="rounded-3xl border border-line bg-surface p-4 sm:p-8 flex flex-col gap-5 max-sm:rounded-none max-sm:border-x-0 max-sm:border-b-0 max-sm:bg-transparent max-sm:px-0 max-sm:pb-0 max-sm:pt-6">
                   <div className="flex items-start gap-4">
                     <div className="relative shrink-0 size-12 rounded-xl bg-white border border-line flex items-center justify-center overflow-hidden p-1.5">
                       {logo ? (

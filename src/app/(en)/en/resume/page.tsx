@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
 import { t } from "@/i18n";
 import AboutView from "@/components/AboutView";
-import { ABOUT } from "@/lib/about";
+import { getAbout } from "@/lib/about";
 
 export const metadata: Metadata = pageMetadata({ title: t("en", "meta.resume.title"), description: t("en", "meta.resume.description"), path: "/resume", lang: "en" });
 
@@ -10,5 +10,5 @@ export const metadata: Metadata = pageMetadata({ title: t("en", "meta.resume.tit
 export const revalidate = 3600;
 
 export default function ResumePage() {
-  return <AboutView about={ABOUT} />;
+  return <AboutView about={getAbout("en")} lang="en" />;
 }
