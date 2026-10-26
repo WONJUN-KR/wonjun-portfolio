@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import YearSelector from "@/components/YearSelector";
+import { t, type Lang } from "@/i18n";
 import type { ContributionDay } from "@/lib/api";
 import {
   HEATMAP_BG_CLASS,
@@ -14,6 +15,7 @@ type Props = {
   initialDays: ContributionDay[]; // 서버가 처음 그릴 때 받은 최근 1년 데이터 (홈은 정적 페이지라 주소의 ?year= 는 안 봄)
   initialYear?: string;
   years: number[]; // 연도 선택 상자에 넣을 연도들
+  lang?: Lang;
 };
 // 연도 "" = 최근: 1년 데이터를 받아서 화면 폭에 들어가는 만큼만 (휴대폰 6개월 ~ 넓은 화면 12개월)
 // 연도 YYYY = 그 해 전체 (좁으면 가로 스크롤)
@@ -25,7 +27,7 @@ const HEADER_H = 20;
 const MIN_WEEKS = 26; // 6개월 - 휴대폰처럼 좁아도 이만큼은 보여줌 (칸이 작아짐)
 const MAX_STEP = 18; // 넓은 화면에서 칸이 너무 커지지 않게
 
-export default function ContributionsCalendar({ initialDays, initialYear = "", years }: Props) {
+export default function ContributionsCalendar({ initialDays, initialYear = "", years, lang = "ko" }: Props) {
   const boxRef = useRef<HTMLDivElement>(null);
   const [boxWidth, setBoxWidth] = useState<number | null>(null);
   const [year, setYear] = useState(initialYear);
@@ -84,15 +86,15 @@ export default function ContributionsCalendar({ initialDays, initialYear = "", y
   const header = (periodLabel: string) => (
     <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
       <span className="whitespace-nowrap text-sm font-semibold">GitHub Contributions</span>
-      <YearSelector years={years} value={year} onChange={changeYear} defaultLabel={periodLabel} />
+      <YearSelector years={years} value={year} onChange={changeYear} defaultLabel={periodLabel} lang={lang} />
     </div>
   );
 
   if (days.length === 0) {
     return (
       <div className="flex flex-col gap-4">
-        {header("최근 1년")}
-        <p className="text-sm text-muted">잔디 데이터를 불러올 수 없습니다.</p>
+        {header(t(lang, "contrib.recentYear"))}
+        <p className="text-sm text-muted">{t(lang, "contrib.unavailable")}</p>
       </div>
     );
   }
@@ -151,7 +153,7 @@ export default function ContributionsCalendar({ initialDays, initialYear = "", y
       const x = (week - offset) * step;
       if (lastMonth !== -1) monthDividers.push(x - gap / 2);
       if (x - lastLabelX >= minLabelGap) {
-        monthLabels.push({ x, label: `${month + 1}월` });
+        monthLabels.push({ x, label: monthLabel(month, lang) });
         lastLabelX = x;
       }
       lastMonth = month;
@@ -178,7 +180,7 @@ export default function ContributionsCalendar({ initialDays, initialYear = "", y
           rx={Math.min(3, cell / 4)}
           className={HEATMAP_FILL_CLASS[level]}
         >
-          <title>{`${key} - ${count}건`}</title>
+          <title>{t(lang, "contrib.tooltip", { date: key, n: count })}</title>
         </rect>,
       );
     }
@@ -188,17 +190,18 @@ export default function ContributionsCalendar({ initialDays, initialYear = "", y
   // 연도를 보고 있을 때도 같은 폭 기준으로 계산 - 예전엔 연도 모드의 1년 전체 주 수로 계산돼서 휴대폰에서도 "최근 1년"으로 보였음
   const recentWeeks = recent ? shownWeeks : boxWidth !== null ? Math.max(MIN_WEEKS, Math.floor(boxWidth / STEP)) : 53;
   const shownMonths = Math.min(12, Math.round(recentWeeks / 4.345));
-  const periodLabel = shownMonths >= 12 ? "최근 1년" : `최근 ${shownMonths}개월`;
+  const periodLabel = shownMonths >= 12 ? t(lang, "contrib.recentYear") : t(lang, "contrib.recentMonths", { n: shownMonths });
 
   return (
     <div className="flex flex-col gap-4">
       {header(periodLabel)}
       <div className="flex flex-col gap-2">
-        <div className="flex items-baseline gap-2">
-          <span className="text-sm text-muted">
-            <span className="text-lg font-bold text-accent-2">{shownTotal.toLocaleString()}</span>건
+        {/* 합계 · 계정 안내 - 좁아서 한 줄에 안 들어가면 안내가 다음 줄로 (영어 문구가 찌그러져 세 줄 되던 것) */}
+        <div className="flex flex-wrap items-baseline gap-x-2">
+          <span className="whitespace-nowrap text-sm text-muted">
+            <span className="text-lg font-bold text-accent-2">{shownTotal.toLocaleString("en-US")}</span>{t(lang, "contrib.unit")}
           </span>
-          <span className="text-xs text-muted">(개인 + 회사 계정 합산)</span>
+          <span className="whitespace-nowrap text-xs text-muted">{t(lang, "contrib.combined")}</span>
         </div>
         <div ref={boxRef} className={`${recent ? "overflow-hidden" : "overflow-x-auto"} transition-opacity ${loading ? "opacity-40" : ""}`}>
           <svg
@@ -250,4 +253,10 @@ export default function ContributionsCalendar({ initialDays, initialYear = "", y
       </div>
     </div>
   );
+}
+
+// 월 이름 - 한국어 "10월", 영어 "Oct" (월 번호만 쓰니 시간대와 상관없게 UTC 로)
+function monthLabel(month: number, lang: Lang): string {
+  if (lang === "ko") return `${month + 1}월`;
+  return new Date(Date.UTC(2000, month, 1)).toLocaleString("en-US", { month: "short", timeZone: "UTC" });
 }

@@ -25,24 +25,24 @@ export default async function SeriesView({ slug, lang }: { slug: string; lang: L
 
   return (
     <div className="flex flex-col gap-12 py-6">
-      <BackLink href={localizedPath(lang, "/log")} label="기록으로" />
+      <BackLink href={localizedPath(lang, "/log")} label={t(lang, "series.back")} />
 
       <header className="animate-fade-up flex flex-col gap-4">
         <Eyebrow>Series</Eyebrow>
         <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">{series.name}</h1>
         {series.description && <p className="text-base sm:text-lg text-muted max-w-2xl">{series.description}</p>}
         <div className="flex items-center gap-2 text-sm text-muted">
-          <span>{series.postsCount}개 글</span>
+          <span>{t(lang, "series.count", { n: series.postsCount })}</span>
           {series.updatedAt && (
             <>
               <span>·</span>
-              <span><LocalDate iso={series.updatedAt} locale={DATE_LOCALE[lang]} /> 업데이트</span>
+              <span>{t(lang, "log.updatedPrefix")}<LocalDate iso={series.updatedAt} locale={DATE_LOCALE[lang]} />{t(lang, "log.updatedSuffix")}</span>
             </>
           )}
         </div>
       </header>
 
-      <SeriesPostList posts={series.posts} locale={DATE_LOCALE[lang]} />
+      <SeriesPostList posts={series.posts} lang={lang} />
     </div>
   );
 }

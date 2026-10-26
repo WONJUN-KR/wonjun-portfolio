@@ -7,6 +7,7 @@ import { SectionHeader } from "@/components/ui";
 import { splitSeriesName } from "@/lib/series";
 import SafeImage from "@/components/SafeImage";
 import LocalDate from "@/components/LocalDate";
+import { DATE_LOCALE, t, type Lang } from "@/i18n";
 
 // 한 페이지 9개 (3칸 x 3줄), 페이지 번호는 네이버 블로그처럼 10개씩 묶음
 const PAGE_SIZE = 9;
@@ -17,7 +18,8 @@ export type LogPost = PostListItem & { seriesIds: string[] };
 export type LogSeries = { id: string; name: string; postsCount: number; updatedAt: string | null };
 
 // 기록 목록 - 시리즈 카드는 필터, 검색어는 제목·요약·태그에서 찾음, 썸네일 갤러리를 페이지로 나눔
-export default function LogBrowser({ posts, seriesList, locale = "ko-KR" }: { posts: LogPost[]; seriesList: LogSeries[]; locale?: string }) {
+export default function LogBrowser({ posts, seriesList, lang = "ko" }: { posts: LogPost[]; seriesList: LogSeries[]; lang?: Lang }) {
+  const locale = DATE_LOCALE[lang];
   const [seriesId, setSeriesId] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [page, setPage] = useState(1);
@@ -53,7 +55,7 @@ export default function LogBrowser({ posts, seriesList, locale = "ko-KR" }: { po
       {seriesList.length > 0 && (
         <section className="flex flex-col gap-8">
           {/* 화면엔 안 보이는 구역 제목 - 페이지 제목(h1) 다음에 시리즈 카드 제목(h3)이 바로 오면 제목 단계가 건너뛰어짐 */}
-          <h2 className="sr-only">시리즈</h2>
+          <h2 className="sr-only">{t(lang, "log.seriesHeading")}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             {seriesList.map((series) => {
               const active = series.id === seriesId;
@@ -75,9 +77,9 @@ export default function LogBrowser({ posts, seriesList, locale = "ko-KR" }: { po
                       <Layers className="size-5 text-accent-2" />
                     </span>
                     {active ? (
-                      <FunnelX className="size-5 text-accent-2 max-sm:col-start-3 max-sm:row-span-2 max-sm:row-start-1" aria-label="필터 해제" />
+                      <FunnelX className="size-5 text-accent-2 max-sm:col-start-3 max-sm:row-span-2 max-sm:row-start-1" aria-label={t(lang, "log.filterClear")} />
                     ) : (
-                      <Funnel className="size-5 text-muted transition-colors group-hover:text-accent-2 max-sm:col-start-3 max-sm:row-span-2 max-sm:row-start-1" aria-label="이 시리즈로 필터" />
+                      <Funnel className="size-5 text-muted transition-colors group-hover:text-accent-2 max-sm:col-start-3 max-sm:row-span-2 max-sm:row-start-1" aria-label={t(lang, "log.filterBy")} />
                     )}
                   </div>
                   {/* 360px 미만은 연도를 제목 위로, 글 수·날짜를 짧게 */}
@@ -86,11 +88,11 @@ export default function LogBrowser({ posts, seriesList, locale = "ko-KR" }: { po
                     <h3 className="text-lg font-bold tracking-tight max-sm:truncate max-sm:text-base">{title}</h3>
                   </div>
                   <div className="flex items-center gap-2 text-xs text-muted max-sm:col-start-2 max-sm:row-start-2 max-sm:min-w-0 max-sm:gap-1.5 max-sm:overflow-hidden max-sm:whitespace-nowrap">
-                    <span className="shrink-0">{series.postsCount}개<span className="max-[359px]:hidden">의 글</span></span>
+                    <span className="shrink-0">{t(lang, "log.countShort", { n: series.postsCount })}<span className="max-[359px]:hidden">{t(lang, "log.countSuffix")}</span></span>
                     {series.updatedAt && (
                       <>
                         <span>·</span>
-                        <span className="max-sm:truncate"><LocalDate iso={series.updatedAt} locale={locale} /><span className="max-[359px]:hidden"> 업데이트</span></span>
+                        <span className="max-sm:truncate"><span className="max-[359px]:hidden">{t(lang, "log.updatedPrefix")}</span><LocalDate iso={series.updatedAt} locale={locale} /><span className="max-[359px]:hidden">{t(lang, "log.updatedSuffix")}</span></span>
                       </>
                     )}
                   </div>
@@ -107,7 +109,7 @@ export default function LogBrowser({ posts, seriesList, locale = "ko-KR" }: { po
           {/* 시리즈 선택 시: 작은 글씨 = 시리즈 이름·연도, 큰 제목 = 글 수 */}
           <SectionHeader
             eyebrow={selected ? seriesHeading(selected.name) : "All Posts"}
-            title={selected ? `${filtered.length}개의 글` : `전체 ${filtered.length}개의 글`}
+            title={t(lang, selected ? "log.filtered" : "log.all", { n: filtered.length })}
           />
           <div className="flex items-center gap-2">
             <label className="relative w-full sm:w-72">
@@ -119,7 +121,7 @@ export default function LogBrowser({ posts, seriesList, locale = "ko-KR" }: { po
                   setQuery(e.target.value);
                   setPage(1);
                 }}
-                placeholder="제목, 내용, 태그로 검색"
+                placeholder={t(lang, "log.search")}
                 className="w-full rounded-full border border-line bg-surface py-2.5 pl-11 pr-4 text-sm placeholder:text-muted focus:border-accent/60 focus:outline-none"
               />
             </label>
@@ -129,14 +131,14 @@ export default function LogBrowser({ posts, seriesList, locale = "ko-KR" }: { po
                 onClick={() => selectSeries(selected.id)}
                 className="shrink-0 rounded-full border border-line px-4 py-2.5 text-sm font-semibold hover:bg-surface-hover transition-colors"
               >
-                시리즈 해제
+                {t(lang, "log.clearSeries")}
               </button>
             )}
           </div>
         </div>
 
         {visible.length === 0 ? (
-          <p className="text-muted">{posts.length === 0 ? "아직 글이 없습니다." : "조건에 맞는 글이 없어요."}</p>
+          <p className="text-muted">{t(lang, posts.length === 0 ? "log.empty" : "log.noMatch")}</p>
         ) : (
           <ul className="grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
             {visible.map((post, idx) => (
@@ -178,20 +180,20 @@ export default function LogBrowser({ posts, seriesList, locale = "ko-KR" }: { po
         )}
 
         {totalPages > 1 && (
-          <nav className="flex items-center justify-center gap-1" aria-label="페이지">
+          <nav className="flex items-center justify-center gap-1" aria-label={t(lang, "log.pagesAria")}>
             {/* 이전·다음은 10페이지 묶음 단위로 넘김 */}
             {groupStart > 1 && (
-              <PageButton onClick={() => goPage(groupStart - 1)} label="이전 10페이지">
+              <PageButton onClick={() => goPage(groupStart - 1)} label={t(lang, "log.prevPages")}>
                 <ChevronLeft className="size-4" />
               </PageButton>
             )}
             {Array.from({ length: groupEnd - groupStart + 1 }, (_, i) => groupStart + i).map((n) => (
-              <PageButton key={n} active={n === current} onClick={() => goPage(n)} label={`${n}페이지`}>
+              <PageButton key={n} active={n === current} onClick={() => goPage(n)} label={t(lang, "log.page", { n })}>
                 {n}
               </PageButton>
             ))}
             {groupEnd < totalPages && (
-              <PageButton onClick={() => goPage(groupEnd + 1)} label="다음 10페이지">
+              <PageButton onClick={() => goPage(groupEnd + 1)} label={t(lang, "log.nextPages")}>
                 <ChevronRight className="size-4" />
               </PageButton>
             )}

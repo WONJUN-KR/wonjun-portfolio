@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { EN_LOG_ENABLED } from "./src/i18n/config";
 
 const nextConfig: NextConfig = {
   // 개발 서버 왼쪽 아래 Next.js 표시(동그라미 버튼) 숨김 - 배포 화면엔 원래 안 나옴
@@ -21,7 +22,14 @@ const nextConfig: NextConfig = {
       { source: "/en/about", destination: "/en/resume", permanent: true },
       { source: "/en/roadmap", destination: "/en/history", permanent: true },
       { source: "/en/roadmap/:slug", destination: "/en/history", permanent: true },
-      { source: "/en/log/:slug", destination: "/en/log", permanent: false },
+      // 영어판 기록이 꺼져 있으면(EN_LOG_ENABLED) 한국어 기록으로
+      ...(EN_LOG_ENABLED
+        ? [{ source: "/en/log/:slug", destination: "/en/log", permanent: false }]
+        : [
+            { source: "/en/log", destination: "/log", permanent: false },
+            { source: "/en/log/:slug", destination: "/log", permanent: false },
+            { source: "/en/series/:slug", destination: "/series/:slug", permanent: false },
+          ]),
     ];
   },
 };

@@ -9,7 +9,7 @@ import { CONTRIBUTIONS_EARLIEST_YEAR, detailText, getContributions, getPosts, ty
 import { getHomeHighlights } from "@/lib/about";
 import SafeImage from "@/components/SafeImage";
 import { getProjects } from "@/lib/projects";
-import { localizedPath, t, type Lang } from "@/i18n";
+import { hasPage, localizedPath, t, type Lang } from "@/i18n";
 import { yearIn } from "@/lib/time";
 import LocalDate from "@/components/LocalDate";
 
@@ -38,6 +38,7 @@ export default async function HomeView({ about, lang }: { about: AboutContent; l
   const profile = about?.profile;
   const contacts = profile?.contacts;
   const careers = [...(about?.careers ?? [])].sort((a, b) => a.sortOrder - b.sortOrder);
+  const showLog = hasPage(lang, "/log");
   const latestPosts = posts.slice(0, LATEST_POSTS_COUNT);
   const featured = getProjects(lang).slice(0, FEATURED_PROJECTS_COUNT);
 
@@ -232,10 +233,14 @@ export default async function HomeView({ about, lang }: { about: AboutContent; l
         </div>
       </section>
 
-      {/* Activity - 글 + 잔디 */}
+      {/* Activity - 글 + 잔디. 기록이 없는 언어(영어판, EN_LOG_ENABLED)는 잔디만 */}
       <section className="flex flex-col gap-8">
-        <SectionHeader eyebrow="Activity" title={t(lang, "home.log.title")} href={localizedPath(lang, "/log")} linkLabel={t(lang, "home.log.link")} />
-        {latestPosts.length > 0 && (
+        {showLog ? (
+          <SectionHeader eyebrow="Activity" title={t(lang, "home.log.title")} href={localizedPath(lang, "/log")} linkLabel={t(lang, "home.log.link")} />
+        ) : (
+          <SectionHeader eyebrow="Activity" title={t(lang, "home.activity.title")} />
+        )}
+        {showLog && latestPosts.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-sm:gap-3">
             {latestPosts.map((post) => (
               <a
@@ -256,7 +261,7 @@ export default async function HomeView({ about, lang }: { about: AboutContent; l
         )}
         {contributions && (
           <div className="rounded-3xl border border-line bg-surface p-6 sm:p-8 flex flex-col gap-4">
-            <ContributionsCalendar initialDays={contributions.days} years={availableYears()} />
+            <ContributionsCalendar initialDays={contributions.days} years={availableYears()} lang={lang} />
           </div>
         )}
       </section>

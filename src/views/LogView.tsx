@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
-import { DATE_LOCALE, t, type Lang } from "@/i18n";
+import { t, type Lang } from "@/i18n";
 import { getPosts, getSeries, getSeriesList } from "@/lib/api";
 import { PageHeader } from "@/components/ui";
 import LogBrowser, { type LogPost, type LogSeries } from "@/components/LogBrowser";
@@ -31,8 +31,8 @@ export default async function LogView({ lang }: { lang: Lang }) {
 
   return (
     <div className="flex flex-col gap-20 py-6">
-      <PageHeader eyebrow="Log" title="기록" />
-      <LogBrowser posts={logPosts} seriesList={logSeries} locale={DATE_LOCALE[lang]} />
+      <PageHeader eyebrow="Log" title={t(lang, "log.title")} />
+      <LogBrowser posts={logPosts} seriesList={logSeries} lang={lang} />
     </div>
   );
 }

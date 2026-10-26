@@ -2,7 +2,7 @@
 
 import type { MouseEvent } from "react";
 import { usePathname } from "next/navigation";
-import { LANGS, localizedPath, pathWithoutLang, type Lang } from "@/i18n";
+import { LANGS, hasPage, localizedPath, pathWithoutLang, type Lang } from "@/i18n";
 import { KoreaFlag, UsFlag } from "@/components/Flags";
 
 const FLAGS: Record<Lang, { Flag: typeof KoreaFlag; label: string }> = {
@@ -26,7 +26,8 @@ export default function LangSwitch({ lang }: { lang: Lang }) {
       {LANGS.map((l) => {
         const { Flag, label } = FLAGS[l];
         const current = l === lang;
-        const href = localizedPath(l, page);
+        // 그 언어에 없는 페이지(영어판 기록 등)면 그 언어 홈으로
+        const href = localizedPath(l, hasPage(l, page) ? page : "/");
         return (
           <a
             key={l}
