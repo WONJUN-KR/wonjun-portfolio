@@ -46,7 +46,7 @@ export const ABOUT_EN: AboutContent = {
       summary: "Responsible for 6 concurrent projects across CGM medical device web services, an internal data platform, and an IoT platform, from development to infrastructure and deployment",
       projects: [
         {
-          title: "Personal CGM Monitoring Service: AWS migration, deployments, and a new admin console",
+          title: "Patient CGM Monitoring Service: AWS migration, deployments, and a new admin console",
           period: "Apr 2026 – Present",
           details: [
             {
