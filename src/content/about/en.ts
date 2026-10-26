@@ -8,8 +8,8 @@ import { ABOUT_KO } from "./ko";
 
 // 홈 숫자 카드 - 커밋 수 대신 결과 지표. 아래 careers 문구에 있는 숫자만 씀 (basis = 근거 한 줄)
 export const HOME_HIGHLIGHTS_EN: { label: string; value: string; basis: string }[] = [
-  { label: "Built from scratch", value: "3 tools", basis: "Glucose, sensor, meeting notes" },
-  { label: "Zero-downtime deploys", value: "3 services", basis: "0 outages during deploys" },
+  { label: "Built from scratch", value: "3 tools", basis: "Glucose, sensor, notes" },
+  { label: "Zero-downtime", value: "3 services", basis: "0 outages during deploys" },
   { label: "Lossless AWS moves", value: "2", basis: "0 medical records lost" },
 ];
 
@@ -17,7 +17,7 @@ export const HOME_HIGHLIGHTS_EN: { label: string; value: string; basis: string }
 export const ABOUT_EN: AboutContent = {
   profile: {
     name: "WonJun Oh",
-    tagline: "Full-stack developer in healthcare IT",
+    tagline: "Health IT full-stack developer",
     email: "dnjswns0010@naver.com",
     region: "Siheung, South Korea",
     // 읽을 때마다 careers 기간으로 계산
@@ -39,7 +39,7 @@ export const ABOUT_EN: AboutContent = {
       id: "uxn",
       logo: "/logos/uxn.jpg",
       company: "UXN Co., Ltd.",
-      position: "R&D Center",
+      position: "R&D",
       role: "Full-stack Developer",
       period: "Mar 2026 – Present",
       isCurrent: true,
@@ -73,11 +73,9 @@ export const ABOUT_EN: AboutContent = {
                 when: "Aug 2026",
               },
             },
-            "Built an admin console from scratch (user, device, and permission management with soft delete) and migrated permission strings to code-based RBAC with zero downtime",
-            "Switched React screens (charts, lists, reports) from server UTC to each user's local time, verifying 0 changes to Korean screens with jest + jsdom golden tests",
-            "Moved time storage to UTC (timestamptz) with zero downtime, losing 0 rows during the cutover and proving no screen changes with golden master tests",
-            "Shipped a periodic data-processing scheduler and FCM push notifications; recalculated and verified every stored value when replacing the processing logic",
             "Traced why web and app results differed and raised the match rate from about 40% to 100%",
+            "Built an admin console from scratch (users, devices, permissions) and migrated permission strings to code-based RBAC with zero downtime",
+            "Moved time storage to UTC and React screens to each user's local time with zero downtime: 0 rows lost, 0 changes to Korean screens in golden tests",
           ],
         },
         {
@@ -100,7 +98,6 @@ export const ABOUT_EN: AboutContent = {
                 when: "Oct 2026",
               },
             },
-            "Overhauled access control and session security in two phases (monitor, then block) with no disruption to daily work",
             {
               text: "Refactored while keeping output identical under golden master tests (chart functions 6 → 1, SQL variants 7 → 1, 373 lines of dead code removed)",
               evidence: {
@@ -109,10 +106,9 @@ export const ABOUT_EN: AboutContent = {
                 when: "Sep 2026, still run on every deploy",
               },
             },
+            "Overhauled access control and session security in two phases (monitor, then block) with no disruption to daily work",
             "Introduced version control and code review to a legacy Flask platform",
-            "Built a sensor data processing pipeline and visualization screens, verifying a 100% match on chart and CSV output",
-            "Built ApexCharts comparison views (up to 10 overlaid lines, split view, manual axis ranges, linked axis scaling)",
-            "Handled time zones for overseas devices: stored in UTC and shown in each viewer's browser time across lists, charts, and CSVs",
+            "Built a sensor data pipeline and ApexCharts comparison views (up to 10 overlaid lines), with a 100% match on chart and CSV output",
           ],
         },
         {
@@ -121,7 +117,6 @@ export const ABOUT_EN: AboutContent = {
           details: [
             "Migrated the service from on-premises to AWS solo (every table verified, DNS cutover); 0 failures in 225 checks on the first blue/green cutover",
             "Grew unit tests from 15 to 119, finding 8 production defects along the way, and wrote a 45-item test design document",
-            "Took a cloned service live the same day with its own repository, Docker deployment, and HTTPS",
             "Implemented single-session login with real-time forced logout within 10 s, Google and Kakao OAuth, and UTC storage with local-time display",
             "Prevented duplicate email accounts with fail-closed login and a DB partial unique index",
           ],
@@ -135,7 +130,7 @@ export const ABOUT_EN: AboutContent = {
           ],
         },
         {
-          title: "Sensor Sensitivity Table Tool: solo development",
+          title: "Sensitivity Table Tool (solo)",
           period: "Apr 2026 – Present",
           details: [
             "Built the tool solo from repository setup to deployment, with version history, UPSERT saves, and bulk CSV (RFC 4180) and Excel imports",
@@ -147,8 +142,7 @@ export const ABOUT_EN: AboutContent = {
           title: "Other",
           period: "Apr 2026 – Present",
           details: [
-            "Built a new internal meeting-notes tool end to end (FastAPI + React, Vite, TypeScript); all 3,298 consecutive requests succeeded during a zero-downtime swap",
-            "Created a team docs repository with automated link and secret checks, set PR conventions and cleaned up 386 existing PRs, and wrote handover docs for 6 projects",
+            "Built an internal meeting-notes tool (FastAPI + React) with 0 failures in 3,298 requests during a zero-downtime swap; set PR conventions and cleaned up 386 PRs",
           ],
         },
       ],
@@ -165,12 +159,12 @@ export const ABOUT_EN: AboutContent = {
       id: "sangsang",
       logo: "/logos/sangs.jpg",
       company: "Sangsang Story Co., Ltd.",
-      position: "R&D Center",
+      position: "R&D",
       role: "Full-stack Developer",
       period: "Mar 2022 – Apr 2024",
       region: "Seoul",
       resignReason: "Returned to school",
-      summary: "Developed and operated 3 Spring-based web systems (portal, LMS, facility management). Started with a 2-month contract probation (Mar – Apr 2022) and became full-time in May 2022 when placed as Industrial Technical Personnel",
+      summary: "Developed and operated 3 Spring-based web systems (portal, LMS, facility management)",
       projects: [
         {
           title: "Internal Portal and Access Management System",
@@ -178,12 +172,10 @@ export const ABOUT_EN: AboutContent = {
           details: [
             "Built a new portal system on eGovFramework",
             "Designed and implemented RBAC authorization and authentication with Spring Security",
-            "Applied secure coding guidelines to harden security",
-            "Set up and optimized a Docker-based internal server environment",
           ],
         },
         {
-          title: "LMS and Facility Management System Upgrades",
+          title: "LMS and Facility System Upgrades",
           period: "Aug 2023 – Apr 2024",
           details: [
             "Audited and fixed all 60 security vulnerabilities, including SQL injection and XSS",
@@ -191,7 +183,6 @@ export const ABOUT_EN: AboutContent = {
             "Developed and optimized the Ministry of Justice Solomon Law portal, an LMS, and a facility management system",
             "Tuned queries to resolve N+1 problems",
             "Designed RESTful APIs and built log and statistics dashboards",
-            "Automated server management and standardized incident response",
           ],
         },
       ],
@@ -207,18 +198,18 @@ export const ABOUT_EN: AboutContent = {
   educations: [
     {
       id: "nile",
-      school: "National Institute for Lifelong Education (Academic Credit Bank, 4-year)",
-      department: "B.S. in Information and Communications",
+      school: "Academic Credit Bank (NILE)",
+      department: "Bachelor's in ICT",
       period: "May 2022 – Feb 2024",
-      status: "Transferred, graduated",
+      status: "Graduated",
       region: "Seoul",
       gpa: "3.75/4.5",
       sortOrder: 1,
     },
     {
       id: "bucheon",
-      school: "Bucheon University (2-3 year college)",
-      department: "Associate degree in Information and Communications",
+      school: "Bucheon University",
+      department: "Associate in ICT",
       period: "Mar 2019 – Feb 2021",
       status: "Graduated",
       region: "Gyeonggi",
@@ -232,7 +223,7 @@ export const ABOUT_EN: AboutContent = {
   trainings: [
     {
       org: "Kernel Academy",
-      course: "AI-Integrated Backend Development Bootcamp",
+      course: "AI Backend Development Bootcamp",
       period: "Jun – Dec 2025",
       learned: [
         "Java", "HTML5", "CSS3", "JavaScript", "TypeScript", "Spring Boot", "JSP", "React",
@@ -251,9 +242,7 @@ export const ABOUT_EN: AboutContent = {
       period: "Jul 2021 – Jan 2022",
       learned: ["Java", "Oracle", "JSP", "HTML5", "CSS3", "JavaScript", "jQuery", "Spring"],
       projects: [
-        "Basketball team website (team of 5, Dec 2021 – Jan 2022, final project): team intro, announcements, Q&A, and an admin page",
-        "Hidden travel spots website (team of 4, Oct – Nov 2021, second project): community site for sharing spots with file uploads",
-        "Public transit booking app (team of 5, Aug – Sep 2021, first project): seat booking, cancellation, and payment in one place",
+        "3 team projects (teams of 4-5, Aug 2021 – Jan 2022): basketball team site, travel spot sharing site, and transit booking app",
       ],
       sortOrder: 2,
     },
