@@ -7,6 +7,7 @@ import { useEffect } from "react";
 // 버튼 위쪽 내용이 줄어들면 스크롤 위치는 그대로라 버튼이 화면 위로 사라지고 다음 구역이 보임
 // → 펼칠 때 window.scrollY 를 그 체크박스 · details 에 기억했다가, 접힌 뒤 다음 프레임에 그 위치로 scrollTo
 // 접힌 모양은 펼치기 전과 같아서 화면이 그대로 복원됨. 기억한 값이 없으면(새로고침 뒤 등) 버튼이 화면 속 같은 자리에 오도록 보정
+// 위치 이동은 scrollTo(x, y) 숫자 인자로 - behavior: 'instant' 는 옛 Safari 가 모르는 값이라 옵션 객체를 쓰지 않음 (사이트에 smooth 스크롤 설정 없음)
 // 문서에 클릭 리스너 하나만 둠(버튼마다 클라이언트 컴포넌트를 만들지 않음) - layout 에 한 번 마운트
 const openedAt = new WeakMap<Element, number>();
 
@@ -30,8 +31,8 @@ export default function MoreToggleScrollRestore() {
       // 기본 동작(체크 해제 · details 닫힘)으로 다시 그려진 다음 프레임에 위치 복원
       requestAnimationFrame(() =>
         requestAnimationFrame(() => {
-          if (saved !== undefined) window.scrollTo({ top: saved, behavior: "instant" });
-          else window.scrollBy({ top: toggle.getBoundingClientRect().top - before, behavior: "instant" });
+          if (saved !== undefined) window.scrollTo(0, saved);
+          else window.scrollBy(0, toggle.getBoundingClientRect().top - before);
           openedAt.delete(target);
         }),
       );
