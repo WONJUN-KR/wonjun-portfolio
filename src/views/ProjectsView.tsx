@@ -1,15 +1,18 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
-import { t, type Lang } from "@/i18n";
+import { type Lang } from "@/i18n";
 import { ExternalLink, Pin } from "lucide-react";
 import { getProjects, type Project } from "@/lib/projects";
 import SafeImage from "@/components/SafeImage";
 import MockupGallery from "@/components/MockupGallery";
 import { GithubIcon } from "@/components/icons";
 import { MOBILE_OPEN_ONLY, MobileMoreToggle, PageHeader, StackChips } from "@/components/ui";
+import { useTranslations } from "next-intl";
+import { tFor } from "@/i18n/translator";
 
 export function projectsMetadata(lang: Lang): Metadata {
-  return pageMetadata({ title: t(lang, "meta.projects.title"), description: t(lang, "meta.projects.description"), path: "/projects", lang });
+  const t = tFor(lang);
+  return pageMetadata({ title: t("meta.projects.title"), description: t("meta.projects.description"), path: "/projects", lang });
 }
 
 function BrowserFrame({ children, fixedAspect = true }: { children: React.ReactNode; fixedAspect?: boolean }) {
@@ -93,11 +96,12 @@ function ProjectVisual({ project, preload = false }: { project: Project; preload
 
 // 프로젝트 페이지 본문 - 한국어(/projects) · 영어(/en/projects) 페이지가 같이 씀
 export default function ProjectsView({ lang }: { lang: Lang }) {
+  const t = useTranslations();
   return (
     <div className="flex flex-col gap-16 py-6">
       <PageHeader
         eyebrow="Projects"
-        title={t(lang, "projects.title")}
+        title={t("projects.title")}
       />
 
       <div className="flex flex-col gap-6">
@@ -112,7 +116,7 @@ export default function ProjectsView({ lang }: { lang: Lang }) {
             {p.pinned && (
               <span
                 role="img"
-                aria-label={t(lang, "projects.pinnedAria")}
+                aria-label={t("projects.pinnedAria")}
                 className="absolute -left-3 -top-3 z-10 flex size-10 -rotate-12 items-center justify-center rounded-full border border-line bg-accent-strong text-foreground shadow-lg shadow-black/30 max-sm:-left-2 max-sm:-top-2 max-sm:size-8"
               >
                 <Pin className="size-5 fill-current max-sm:size-4" />
@@ -136,7 +140,7 @@ export default function ProjectsView({ lang }: { lang: Lang }) {
               </div>
               {/* 휴대폰은 카드마다 '자세히 보기' 버튼 하나로 핵심 기능·맡은 부분·기술을 같이 펼침 */}
               <div className={`flex flex-col gap-2 max-sm:order-4 ${MOBILE_OPEN_ONLY} max-sm:flex-col`}>
-                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-2">{t(lang, "projects.features")}</span>
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-2">{t("projects.features")}</span>
                 <ul className="flex flex-col gap-1.5 text-sm leading-relaxed">
                   {p.features.map((f) => (
                     <li key={f} className="relative pl-4 before:absolute before:left-0 before:top-2 before:size-1 before:rounded-full before:bg-accent">
@@ -151,15 +155,15 @@ export default function ProjectsView({ lang }: { lang: Lang }) {
               <div className="flex flex-col gap-2 max-sm:order-2">
                 <div className="flex flex-wrap items-center gap-2 text-xs text-muted">
                   {p.pinned && (
-                    <span className="rounded-full border border-transparent bg-accent-soft text-accent-2 px-2.5 py-0.5 font-semibold">{t(lang, "projects.pinned")}</span>
+                    <span className="rounded-full border border-transparent bg-accent-soft text-accent-2 px-2.5 py-0.5 font-semibold">{t("projects.pinned")}</span>
                   )}
                   {p.status !== "local" && (
                     <span className="rounded-full border border-line px-2.5 py-0.5 font-semibold text-foreground">
-                      {t(lang, p.status === "live" ? "status.live" : "status.released")}
+                      {t(p.status === "live" ? "status.live" : "status.released")}
                     </span>
                   )}
                   {p.lead && (
-                    <span className="rounded-full border border-transparent bg-accent-soft text-accent-2 px-2.5 py-0.5 font-semibold">{t(lang, "projects.lead")}</span>
+                    <span className="rounded-full border border-transparent bg-accent-soft text-accent-2 px-2.5 py-0.5 font-semibold">{t("projects.lead")}</span>
                   )}
                   <span className="tabular-nums">{p.period}</span>
                   <span>·</span>
@@ -169,7 +173,7 @@ export default function ProjectsView({ lang }: { lang: Lang }) {
               </div>
 
               <div className={`flex flex-col gap-2 rounded-2xl border border-line bg-background p-4 max-sm:order-5 max-sm:rounded-none max-sm:border-0 max-sm:bg-transparent max-sm:p-0 ${MOBILE_OPEN_ONLY} max-sm:flex-col`}>
-                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">{t(lang, "projects.myPart")}</span>
+                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-muted">{t("projects.myPart")}</span>
                 <ul className="flex flex-col gap-1.5 text-sm leading-relaxed text-muted">
                   {p.myPart.map((m) => (
                     <li key={m}>{m}</li>
@@ -192,7 +196,7 @@ export default function ProjectsView({ lang }: { lang: Lang }) {
                     rel="noreferrer"
                     className="inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-transparent bg-accent-strong text-foreground px-4 py-2.5 text-sm font-bold hover:opacity-85 transition-opacity max-sm:min-w-0 max-sm:flex-1 max-sm:justify-center max-sm:gap-1 max-sm:px-2 max-sm:text-[13px]"
                   >
-                    {t(lang, "projects.live")}
+                    {t("projects.live")}
                     <ExternalLink className="size-4 shrink-0 max-sm:size-3.5 max-[359px]:hidden" />
                   </a>
                 )}

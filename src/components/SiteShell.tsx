@@ -6,10 +6,12 @@ import NavLinks from "@/components/NavLinks";
 import LangSwitch from "@/components/LangSwitch";
 import "@/app/globals.css";
 import { SITE_URL, pageMetadata } from "@/lib/seo";
-import { localizedPath, t, type Lang } from "@/i18n";
+import { localizedPath, type Lang } from "@/i18n";
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import WebFontLoader from "@/components/WebFontLoader";
 import MoreToggleScrollRestore from "@/components/MoreToggleScrollRestore";
+import { NextIntlClientProvider, useMessages, useTranslations } from "next-intl";
+import { tFor } from "@/i18n/translator";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -21,11 +23,12 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-// 언어별 루트 레이아웃((ko) · (en)/en)의 홈 기준 메타데이터 - 다른 페이지는 각 page.tsx 에서 pageMetadata 로 설명·주소를 덮어씀
+// 언어별 루트 레이아웃(app/[locale])의 홈 기준 메타데이터 - 다른 페이지는 각 page.tsx 에서 pageMetadata 로 설명·주소를 덮어씀
 export function rootMetadata(lang: Lang): Metadata {
-  const siteName = t(lang, "site.name");
+  const t = tFor(lang);
+  const siteName = t("site.name");
   return {
-    ...pageMetadata({ description: t(lang, "site.description"), path: "/", lang }),
+    ...pageMetadata({ description: t("site.description"), path: "/", lang }),
     metadataBase: new URL(SITE_URL),
     // 페이지별 제목은 "연혁 · 오원준 포트폴리오" 처럼 뒤에 사이트 이름이 붙음
     title: { default: siteName, template: `%s · ${siteName}` },
@@ -33,15 +36,24 @@ export function rootMetadata(lang: Lang): Metadata {
 }
 
 // 사이트 공통 틀 - <html> 부터 헤더 · 푸터 · 분석 도구까지. 한국어 · 영어 두 루트 레이아웃이 같이 씀
+// 클라이언트 컴포넌트가 useTranslations 로 쓰는 메시지 묶음 - 새 클라이언트 컴포넌트에서 다른 묶음을 쓰면 여기에 추가
+// (빠지면 화면에 키 이름이 그대로 나오고 콘솔에 MISSING_MESSAGE)
+const CLIENT_NAMESPACES = ["nav", "contrib", "log", "series", "gallery", "toggle", "stack"] as const;
+
 export default function SiteShell({ lang, children }: { lang: Lang; children: React.ReactNode }) {
+  const messages = useMessages();
+  const clientMessages = Object.fromEntries(CLIENT_NAMESPACES.map((ns) => [ns, messages[ns]]));
+  const t = useTranslations();
   return (
     <html lang={lang} className={`${geistSans.variable} ${geistMono.variable} dark h-full antialiased`}>
       <body className="min-h-full flex flex-col font-sans">
+        {/* 클라이언트 컴포넌트(메뉴 · 잔디 · 기록 등)의 useTranslations 용 - 쓰는 묶음만 넘김 (전부 넘기면 페이지마다 HTML 약 5KB 증가) */}
+        <NextIntlClientProvider messages={clientMessages}>
         <header className="sticky top-0 z-40 border-b border-line bg-background/70 backdrop-blur-xl">
           <nav className="max-w-5xl mx-auto flex items-center justify-between gap-3 max-[359px]:gap-2 px-4 max-[359px]:px-3 sm:px-6 h-14">
             {/* 휴대폰 폭에선 메뉴가 한 줄에 들어가도록 로고를 줄임. 360px 미만(가장 작은 폰 320px)은 여백·글자를 한 단계 더 줄임 */}
             <Link href={localizedPath(lang, "/")} className="shrink-0 whitespace-nowrap max-[359px]:text-[15px] font-semibold tracking-tight">
-              WONJUN<span className="hidden sm:inline">{t(lang, "nav.logoSuffix")}</span>
+              WONJUN<span className="hidden sm:inline">{t("nav.logoSuffix")}</span>
             </Link>
             <NavLinks lang={lang} />
           </nav>
@@ -54,13 +66,14 @@ export default function SiteShell({ lang, children }: { lang: Lang; children: Re
           {children}
         </main>
         {/* GA 는 쿠키를 써서 이용 안내 한 줄 (Google Analytics 약관의 고지 의무) */}
-        <footer className="max-w-5xl w-full mx-auto px-4 sm:px-6 pb-8 text-xs text-muted print:hidden">{t(lang, "footer.analytics")}</footer>
+        <footer className="max-w-5xl w-full mx-auto px-4 sm:px-6 pb-8 text-xs text-muted print:hidden">{t("footer.analytics")}</footer>
         {/* 방문 통계 (Vercel Web Analytics) - 쿠키 없이 페이지뷰·유입 경로·기기만 집계, Vercel 배포에서만 수집 */}
         <Analytics />
         {/* 웹폰트(페이퍼로지 · Pretendard)는 첫 페인트 뒤에 등록 */}
         <WebFontLoader />
         {/* 휴대폰 접기 버튼: 접으면 펼쳤던 화면 위치로 */}
         <MoreToggleScrollRestore />
+        </NextIntlClientProvider>
       </body>
       {/* 방문 통계 (Google Analytics 4) - 체류 시간 · 스크롤 · 클릭까지. 페이지 로드가 끝난 뒤 받아서 첫 화면엔 영향 없음
           운영 배포에서만 넣음 - 로컬 · 미리보기 방문이 통계에 섞이지 않게 */}

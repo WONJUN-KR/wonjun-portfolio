@@ -15,9 +15,9 @@ export function localizedPath(lang: Lang, path: string): string {
 }
 
 // "/en/projects" → "/projects" (언어 앞부분을 뗀 같은 페이지 주소)
+// 한국어 앞부분(/ko)도 떼어 냄 - proxy 가 /projects 를 내부 /ko/projects 로 바꿔 그리므로 어느 쪽이 와도 같은 결과
 export function pathWithoutLang(pathname: string): string {
   for (const lang of LANGS) {
-    if (lang === DEFAULT_LANG) continue;
     if (pathname === `/${lang}`) return "/";
     if (pathname.startsWith(`/${lang}/`)) return pathname.slice(lang.length + 1);
   }
