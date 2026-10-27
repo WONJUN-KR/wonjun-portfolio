@@ -9,9 +9,10 @@ import { CONTRIBUTIONS_EARLIEST_YEAR, detailText, getContributions, getPosts, ty
 import { getHomeHighlights } from "@/lib/about";
 import SafeImage from "@/components/SafeImage";
 import { getProjects } from "@/lib/projects";
-import { hasPage, localizedPath, t, type Lang } from "@/i18n";
+import { hasPage, localizedPath, type Lang } from "@/i18n";
 import { yearIn } from "@/lib/time";
 import LocalDate from "@/components/LocalDate";
+import { getTranslations } from "next-intl/server";
 
 const LATEST_POSTS_COUNT = 3;
 const FEATURED_PROJECTS_COUNT = 3;
@@ -30,6 +31,7 @@ function availableYears(): number[] {
 // 홈 본문 - 이력서 데이터는 src/lib/about.ts 하드코딩
 // 정적 페이지(ISR) - 잔디는 최근 1년으로 그리고, 주소의 ?year= 는 잔디 컴포넌트가 브라우저에서 처리
 export default async function HomeView({ about, lang }: { about: AboutContent; lang: Lang }) {
+  const t = await getTranslations();
   const [contributions, posts] = await Promise.all([
     getContributions().catch(() => null),
     getPosts().catch(() => []),
@@ -44,7 +46,7 @@ export default async function HomeView({ about, lang }: { about: AboutContent; l
 
   // 숫자 카드 - 커밋 수 같은 활동량 대신 결과 지표 + 근거 한 줄
   const stats = [
-    { label: t(lang, "home.stat.career"), value: profile?.careerPeriod ?? "-", basis: t(lang, "home.stat.careerBasis") },
+    { label: t("home.stat.career"), value: profile?.careerPeriod ?? "-", basis: t("home.stat.careerBasis") },
     ...getHomeHighlights(lang),
   ];
 
@@ -55,9 +57,9 @@ export default async function HomeView({ about, lang }: { about: AboutContent; l
         <div className="flex flex-col gap-6 min-w-0">
           <div className="flex flex-col gap-3">
             <h1 className="text-4xl sm:text-6xl font-bold tracking-tight leading-[1.15] bg-gradient-to-br from-foreground via-foreground to-accent-2 bg-clip-text text-transparent">
-              {profile?.tagline ?? t(lang, "home.taglineFallback")}
+              {profile?.tagline ?? t("home.taglineFallback")}
             </h1>
-            <p className="text-lg text-muted">{t(lang, "home.greeting", { name: profile?.name ?? "WonJun" })}</p>
+            <p className="text-lg text-muted">{t("home.greeting", { name: profile?.name ?? "WonJun" })}</p>
           </div>
           {profile?.intro && (
             <p className="text-base max-sm:text-[15px] sm:text-lg leading-relaxed text-muted whitespace-pre-line">
@@ -71,7 +73,7 @@ export default async function HomeView({ about, lang }: { about: AboutContent; l
                 className="inline-flex items-center gap-2 rounded-full border border-transparent bg-accent-strong text-foreground font-bold px-5 py-2.5 text-sm font-semibold hover:opacity-85 transition-opacity"
               >
                 <Mail className="size-4" />
-                {t(lang, "home.contact")}
+                {t("home.contact")}
               </a>
             )}
             {contacts?.githubPersonal && (
@@ -132,7 +134,7 @@ export default async function HomeView({ about, lang }: { about: AboutContent; l
       {/* Experience - 타임라인 */}
       {careers.length > 0 && (
         <section className="flex flex-col gap-8">
-          <SectionHeader eyebrow="Experience" title={t(lang, "home.experience.title")} href={localizedPath(lang, "/resume")} linkLabel={t(lang, "home.experience.link")} />
+          <SectionHeader eyebrow="Experience" title={t("home.experience.title")} href={localizedPath(lang, "/resume")} linkLabel={t("home.experience.link")} />
           <ol className="relative flex flex-col gap-4 max-sm:gap-10">
             {careers.map((c) => {
               const logo = c.logo; // 회사 로고는 이력서 데이터의 logo 필드(회사명이 언어마다 달라서)
@@ -191,7 +193,7 @@ export default async function HomeView({ about, lang }: { about: AboutContent; l
 
       {/* Projects - 같은 크기 카드 3개 나란히 */}
       <section className="flex flex-col gap-8">
-        <SectionHeader eyebrow="Projects" title={t(lang, "home.projects.title")} href={localizedPath(lang, "/projects")} linkLabel={t(lang, "home.projects.link")} />
+        <SectionHeader eyebrow="Projects" title={t("home.projects.title")} href={localizedPath(lang, "/projects")} linkLabel={t("home.projects.link")} />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-sm:gap-3">
           {featured.map((p) => {
             // 홈은 맛보기(이미지 + 한 줄 소개), 핵심 기능·내가 맡은 부분은 /projects 에서
@@ -219,7 +221,7 @@ export default async function HomeView({ about, lang }: { about: AboutContent; l
                       <h3 className="text-xl max-sm:text-lg font-bold tracking-tight truncate">{p.title}</h3>
                       {p.status !== "local" && (
                         <span className="shrink-0 rounded-full border border-transparent bg-accent-soft text-accent-2 px-2 py-0.5 text-xs font-semibold">
-                          {t(lang, p.status === "live" ? "status.live" : "status.released")}
+                          {t(p.status === "live" ? "status.live" : "status.released")}
                         </span>
                       )}
                     </div>
@@ -236,9 +238,9 @@ export default async function HomeView({ about, lang }: { about: AboutContent; l
       {/* Activity - 글 + 잔디. 기록이 없는 언어(영어판, EN_LOG_ENABLED)는 잔디만 */}
       <section className="flex flex-col gap-8">
         {showLog ? (
-          <SectionHeader eyebrow="Activity" title={t(lang, "home.log.title")} href={localizedPath(lang, "/log")} linkLabel={t(lang, "home.log.link")} />
+          <SectionHeader eyebrow="Activity" title={t("home.log.title")} href={localizedPath(lang, "/log")} linkLabel={t("home.log.link")} />
         ) : (
-          <SectionHeader eyebrow="Activity" title={t(lang, "home.activity.title")} />
+          <SectionHeader eyebrow="Activity" title={t("home.activity.title")} />
         )}
         {showLog && latestPosts.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-sm:gap-3">
@@ -269,8 +271,8 @@ export default async function HomeView({ about, lang }: { about: AboutContent; l
       {/* Contact CTA */}
       <section className="rounded-3xl border border-line bg-surface px-6 max-[359px]:px-4 py-14 sm:py-20 flex flex-col items-center text-center gap-6">
         <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-2">Contact</span>
-        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">{t(lang, "home.cta.title")}</h2>
-        <p className="text-muted max-w-md">{t(lang, "home.cta.body")}</p>
+        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">{t("home.cta.title")}</h2>
+        <p className="text-muted max-w-md">{t("home.cta.body")}</p>
         <div className="flex flex-wrap justify-center gap-3">
           {/* 360px 미만은 메일 주소가 버튼 여백·아이콘까지 들어갈 폭이 안 돼서 여백·글자 크기를 줄이고 아이콘 생략 */}
           {profile?.email && (

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import YearSelector from "@/components/YearSelector";
-import { t, type Lang } from "@/i18n";
+import { type Lang } from "@/i18n";
 import type { ContributionDay } from "@/lib/api";
 import {
   HEATMAP_BG_CLASS,
@@ -10,6 +10,7 @@ import {
   levelFor,
   quartileThresholds,
 } from "@/lib/heatmap";
+import { useTranslations } from "next-intl";
 
 type Props = {
   initialDays: ContributionDay[]; // 서버가 처음 그릴 때 받은 최근 1년 데이터 (홈은 정적 페이지라 주소의 ?year= 는 안 봄)
@@ -28,6 +29,7 @@ const MIN_WEEKS = 26; // 6개월 - 휴대폰처럼 좁아도 이만큼은 보여
 const MAX_STEP = 18; // 넓은 화면에서 칸이 너무 커지지 않게
 
 export default function ContributionsCalendar({ initialDays, initialYear = "", years, lang = "ko" }: Props) {
+  const t = useTranslations();
   const boxRef = useRef<HTMLDivElement>(null);
   const [boxWidth, setBoxWidth] = useState<number | null>(null);
   const [year, setYear] = useState(initialYear);
@@ -93,8 +95,8 @@ export default function ContributionsCalendar({ initialDays, initialYear = "", y
   if (days.length === 0) {
     return (
       <div className="flex flex-col gap-4">
-        {header(t(lang, "contrib.recentYear"))}
-        <p className="text-sm text-muted">{t(lang, "contrib.unavailable")}</p>
+        {header(t("contrib.recentYear"))}
+        <p className="text-sm text-muted">{t("contrib.unavailable")}</p>
       </div>
     );
   }
@@ -180,7 +182,7 @@ export default function ContributionsCalendar({ initialDays, initialYear = "", y
           rx={Math.min(3, cell / 4)}
           className={HEATMAP_FILL_CLASS[level]}
         >
-          <title>{t(lang, "contrib.tooltip", { date: key, n: count })}</title>
+          <title>{t("contrib.tooltip", { date: key, n: count })}</title>
         </rect>,
       );
     }
@@ -190,7 +192,7 @@ export default function ContributionsCalendar({ initialDays, initialYear = "", y
   // 연도를 보고 있을 때도 같은 폭 기준으로 계산 - 예전엔 연도 모드의 1년 전체 주 수로 계산돼서 휴대폰에서도 "최근 1년"으로 보였음
   const recentWeeks = recent ? shownWeeks : boxWidth !== null ? Math.max(MIN_WEEKS, Math.floor(boxWidth / STEP)) : 53;
   const shownMonths = Math.min(12, Math.round(recentWeeks / 4.345));
-  const periodLabel = shownMonths >= 12 ? t(lang, "contrib.recentYear") : t(lang, "contrib.recentMonths", { n: shownMonths });
+  const periodLabel = shownMonths >= 12 ? t("contrib.recentYear") : t("contrib.recentMonths", { n: shownMonths });
 
   return (
     <div className="flex flex-col gap-4">
@@ -199,9 +201,9 @@ export default function ContributionsCalendar({ initialDays, initialYear = "", y
         {/* 합계 · 계정 안내 - 좁아서 한 줄에 안 들어가면 안내가 다음 줄로 (영어 문구가 찌그러져 세 줄 되던 것) */}
         <div className="flex flex-wrap items-baseline gap-x-2">
           <span className="whitespace-nowrap text-sm text-muted">
-            <span className="text-lg font-bold text-accent-2">{shownTotal.toLocaleString("en-US")}</span>{t(lang, "contrib.unit")}
+            <span className="text-lg font-bold text-accent-2">{shownTotal.toLocaleString("en-US")}</span>{t("contrib.unit")}
           </span>
-          <span className="whitespace-nowrap text-xs text-muted">{t(lang, "contrib.combined")}</span>
+          <span className="whitespace-nowrap text-xs text-muted">{t("contrib.combined")}</span>
         </div>
         <div ref={boxRef} className={`${recent ? "overflow-hidden" : "overflow-x-auto"} transition-opacity ${loading ? "opacity-40" : ""}`}>
           <svg

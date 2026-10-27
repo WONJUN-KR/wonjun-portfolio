@@ -4,7 +4,8 @@ import { useMemo, useState } from "react";
 import type { SeriesPostItem } from "@/lib/api";
 import LocalDate from "@/components/LocalDate";
 import { TagList } from "@/components/ui";
-import { DATE_LOCALE, t, type Lang } from "@/i18n";
+import { DATE_LOCALE, type Lang } from "@/i18n";
+import { useTranslations } from "next-intl";
 
 type Order = "asc" | "desc";
 
@@ -14,6 +15,7 @@ const ORDER_OPTIONS = [
 ] as const satisfies readonly { value: Order; label: string }[];
 
 export default function SeriesPostList({ posts, lang = "ko" }: { posts: SeriesPostItem[]; lang?: Lang }) {
+  const t = useTranslations();
   const locale = DATE_LOCALE[lang];
   const [order, setOrder] = useState<Order>("desc");
 
@@ -35,7 +37,7 @@ export default function SeriesPostList({ posts, lang = "ko" }: { posts: SeriesPo
               order === o.value ? "bg-surface-hover text-foreground font-semibold" : "text-muted hover:text-foreground"
             }`}
           >
-            {t(lang, o.label)}
+            {t(o.label)}
           </button>
         ))}
       </div>
