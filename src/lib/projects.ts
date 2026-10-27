@@ -72,9 +72,15 @@ function withText(p: Project, text: ProjectText): Project {
   return { ...p, title: text.title, subtitle: text.subtitle, period: text.period, role: text.role, tagline: text.tagline, features: text.features, myPart: text.myPart, mockup };
 }
 
-const PROJECTS_EN: Project[] = PROJECTS_KO.map((p) => withText(p, PROJECTS_EN_TEXT[p.slug]));
+// 기술 이름 중 한글인 것만 영어판에서 바꿈 (나머지 기술 이름은 두 언어 같음)
+const STACK_EN: Record<string, string> = { 카카오맵: "Kakao Maps" };
 
-// 언어별 프로젝트 목록 - 순서 · 사진 · 스택은 한국어 데이터 그대로
+const PROJECTS_EN: Project[] = PROJECTS_KO.map((p) => ({
+  ...withText(p, PROJECTS_EN_TEXT[p.slug]),
+  stack: p.stack.map((s) => STACK_EN[s] ?? s),
+}));
+
+// 언어별 프로젝트 목록 - 순서 · 사진 · 스택은 한국어 데이터 그대로 (스택의 한글 이름만 STACK_EN)
 export function getProjects(lang: Lang): Project[] {
   return lang === "en" ? PROJECTS_EN : PROJECTS_KO;
 }
