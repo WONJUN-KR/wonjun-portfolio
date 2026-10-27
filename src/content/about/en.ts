@@ -43,7 +43,7 @@ export const ABOUT_EN: AboutContent = {
       role: "Full-stack Developer",
       period: "Mar 2026 – Present",
       isCurrent: true,
-      summary: "Handle 6 concurrent projects end to end: CGM web services, a data platform, and IoT",
+      summary: "Handle 6 concurrent projects end to end: CGM web services, a data platform, and an IoT platform",
       projects: [
         {
           title: "Patient CGM Monitoring Service: AWS migration, deployments, and a new admin console",

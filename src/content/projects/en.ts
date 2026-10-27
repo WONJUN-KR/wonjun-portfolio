@@ -122,7 +122,7 @@ export const PROJECTS_EN_TEXT = {
     subtitle: "Home decor community and shop",
     period: "Sep – Oct 2025",
     role: "Full-stack developer, team of 5",
-    tagline: "Share interior ideas and buy featured products, like Korea's Today's House",
+    tagline: "Share interior ideas and shop interior products, like Korea's Today's House",
     features: [
       "Sells products through Toss Payments",
       "Hosts community posts and comments",
