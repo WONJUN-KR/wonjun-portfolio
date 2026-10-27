@@ -10,7 +10,7 @@ import { ABOUT_KO } from "./ko";
 export const HOME_HIGHLIGHTS_EN: { label: string; value: string; basis: string }[] = [
   { label: "Built from scratch", value: "3 tools", basis: "Glucose, sensor, notes" },
   { label: "Zero-downtime", value: "3 services", basis: "0 outages during deploys" },
-  { label: "Lossless AWS moves", value: "2", basis: "Zero data loss" },
+  { label: "AWS migrations", value: "2", basis: "Zero data loss" },
 ];
 
 // 이력서 데이터 - 홈(/en)과 Resume(/en/resume)이 함께 씀
@@ -43,7 +43,7 @@ export const ABOUT_EN: AboutContent = {
       role: "Full-stack Developer",
       period: "Mar 2026 – Present",
       isCurrent: true,
-      summary: "Responsible for 6 concurrent projects across CGM medical device web services, an internal data platform, and an IoT platform, from development to infrastructure and deployment",
+      summary: "Handle 6 concurrent projects end to end: CGM web services, a data platform, and IoT",
       projects: [
         {
           title: "Patient CGM Monitoring Service: AWS migration, deployments, and a new admin console",
@@ -58,7 +58,7 @@ export const ABOUT_EN: AboutContent = {
               },
             },
             {
-              text: "Built keyless CI/CD (GitHub Actions + OIDC + SSM) and nginx blue/green zero-downtime deploys; confirmed 0 failures in 236 external checks on the first dev cutover before rolling out to production, at no extra cost",
+              text: "Built keyless CI/CD (GitHub Actions + OIDC + SSM) and nginx blue/green zero-downtime deploys at no extra cost; verified 0 failures in 236 external checks on the first dev cutover before rolling out to production",
               evidence: {
                 method: "Called the login API every 0.5 s during deployment; any non-OK response counted as a failure",
                 env: "Dev server (same setup as production)",
@@ -73,9 +73,9 @@ export const ABOUT_EN: AboutContent = {
                 when: "Aug 2026",
               },
             },
-            "Traced why web and app results differed and raised the match rate from about 40% to 100%",
+            "Found why web and app results differed, raising the match rate from about 40% to 100%",
             "Built an admin console from scratch (users, devices, permissions) and migrated permission strings to code-based RBAC with zero downtime",
-            "Moved time storage to UTC and React screens to each user's local time with zero downtime: 0 rows lost, 0 changes to Korean screens in golden tests",
+            "Migrated timestamps to UTC storage with local-time display in React, with zero downtime: 0 rows lost and 0 changes to Korean screens in golden tests",
           ],
         },
         {
@@ -181,7 +181,7 @@ export const ABOUT_EN: AboutContent = {
             "Audited and fixed all 60 security vulnerabilities, including SQL injection and XSS",
             "Raised the WAX Scanner accessibility score from 70 to 90, earning KWCAG certification",
             "Developed and optimized the Ministry of Justice Solomon Law portal, an LMS, and a facility management system",
-            "Tuned queries to resolve N+1 problems",
+            "Fixed N+1 queries through query tuning",
             "Designed RESTful APIs and built log and statistics dashboards",
           ],
         },
@@ -242,7 +242,7 @@ export const ABOUT_EN: AboutContent = {
       period: "Jul 2021 – Jan 2022",
       learned: ["Java", "Oracle", "JSP", "HTML5", "CSS3", "JavaScript", "jQuery", "Spring"],
       projects: [
-        "3 team projects (teams of 4-5, Aug 2021 – Jan 2022): basketball team site, travel spot sharing site, and transit booking app",
+        "3 team projects (teams of 4–5, Aug 2021 – Jan 2022): basketball team site, travel spot sharing site, and transit booking app",
       ],
       sortOrder: 2,
     },
@@ -303,5 +303,5 @@ Full-stack developer at a continuous glucose monitoring (CGM) medical device com
 
 Built keyless CI/CD with blue/green zero-downtime deploys at no extra cost, and moved two on-premises services to AWS with zero data loss and about 2.5 minutes of downtime. On a legacy data platform, grew tests from 0 to 211 and cut a 20-second query to 0.6 seconds.
 
-Works on one rule: medical data must never lose a row, and the service must never stop. Backs up, dry-runs, and fully reconciles before changing production data.`,
+Guided by one rule: never lose a row of medical data, and never let the service go down. Backs up, dry-runs, and fully reconciles before changing production data.`,
 };
