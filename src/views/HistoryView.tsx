@@ -1,12 +1,15 @@
 import type { Metadata } from "next";
 import { pageMetadata } from "@/lib/seo";
-import { t, type Lang } from "@/i18n";
+import { type Lang } from "@/i18n";
 import type { RoadmapItem } from "@/lib/api";
 import { getHistory } from "@/lib/history";
 import { PageHeader } from "@/components/ui";
+import { useTranslations } from "next-intl";
+import { tFor } from "@/i18n/translator";
 
 export function historyMetadata(lang: Lang): Metadata {
-  return pageMetadata({ title: t(lang, "meta.history.title"), description: t(lang, "meta.history.description"), path: "/history", lang });
+  const t = tFor(lang);
+  return pageMetadata({ title: t("meta.history.title"), description: t("meta.history.description"), path: "/history", lang });
 }
 
 // period "2024.11" → 연도별로 묶고, 연도·항목 모두 최신이 위
@@ -25,14 +28,15 @@ function groupByYear(items: RoadmapItem[], other: string): { year: string; items
 
 // 연혁 페이지 본문 - 한국어 · 영어 페이지가 같이 씀
 export default function HistoryView({ lang }: { lang: Lang }) {
-  const years = groupByYear(getHistory(lang), t(lang, "history.other"));
+  const t = useTranslations();
+  const years = groupByYear(getHistory(lang), t("history.other"));
   // "2024.11" 의 월 → 한국어 "11월" · 영어 "Nov"
   const monthLabel = (period: string) =>
     lang === "en" ? new Date(Date.UTC(2000, Number(period.slice(5, 7)) - 1, 1)).toLocaleString("en-US", { month: "short", timeZone: "UTC" }) : `${period.slice(5, 7)}월`;
 
   return (
     <div className="flex flex-col gap-12 py-6">
-      <PageHeader eyebrow="History" title={t(lang, "history.title")} />
+      <PageHeader eyebrow="History" title={t("history.title")} />
 
       <div className="flex flex-col">
         {years.map(({ year, items }) => (
@@ -50,7 +54,7 @@ export default function HistoryView({ lang }: { lang: Lang }) {
                     <div className="flex flex-wrap items-center gap-2">
                       <h3 className="font-semibold tracking-tight">{item.title}</h3>
                       {item.status === "IN_PROGRESS" && (
-                        <span className="rounded-full border border-transparent bg-accent-soft px-2 py-0.5 text-xs font-semibold text-accent-2">{t(lang, "history.current")}</span>
+                        <span className="rounded-full border border-transparent bg-accent-soft px-2 py-0.5 text-xs font-semibold text-accent-2">{t("history.current")}</span>
                       )}
                     </div>
                     {item.description && <p className="text-sm text-muted">{item.description}</p>}

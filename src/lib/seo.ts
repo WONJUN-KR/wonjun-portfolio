@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { OG_ALT, OG_SIZE } from "@/lib/ogImage";
-import { DEFAULT_LANG, LANGS, OG_LOCALE, hasPage, localizedPath, t, type Lang } from "@/i18n";
+import { DEFAULT_LANG, LANGS, OG_LOCALE, hasPage, localizedPath, type Lang } from "@/i18n";
+import { tFor } from "@/i18n/translator";
 
 // 링크 미리보기 이미지 등 절대 주소의 기준 - 도메인 바꾸면 여기만 수정
 export const SITE_URL = "https://wonjun.page";
@@ -16,7 +17,8 @@ const ogImage = (lang: Lang) => ({ url: OG_IMAGE_URL[lang], ...OG_SIZE, alt: OG_
 // 페이지별 제목·설명·주소를 description · og · twitter 에 똑같이 반영
 // path 는 언어 앞부분 없는 주소("/projects") - canonical 은 그 언어 주소, alternates 에 언어별 주소(hreflang) + x-default(한국어)
 export function pageMetadata({ title, description, path, lang = DEFAULT_LANG }: { title?: string; description: string; path: string; lang?: Lang }): Metadata {
-  const siteName = t(lang, "site.name");
+  const t = tFor(lang);
+  const siteName = t("site.name");
   const fullTitle = title ? `${title} · ${siteName}` : siteName;
   const url = localizedPath(lang, path);
   return {

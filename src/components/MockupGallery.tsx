@@ -4,8 +4,9 @@ import { useEffect, useRef, useState, type PointerEvent, type ReactNode } from "
 import { ArrowLeftRight, ChevronLeft, ChevronRight, Play, X } from "lucide-react";
 import type { Mockup } from "@/lib/projects";
 import SafeImage from "@/components/SafeImage";
-import { t, type Lang } from "@/i18n";
+import { type Lang } from "@/i18n";
 import { trackEvent } from "@/lib/analytics";
+import { useTranslations } from "next-intl";
 
 type Slide =
   | { kind: "video"; webm: string; mp4: string; poster: string; caption: string }
@@ -28,6 +29,7 @@ const OPEN_EVENT = "mockup:open";
 // 넘기기: ‹ › 버튼 · 키보드 ← → · 터치 스와이프, 위치는 오른쪽 위 'n / 전체' (하단 점은 장 수가 많으면 휴대폰에서 두 줄로 넘쳐서 뺌)
 // prefers-reduced-motion 이면 슬라이드 전환 애니메이션 없음
 export default function MockupGallery({ slug, title, mockup, children, lang = "ko" }: { slug: string; title: string; mockup: Mockup; children: ReactNode; lang?: Lang }) {
+  const t = useTranslations();
   const ref = useRef<HTMLDialogElement>(null);
   const startX = useRef<number | null>(null);
   const [open, setOpen] = useState(false);
@@ -90,22 +92,22 @@ export default function MockupGallery({ slug, title, mockup, children, lang = "k
           setIndex(0);
           setOpen(true);
         }}
-        aria-label={t(lang, "gallery.openAria", { title, shots: mockup.shots.length, videos: mockup.videos.length })}
+        aria-label={t("gallery.openAria", { title, shots: mockup.shots.length, videos: mockup.videos.length })}
         className="group/shot relative block w-full cursor-pointer rounded-2xl text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
       >
         {children}
         <span className="pointer-events-none absolute right-3 bottom-3 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-black/65 px-3.5 py-2 text-sm font-semibold text-white shadow-lg backdrop-blur transition-colors group-hover/shot:bg-black/80 max-sm:right-2 max-sm:bottom-2 max-sm:px-3 max-sm:py-1.5 max-sm:text-[13px]">
           <Play className="size-4 fill-current max-sm:size-3.5" />
-          {t(lang, "gallery.open")}
+          {t("gallery.open")}
           <span className="font-normal text-white/75">
-            · {t(lang, "gallery.badgeShots", { n: mockup.shots.length })}{mockup.videos.length > 0 && ` · ${t(lang, "gallery.badgeVideos", { n: mockup.videos.length })}`}
+            · {t("gallery.badgeShots", { n: mockup.shots.length })}{mockup.videos.length > 0 && ` · ${t("gallery.badgeVideos", { n: mockup.videos.length })}`}
           </span>
         </span>
       </button>
 
       <dialog
         ref={ref}
-        aria-label={t(lang, "gallery.dialogAria", { title })}
+        aria-label={t("gallery.dialogAria", { title })}
         onClose={() => setOpen(false)}
         // 바깥(backdrop) 클릭으로 닫기 - dialog 자신이 클릭 대상이면 안쪽 내용이 아닌 바깥
         onClick={(e) => e.target === e.currentTarget && ref.current?.close()}
@@ -139,7 +141,7 @@ export default function MockupGallery({ slug, title, mockup, children, lang = "k
                 <button
                   type="button"
                   onClick={() => ref.current?.close()}
-                  aria-label={t(lang, "gallery.close")}
+                  aria-label={t("gallery.close")}
                   className="rounded-full border border-line p-2 hover:bg-surface-hover transition-colors"
                 >
                   <X className="size-4" />
@@ -199,10 +201,10 @@ export default function MockupGallery({ slug, title, mockup, children, lang = "k
                   ))}
                 </div>
               </div>
-              <button type="button" onClick={() => go(index - 1)} disabled={index === 0} aria-label={t(lang, "gallery.prev")} className={`${navButton} left-2`}>
+              <button type="button" onClick={() => go(index - 1)} disabled={index === 0} aria-label={t("gallery.prev")} className={`${navButton} left-2`}>
                 <ChevronLeft className="size-5" />
               </button>
-              <button type="button" onClick={() => go(index + 1)} disabled={index === last} aria-label={t(lang, "gallery.next")} className={`${navButton} right-2`}>
+              <button type="button" onClick={() => go(index + 1)} disabled={index === last} aria-label={t("gallery.next")} className={`${navButton} right-2`}>
                 <ChevronRight className="size-5" />
               </button>
             </div>

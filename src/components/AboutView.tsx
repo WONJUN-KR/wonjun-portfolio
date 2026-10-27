@@ -5,8 +5,9 @@ import { detailText, type AboutContent, type CareerDetail, type Evidence } from 
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import SkillGroups from "@/components/SkillGroups";
 import PrintButton from "@/components/PrintButton";
-import { t, type Lang } from "@/i18n";
+import { type Lang } from "@/i18n";
 import { Eyebrow, MOBILE_OPEN_ONLY_INLINE, MOBILE_OPEN_ONLY_ITEM, MOBILE_TOGGLE, MobileMoreInput, MobileMoreToggle, StackChips } from "@/components/ui";
+import { useTranslations } from "next-intl";
 
 // 헤더 링크 · PDF 저장 버튼 공통 모양 (색은 따로 - 링크는 테두리만, PDF 저장은 크림색 바탕으로 눈에 띄게)
 const HEADER_BUTTON =
@@ -16,6 +17,7 @@ const PDF_BUTTON = `${HEADER_BUTTON} cursor-pointer border-transparent bg-foregr
 
 // resume 페이지 본문 - 데이터는 src/lib/about.ts
 export default function AboutView({ about, lang = "ko" }: { about: AboutContent; lang?: Lang }) {
+  const t = useTranslations();
 
   const { profile, careers, educations, trainings, certifications, skills, portfolios, military, coverLetter } = about;
   const sortedCareers = [...careers].sort((a, b) => a.sortOrder - b.sortOrder);
@@ -53,7 +55,7 @@ export default function AboutView({ about, lang = "ko" }: { about: AboutContent;
               {l.label}
             </a>
           ))}
-          <PrintButton fileName={t(lang, "resume.pdfFile", { name: profile.name })} label={t(lang, "resume.pdf")} className={`${PDF_BUTTON} max-sm:basis-full`} />
+          <PrintButton fileName={t("resume.pdfFile", { name: profile.name })} label={t("resume.pdf")} className={`${PDF_BUTTON} max-sm:basis-full`} />
         </div>
       </header>
 
@@ -62,21 +64,21 @@ export default function AboutView({ about, lang = "ko" }: { about: AboutContent;
       {/* 휴대폰은 홈 숫자 카드처럼 한 상자 안에 한 줄씩 (이름·설명 왼쪽, 값 오른쪽) - 값 칸은 최대 65%, 넘으면 값도 줄바꿈 (영어 자격증 이름처럼 긴 값이 화면 밖으로 안 나가게) */}
       <section className="grid grid-cols-2 max-sm:grid-cols-1 md:grid-cols-4 gap-3 max-sm:gap-0 max-sm:rounded-2xl max-sm:border max-sm:border-line max-sm:bg-surface max-sm:divide-y max-sm:divide-line">
         <InfoBox
-          label={t(lang, "resume.info.career")}
+          label={t("resume.info.career")}
           value={profile.careerPeriod}
-          sub={currentCareer ? t(lang, "resume.info.currentAt", { company: currentCareer.company }) : undefined}
+          sub={currentCareer ? t("resume.info.currentAt", { company: currentCareer.company }) : undefined}
         />
-        <InfoBox label={t(lang, "resume.info.field")} value={t(lang, "resume.info.fieldValue")} sub={t(lang, "resume.info.fieldSub")} />
-        <InfoBox label={t(lang, "resume.info.education")} value={t(lang, "resume.info.educationValue")} sub={t(lang, "resume.info.educationSub")} />
+        <InfoBox label={t("resume.info.field")} value={t("resume.info.fieldValue")} sub={t("resume.info.fieldSub")} />
+        <InfoBox label={t("resume.info.education")} value={t("resume.info.educationValue")} sub={t("resume.info.educationSub")} />
         <InfoBox
-          label={t(lang, "resume.info.certs")}
+          label={t("resume.info.certs")}
           value={certifications.slice(0, 2).map((c) => c.short ?? c.name.replace(/\s*\(.*\)$/, "")).join(" · ")}
-          sub={certifications.length > 2 ? t(lang, "resume.info.certsMore", { n: certifications.length - 2 }) : undefined}
+          sub={certifications.length > 2 ? t("resume.info.certsMore", { n: certifications.length - 2 }) : undefined}
         />
       </section>
 
       {coverLetter && (
-      <Section eyebrow={t(lang, "resume.coverLetterEyebrow")} title={t(lang, "resume.coverLetter")}>
+      <Section eyebrow={t("resume.coverLetterEyebrow")} title={t("resume.coverLetter")}>
         <div className="rounded-3xl border border-line bg-surface p-5 sm:p-10 max-sm:rounded-none max-sm:border-0 max-sm:bg-transparent max-sm:p-0">
           {/* 휴대폰은 앞부분만 보여주고 '전체 읽기' ↔ '접기' - JS 없이 체크박스 + :has */}
           <div className="group/cover flex flex-col">
@@ -88,8 +90,8 @@ export default function AboutView({ about, lang = "ko" }: { about: AboutContent;
             {coverFolds && (
             <label data-more-toggle="" className={`sm:hidden mt-3 ${MOBILE_TOGGLE}`}>
               <input type="checkbox" className="peer sr-only" />
-              <span className="peer-checked:hidden">{t(lang, "resume.readAll")}</span>
-              <span className="hidden peer-checked:inline">{t(lang, "toggle.less")}</span>
+              <span className="peer-checked:hidden">{t("resume.readAll")}</span>
+              <span className="hidden peer-checked:inline">{t("toggle.less")}</span>
               <ChevronDown className="size-3.5 transition-transform peer-checked:rotate-180" />
             </label>
             )}
@@ -98,11 +100,11 @@ export default function AboutView({ about, lang = "ko" }: { about: AboutContent;
       </Section>
       )}
 
-      <Section eyebrow="Skills" title={t(lang, "resume.skills")}>
+      <Section eyebrow="Skills" title={t("resume.skills")}>
         <SkillGroups skills={skills} lang={lang} />
       </Section>
 
-      <Section eyebrow="Experience" title={t(lang, "resume.experience")} sub={profile.careerPeriod}>
+      <Section eyebrow="Experience" title={t("resume.experience")} sub={profile.careerPeriod}>
         {/* 휴대폰은 회사마다 프로젝트 제목만 - 기간·상세(작은 글씨)·기술은 내용 아래 '자세히 보기'로 그 회사만 펼침, 같은 버튼이 '접기'로 바뀜 */}
         <Timeline>
           {sortedCareers.map((c, idx) => (
@@ -137,7 +139,7 @@ export default function AboutView({ about, lang = "ko" }: { about: AboutContent;
       </Section>
 
       {sortedTrainings.length > 0 && (
-      <Section eyebrow="Training" title={t(lang, "resume.training")}>
+      <Section eyebrow="Training" title={t("resume.training")}>
         <Timeline>
           {sortedTrainings.map((tr, idx) => (
             <TimelineItem key={idx} period={tr.period}>
@@ -154,7 +156,7 @@ export default function AboutView({ about, lang = "ko" }: { about: AboutContent;
       </Section>
       )}
 
-      <Section eyebrow="Education" title={t(lang, "resume.education")}>
+      <Section eyebrow="Education" title={t("resume.education")}>
         <Timeline>
           {sortedEducations.map((e, idx) => (
             <TimelineItem key={idx} period={[e.period, e.status].filter(Boolean).join(" · ")}>
@@ -164,8 +166,8 @@ export default function AboutView({ about, lang = "ko" }: { about: AboutContent;
               </div>
               {(e.region || e.gpa) && (
                 <div className="flex flex-wrap gap-x-4 text-xs text-muted">
-                  {e.region && <span>{t(lang, "resume.region", { v: e.region })}</span>}
-                  {e.gpa && <span>{t(lang, "resume.gpa", { v: e.gpa })}</span>}
+                  {e.region && <span>{t("resume.region", { v: e.region })}</span>}
+                  {e.gpa && <span>{t("resume.gpa", { v: e.gpa })}</span>}
                 </div>
               )}
               {e.projects && e.projects.length > 0 && <BulletList items={e.projects} lang={lang} />}
@@ -175,7 +177,7 @@ export default function AboutView({ about, lang = "ko" }: { about: AboutContent;
       </Section>
 
       {certifications.length > 0 && (
-      <Section eyebrow="Certifications" title={t(lang, "resume.certifications")}>
+      <Section eyebrow="Certifications" title={t("resume.certifications")}>
         <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
           {certifications.map((c, idx) => (
             <li key={idx} className="rounded-2xl border border-line bg-surface p-5 flex flex-col gap-1">
@@ -188,16 +190,16 @@ export default function AboutView({ about, lang = "ko" }: { about: AboutContent;
       )}
 
       {military && (
-        <Section eyebrow="Etc" title={t(lang, "resume.etc")}>
+        <Section eyebrow="Etc" title={t("resume.etc")}>
           <div className="rounded-2xl border border-line bg-surface p-5 text-sm">
-            <span className="font-semibold">{t(lang, "resume.military")} · {military.status}</span>
+            <span className="font-semibold">{t("resume.military")} · {military.status}</span>
             <span className="text-muted"> - {military.type} ({military.period})</span>
           </div>
         </Section>
       )}
 
       {portfolios.length > 0 && (
-      <Section eyebrow="Portfolio" title={t(lang, "resume.portfolio")} sub={t(lang, "resume.portfolioCount", { n: portfolios.length })}>
+      <Section eyebrow="Portfolio" title={t("resume.portfolio")} sub={t("resume.portfolioCount", { n: portfolios.length })}>
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {portfolios.map((p, idx) => (
             <li key={idx}>
@@ -211,7 +213,7 @@ export default function AboutView({ about, lang = "ko" }: { about: AboutContent;
                   <div className="font-semibold group-hover:text-accent-2 transition-colors">{p.title}</div>
                   <div className="text-xs text-muted">
                     {p.period}
-                    {p.teamSize && ` · ${t(lang, "resume.teamSize", { n: p.teamSize })}`}
+                    {p.teamSize && ` · ${t("resume.teamSize", { n: p.teamSize })}`}
                   </div>
                 </div>
                 <ExternalLink className="size-4 shrink-0 text-muted group-hover:text-accent-2 transition-colors" />
@@ -299,15 +301,16 @@ function BulletList({ items, mobileKeep, lang }: { items: CareerDetail[]; mobile
 
 // 숫자 줄 끝의 ⓘ - 누르면 측정 방식·환경·시기가 아래로 펼쳐짐 (details/summary 라 JS 없이 동작, 키보드 Enter/Space 로도 열림)
 function EvidencePin({ evidence, lang }: { evidence: Evidence; lang: Lang }) {
+  const t = useTranslations();
   const rows: [string, string][] = [
-    [t(lang, "evidence.method"), evidence.method],
-    [t(lang, "evidence.env"), evidence.env],
-    [t(lang, "evidence.when"), evidence.when],
+    [t("evidence.method"), evidence.method],
+    [t("evidence.env"), evidence.env],
+    [t("evidence.when"), evidence.when],
   ];
   return (
     <details className="group/pin inline">
       <summary
-        aria-label={t(lang, "evidence.aria")}
+        aria-label={t("evidence.aria")}
         className="ml-1 inline-flex size-5 cursor-pointer list-none items-center justify-center rounded-full border border-accent-2 align-[1px] text-[12px] font-bold leading-none text-accent-2 transition-colors group-open/pin:bg-accent-2 group-open/pin:text-background [&::-webkit-details-marker]:hidden"
       >
         i
