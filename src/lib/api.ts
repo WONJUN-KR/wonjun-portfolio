@@ -171,6 +171,9 @@ export type CareerProject = {
 };
 
 export type CareerItem = {
+  // 언어별 파일(content/about/ko · en)끼리 같은 항목인지 맞춰보는 키 · 회사 로고 경로(회사명이 언어마다 달라서 따로 둠)
+  id?: string;
+  logo?: string;
   company: string;
   position?: string;
   role?: string;
@@ -185,6 +188,7 @@ export type CareerItem = {
 };
 
 export type EducationItem = {
+  id?: string;
   school: string;
   department?: string;
   period: string;
@@ -206,6 +210,7 @@ export type TrainingItem = {
 
 export type CertificationItem = {
   name: string;
+  short?: string; // 이력서 요약 칸에 쓰는 짧은 이름 (없으면 name 에서 괄호 뺀 것)
   issuer: string;
   acquiredAt: string;
 };

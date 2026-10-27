@@ -1,5 +1,7 @@
 "use client";
 
+import { t, type Lang } from "@/i18n";
+
 // 잔디 연도 선택 상자 - 값과 바뀔 때 할 일은 잔디 컴포넌트가 정함 (페이지 이동 없음)
 type Props = {
   years: number[];
@@ -7,12 +9,14 @@ type Props = {
   onChange: (year: string) => void;
   defaultLabel?: string;
   disabled?: boolean;
+  lang?: Lang;
 };
 
-export default function YearSelector({ years, value, onChange, defaultLabel = "최근 1년", disabled = false }: Props) {
+export default function YearSelector({ years, value, onChange, defaultLabel, disabled = false, lang = "ko" }: Props) {
+  defaultLabel ??= t(lang, "contrib.recentYear");
   return (
     <select
-      aria-label="잔디 기간 선택"
+      aria-label={t(lang, "contrib.periodAria")}
       value={value}
       onChange={(e) => onChange(e.target.value)}
       disabled={disabled}
@@ -21,7 +25,7 @@ export default function YearSelector({ years, value, onChange, defaultLabel = "�
       <option value="">{defaultLabel}</option>
       {years.map((y) => (
         <option key={y} value={y}>
-          {y}년
+          {t(lang, "contrib.year", { y })}
         </option>
       ))}
     </select>

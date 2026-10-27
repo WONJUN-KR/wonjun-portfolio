@@ -6,23 +6,22 @@ import ContributionsCalendar from "@/components/ContributionsCalendar";
 import { GithubIcon, LinkedinIcon } from "@/components/icons";
 import { SectionHeader, StackChips } from "@/components/ui";
 import { CONTRIBUTIONS_EARLIEST_YEAR, detailText, getContributions, getPosts, type AboutContent } from "@/lib/api";
-import { HOME_HIGHLIGHTS } from "@/lib/about";
+import { getHomeHighlights } from "@/lib/about";
 import SafeImage from "@/components/SafeImage";
-import { PROJECTS } from "@/lib/projects";
+import { getProjects } from "@/lib/projects";
+import { hasPage, localizedPath, t, type Lang } from "@/i18n";
+import { yearIn } from "@/lib/time";
+import LocalDate from "@/components/LocalDate";
 
 const LATEST_POSTS_COUNT = 3;
 const FEATURED_PROJECTS_COUNT = 3;
 
-const COMPANY_LOGOS: Record<string, string> = {
-  "(주)유엑스엔": "/logos/uxn.jpg",
-  "상상스토리(주)": "/logos/sangs.jpg",
-};
 
 const PROFILE_IMG = "/img/profile.jpg";
 const hasProfileImg = fs.existsSync(path.join(process.cwd(), "public", PROFILE_IMG));
 
 function availableYears(): number[] {
-  const now = new Date().getFullYear();
+  const now = yearIn();
   const years: number[] = [];
   for (let y = now; y >= CONTRIBUTIONS_EARLIEST_YEAR; y--) years.push(y);
   return years;
@@ -30,7 +29,7 @@ function availableYears(): number[] {
 
 // 홈 본문 - 이력서 데이터는 src/lib/about.ts 하드코딩
 // 정적 페이지(ISR) - 잔디는 최근 1년으로 그리고, 주소의 ?year= 는 잔디 컴포넌트가 브라우저에서 처리
-export default async function HomeView({ about }: { about: AboutContent }) {
+export default async function HomeView({ about, lang }: { about: AboutContent; lang: Lang }) {
   const [contributions, posts] = await Promise.all([
     getContributions().catch(() => null),
     getPosts().catch(() => []),
@@ -39,13 +38,14 @@ export default async function HomeView({ about }: { about: AboutContent }) {
   const profile = about?.profile;
   const contacts = profile?.contacts;
   const careers = [...(about?.careers ?? [])].sort((a, b) => a.sortOrder - b.sortOrder);
+  const showLog = hasPage(lang, "/log");
   const latestPosts = posts.slice(0, LATEST_POSTS_COUNT);
-  const featured = PROJECTS.slice(0, FEATURED_PROJECTS_COUNT);
+  const featured = getProjects(lang).slice(0, FEATURED_PROJECTS_COUNT);
 
   // 숫자 카드 - 커밋 수 같은 활동량 대신 결과 지표 + 근거 한 줄
   const stats = [
-    { label: "경력", value: profile?.careerPeriod ?? "-", basis: "UXN 재직 중" },
-    ...HOME_HIGHLIGHTS,
+    { label: t(lang, "home.stat.career"), value: profile?.careerPeriod ?? "-", basis: t(lang, "home.stat.careerBasis") },
+    ...getHomeHighlights(lang),
   ];
 
   return (
@@ -55,9 +55,9 @@ export default async function HomeView({ about }: { about: AboutContent }) {
         <div className="flex flex-col gap-6 min-w-0">
           <div className="flex flex-col gap-3">
             <h1 className="text-4xl sm:text-6xl font-bold tracking-tight leading-[1.15] bg-gradient-to-br from-foreground via-foreground to-accent-2 bg-clip-text text-transparent">
-              {profile?.tagline ?? "풀스택 개발자"}
+              {profile?.tagline ?? t(lang, "home.taglineFallback")}
             </h1>
-            <p className="text-lg text-muted">안녕하세요, {profile?.name ?? "WonJun"}입니다.</p>
+            <p className="text-lg text-muted">{t(lang, "home.greeting", { name: profile?.name ?? "WonJun" })}</p>
           </div>
           {profile?.intro && (
             <p className="text-base max-sm:text-[15px] sm:text-lg leading-relaxed text-muted whitespace-pre-line">
@@ -71,7 +71,7 @@ export default async function HomeView({ about }: { about: AboutContent }) {
                 className="inline-flex items-center gap-2 rounded-full border border-transparent bg-accent-strong text-foreground font-bold px-5 py-2.5 text-sm font-semibold hover:opacity-85 transition-opacity"
               >
                 <Mail className="size-4" />
-                연락하기
+                {t(lang, "home.contact")}
               </a>
             )}
             {contacts?.githubPersonal && (
@@ -132,12 +132,12 @@ export default async function HomeView({ about }: { about: AboutContent }) {
       {/* Experience - 타임라인 */}
       {careers.length > 0 && (
         <section className="flex flex-col gap-8">
-          <SectionHeader eyebrow="Experience" title="경력" href="/resume" linkLabel="이력서 보기" />
+          <SectionHeader eyebrow="Experience" title={t(lang, "home.experience.title")} href={localizedPath(lang, "/resume")} linkLabel={t(lang, "home.experience.link")} />
           <ol className="relative flex flex-col gap-4 max-sm:gap-10">
             {careers.map((c) => {
-              const logo = COMPANY_LOGOS[c.company];
+              const logo = c.logo; // 회사 로고는 이력서 데이터의 logo 필드(회사명이 언어마다 달라서)
               return (
-                <li key={c.company + c.period} className="rounded-3xl border border-line bg-surface p-4 sm:p-8 flex flex-col gap-5 max-sm:rounded-none max-sm:border-x-0 max-sm:border-b-0 max-sm:bg-transparent max-sm:px-0 max-sm:pb-0 max-sm:pt-6">
+                <li key={c.id ?? c.company + c.period} className="rounded-3xl border border-line bg-surface p-4 sm:p-8 flex flex-col gap-5 max-sm:rounded-none max-sm:border-x-0 max-sm:border-b-0 max-sm:bg-transparent max-sm:px-0 max-sm:pb-0 max-sm:pt-6">
                   <div className="flex items-start gap-4">
                     <div className="relative shrink-0 size-12 rounded-xl bg-white border border-line flex items-center justify-center overflow-hidden p-1.5">
                       {logo ? (
@@ -181,7 +181,7 @@ export default async function HomeView({ about }: { about: AboutContent }) {
                       ))}
                     </div>
                   )}
-                  {c.stack && <StackChips items={c.stack} />}
+                  {c.stack && <StackChips items={c.stack} lang={lang} />}
                 </li>
               );
             })}
@@ -191,7 +191,7 @@ export default async function HomeView({ about }: { about: AboutContent }) {
 
       {/* Projects - 같은 크기 카드 3개 나란히 */}
       <section className="flex flex-col gap-8">
-        <SectionHeader eyebrow="Projects" title="포트폴리오" href="/projects" linkLabel="프로젝트 모두 보기" />
+        <SectionHeader eyebrow="Projects" title={t(lang, "home.projects.title")} href={localizedPath(lang, "/projects")} linkLabel={t(lang, "home.projects.link")} />
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-sm:gap-3">
           {featured.map((p) => {
             // 홈은 맛보기(이미지 + 한 줄 소개), 핵심 기능·내가 맡은 부분은 /projects 에서
@@ -199,7 +199,7 @@ export default async function HomeView({ about }: { about: AboutContent }) {
             return (
               <Link
                 key={p.slug}
-                href={`/projects#${p.slug}`}
+                href={`${localizedPath(lang, "/projects")}#${p.slug}`}
                 className="group relative flex flex-col overflow-hidden rounded-3xl border border-line bg-surface transition-all hover:-translate-y-1 hover:border-accent/40 hover:shadow-xl hover:shadow-accent/5"
               >
                 {visual && (
@@ -219,7 +219,7 @@ export default async function HomeView({ about }: { about: AboutContent }) {
                       <h3 className="text-xl max-sm:text-lg font-bold tracking-tight truncate">{p.title}</h3>
                       {p.status !== "local" && (
                         <span className="shrink-0 rounded-full border border-transparent bg-accent-soft text-accent-2 px-2 py-0.5 text-xs font-semibold">
-                          {p.status === "live" ? "운영 중" : "앱 배포"}
+                          {t(lang, p.status === "live" ? "status.live" : "status.released")}
                         </span>
                       )}
                     </div>
@@ -233,10 +233,14 @@ export default async function HomeView({ about }: { about: AboutContent }) {
         </div>
       </section>
 
-      {/* Activity - 글 + 잔디 */}
+      {/* Activity - 글 + 잔디. 기록이 없는 언어(영어판, EN_LOG_ENABLED)는 잔디만 */}
       <section className="flex flex-col gap-8">
-        <SectionHeader eyebrow="Activity" title="기록" href="/log" linkLabel="모든 글" />
-        {latestPosts.length > 0 && (
+        {showLog ? (
+          <SectionHeader eyebrow="Activity" title={t(lang, "home.log.title")} href={localizedPath(lang, "/log")} linkLabel={t(lang, "home.log.link")} />
+        ) : (
+          <SectionHeader eyebrow="Activity" title={t(lang, "home.activity.title")} />
+        )}
+        {showLog && latestPosts.length > 0 && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-sm:gap-3">
             {latestPosts.map((post) => (
               <a
@@ -246,7 +250,7 @@ export default async function HomeView({ about }: { about: AboutContent }) {
                 rel="noreferrer"
                 className="group flex flex-col gap-3 rounded-3xl border border-line bg-surface p-6 transition-all hover:-translate-y-1 hover:border-accent/40 max-sm:gap-1.5 max-sm:rounded-2xl max-sm:p-4"
               >
-                <span className="text-xs tabular-nums text-muted">{post.publishedAt?.slice(0, 10) ?? ""}</span>
+                {post.publishedAt && <LocalDate iso={post.publishedAt} numeric className="text-xs tabular-nums text-muted" />}
                 <h3 className="font-bold tracking-tight leading-snug line-clamp-2 group-hover:text-accent-2 transition-colors">
                   {post.title}
                 </h3>
@@ -257,7 +261,7 @@ export default async function HomeView({ about }: { about: AboutContent }) {
         )}
         {contributions && (
           <div className="rounded-3xl border border-line bg-surface p-6 sm:p-8 flex flex-col gap-4">
-            <ContributionsCalendar initialDays={contributions.days} years={availableYears()} />
+            <ContributionsCalendar initialDays={contributions.days} years={availableYears()} lang={lang} />
           </div>
         )}
       </section>
@@ -265,8 +269,8 @@ export default async function HomeView({ about }: { about: AboutContent }) {
       {/* Contact CTA */}
       <section className="rounded-3xl border border-line bg-surface px-6 max-[359px]:px-4 py-14 sm:py-20 flex flex-col items-center text-center gap-6">
         <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent-2">Contact</span>
-        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">함께 이야기 나눠요</h2>
-        <p className="text-muted max-w-md">궁금한 점이나 제안이 있다면 편하게 연락 주세요.</p>
+        <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">{t(lang, "home.cta.title")}</h2>
+        <p className="text-muted max-w-md">{t(lang, "home.cta.body")}</p>
         <div className="flex flex-wrap justify-center gap-3">
           {/* 360px 미만은 메일 주소가 버튼 여백·아이콘까지 들어갈 폭이 안 돼서 여백·글자 크기를 줄이고 아이콘 생략 */}
           {profile?.email && (
@@ -293,7 +297,7 @@ export default async function HomeView({ about }: { about: AboutContent }) {
       </section>
 
       <footer className="text-center text-xs text-muted pb-4">
-        © {new Date().getFullYear()} WonJun. All rights reserved.
+        © {yearIn()} WonJun. All rights reserved.
       </footer>
     </div>
   );
