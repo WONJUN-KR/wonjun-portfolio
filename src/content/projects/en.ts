@@ -14,10 +14,10 @@ export const PROJECTS_EN_TEXT = {
     features: [
       "Keeps region, city, and theme filters in the URL query string, so refreshes and shared links show the same view",
       "Supports sign-in, token refresh, likes, and photo posts, with S3 or local-disk storage switched by profile",
-      "Cut home-page image transfer by 88% (7.2MB to 0.9MB) through image optimization",
+      "Cuts home-page image transfer by 88% (7.2MB to 0.9MB) through image optimization",
     ],
     myPart: [
-      "Built the entire project solo, from interpreting the original spec to FE, BE, local dev environment, and automated QA",
+      "Built the entire project solo, from interpreting the original spec through FE, BE, the local dev environment, and automated QA",
       "[BE] Built JWT auth, post, like, and image APIs; abstracted image storage (S3 or local) and seeded data from the original",
       "[FE] Rebuilt the original screens (mega menu, Best Picks, Cities to Visit, post editor) as responsive layouts",
       "[Dev env] Set up one-command startup with docker-compose and a local profile, plus headless-browser QA scripts",
@@ -48,7 +48,7 @@ export const PROJECTS_EN_TEXT = {
     role: "Full-stack developer, team of 9",
     tagline: "A map of nearby gacha shops, built up by user reviews",
     features: [
-      "Finds nearby gacha shops on a map, with pin previews and search-this-area",
+      "Finds nearby gacha shops on a map, with pin previews and \"search this area\"",
       "Shows shop info, reviews, and favorites",
       "Lets users report shops with a map pin",
       "Sends update notifications",
@@ -98,7 +98,7 @@ export const PROJECTS_EN_TEXT = {
       "[Lead] Owned scope, roles, and schedule",
       "[BE] Built admin statistics APIs for publishing by user, post, and blog platform, plus AI token usage",
       "[BE] Built a daily stats aggregation scheduler and optimized stats queries, fixing an ISO week bug",
-      "[BE] Built admin user management (blocks suspending oneself or other admins) and common code management",
+      "[BE] Built admin user management (admins can't suspend themselves or other admins) and common code management",
       "[FE] Built admin dashboard trend charts, paginated stats tables, and common code pages",
     ],
     mockup: {
@@ -122,7 +122,7 @@ export const PROJECTS_EN_TEXT = {
     subtitle: "Home decor community and shop",
     period: "Sep – Oct 2025",
     role: "Full-stack developer, team of 5",
-    tagline: "A commerce platform, similar to Korea's 'Today's House', for sharing interior ideas and buying the products",
+    tagline: "Share interior ideas and shop interior products, like Korea's Today's House",
     features: [
       "Sells products through Toss Payments",
       "Hosts community posts and comments",
