@@ -5,42 +5,6 @@ import type { ProjectSlug } from "./ko";
 // 영어 문구 규칙: myPart 는 과거형 동작 동사로 시작, features 는 현재형, 'I' 없음, 가운뎃점 대신 쉼표 · and, 기간은 'Jan 2026 – Present'
 // 숫자 · 고유명사 · 기술 이름은 원문 그대로. 한국어에서 한 줄인 짧은 줄은 1280px 에서도 한 줄(약 40자 이내)
 export const PROJECTS_EN_TEXT = {
-  "eureka-2026": {
-    title: "Eureka (2026 Rebuild)",
-    subtitle: "Travel spot sharing community, a 2021 team project rebuilt on a modern stack (personal project)",
-    period: "Jan 2026 – Present",
-    role: "Solo full-stack developer",
-    tagline: "2021 team project rebuilt in Next.js 16 and Spring Boot 3.5, now responsive",
-    features: [
-      "Keeps region, city, and theme filters in the URL query string, so refreshes and shared links show the same view",
-      "Supports sign-in, token refresh, likes, and photo posts, with S3 or local-disk storage switched by profile",
-      "Cuts home-page image transfer by 88% (7.2MB to 0.9MB) through image optimization",
-    ],
-    myPart: [
-      "Built the entire project solo, from interpreting the original spec through FE, BE, the local dev environment, and automated QA",
-      "[BE] Built JWT auth, post, like, and image APIs; abstracted image storage (S3 or local) and seeded data from the original",
-      "[FE] Rebuilt the original screens (mega menu, Best Picks, Cities to Visit, post editor) as responsive layouts",
-      "[Dev env] Set up one-command startup with docker-compose and a local profile, plus headless-browser QA scripts",
-    ],
-    mockup: {
-      note: "Captured locally with demo data. Photos are free Unsplash images.",
-      shots: [
-        "Main banner",
-        "Region and theme mega menu",
-        "Best Picks of the Month: top-liked post per category",
-        "Cities to Visit",
-        "Post list with region and category filters",
-        "Post detail with photos and likes",
-        "Post editor with photo upload",
-        "Mobile view (390px)",
-      ],
-      videos: [
-        "Home: banner, Best Picks, and recommended cities",
-        "Write a post → upload 2 photos → publish → detail",
-      ],
-      related: "View the 2021 original",
-    },
-  },
   "gotcha": {
     title: "GOTCHA",
     subtitle: "Gacha shop finder on the App Store",
@@ -155,7 +119,7 @@ export const PROJECTS_EN_TEXT = {
     },
   },
   "eureka-2021": {
-    title: "Eureka (2021 Original)",
+    title: "Eureka (2021)",
     subtitle: "Travel spot community, 2021 bootcamp project",
     period: "2021",
     role: "Full-stack developer, team of 3",
@@ -185,7 +149,6 @@ export const PROJECTS_EN_TEXT = {
         "Home: banner, menu, and Best Picks",
         "Step-by-step editor → save → reading view",
       ],
-      related: "View the 2026 rebuild",
     },
   },
 } satisfies Record<ProjectSlug, ProjectText>;
