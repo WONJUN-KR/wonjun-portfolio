@@ -3,7 +3,7 @@ export type Repo = { label: string; url: string };
 // 프로젝트 화면 둘러보기(팝업) - 로컬에서 띄워 찍은 스크린샷과 짧은 흐름 영상. 팝업을 열 때만 불러옴
 export type MockupShot = { src: string; caption: string };
 export type MockupVideo = { webm: string; mp4: string; poster: string; caption: string };
-// related: 팝업 안에서 바로 넘어갈 짝 프로젝트 (예: 같은 서비스의 2021 원본 ↔ 2026 리빌드)
+// related: 팝업 안에서 바로 넘어갈 짝 프로젝트 (예: 같은 서비스의 원본 ↔ 리빌드)
 export type Mockup = { shots: MockupShot[]; videos: MockupVideo[]; note?: string; related?: { slug: string; label: string } };
 
 export type Project = {

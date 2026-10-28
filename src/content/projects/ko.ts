@@ -2,56 +2,10 @@ import type { Project } from "@/lib/projects";
 
 // 프로젝트 데이터 (한국어 = 기준) - 사진 · 영상 경로, 기술 스택, 링크, 상태 같은 언어와 무관한 값은 여기에만
 // 영어 글자는 ./en.ts 에 slug 별로(글자만). 프로젝트를 추가 · 삭제하면 PROJECT_SLUGS 와 en.ts 도 같이 (빠지면 빌드 실패)
-export const PROJECT_SLUGS = ["eureka-2026", "gotcha", "ai-auto-posting", "cos-house", "eureka-2021"] as const;
+export const PROJECT_SLUGS = ["gotcha", "ai-auto-posting", "cos-house", "eureka-2021"] as const;
 export type ProjectSlug = (typeof PROJECT_SLUGS)[number];
 
 export const PROJECTS_KO: (Project & { slug: ProjectSlug })[] = [
-  {
-    slug: "eureka-2026",
-    title: "유레카 (2026 리빌드)",
-    subtitle: "여행 장소 공유 커뮤니티 - 2021 팀 프로젝트를 최신 스택으로 다시 설계 · 개인 프로젝트",
-    period: "2026.01 ~ 진행중",
-    role: "1인 · 풀스택",
-    tagline: "2021 팀 프로젝트를 Next.js 16 · Spring Boot 3.5로 다시 만들고, 화면 구조는 원본 그대로 반응형으로",
-    features: [
-      "지역·도시·테마 필터를 주소(쿼리스트링)로 관리 - 새로고침해도, 링크를 공유해도 같은 화면",
-      "로그인 · 토큰 재발급 · 좋아요 · 사진 업로드 글쓰기 (S3 ↔ 로컬 디스크 저장소를 프로필로 교체)",
-      "이미지 최적화로 홈 이미지 전송량 7.2MB → 0.9MB(-88%)",
-    ],
-    myPart: [
-      "기획 해석부터 FE · BE · 로컬 개발 환경 · 검수 자동화까지 전부 (1인)",
-      "[BE] JWT 인증 · 게시글 · 좋아요 · 이미지 API, 이미지 저장소 추상화(S3 / 로컬), 원본 기준 시드 데이터",
-      "[FE] 원본 화면 구조(메가 메뉴 · Best 픽 · 떠나기 좋은 도시 · 글쓰기)를 반응형으로 재구성",
-      "[개발 환경] docker-compose + local 프로필로 한 번에 실행, headless 브라우저 검수 스크립트",
-    ],
-    stack: ["Java", "TypeScript", "Spring Boot", "Next.js", "React", "Tailwind CSS", "TanStack Query", "Zustand", "PostgreSQL", "Docker"],
-    repos: [
-      { label: "Frontend", url: "https://github.com/WONJUN-KR/Eureka-FE" },
-      { label: "Backend", url: "https://github.com/WONJUN-KR/Eureka-BE" },
-    ],
-    // 2026 배너 사진(흐림·어둡게) + 같은 흰색 헤더 로고로 합성 - 2021 썸네일과 같은 방식
-    thumbnail: "/projects/mockups/eureka-2026/thumb.jpg",
-    status: "local",
-    device: "laptop",
-    mockup: {
-      videos: [
-        { webm: "/projects/mockups/eureka-2026/main-scroll.webm", mp4: "/projects/mockups/eureka-2026/main-scroll.mp4", poster: "/projects/mockups/eureka-2026/01-main-banner.jpg", caption: "메인 화면 - 배너 · Best 픽 · 추천 도시" },
-        { webm: "/projects/mockups/eureka-2026/write-flow.webm", mp4: "/projects/mockups/eureka-2026/write-flow.mp4", poster: "/projects/mockups/eureka-2026/14-write.jpg", caption: "글쓰기 → 사진 2장 업로드 → 등록 → 상세" },
-      ],
-      shots: [
-        { src: "/projects/mockups/eureka-2026/01-main-banner.jpg", caption: "메인 배너" },
-        { src: "/projects/mockups/eureka-2026/02-main-megamenu.jpg", caption: "지역·테마 메가 메뉴" },
-        { src: "/projects/mockups/eureka-2026/04-main-bestpick.jpg", caption: "이 달의 Best 픽 - 카테고리별 좋아요 1위" },
-        { src: "/projects/mockups/eureka-2026/05-main-recommend.jpg", caption: "떠나기 좋은 도시" },
-        { src: "/projects/mockups/eureka-2026/08-posts.jpg", caption: "게시글 목록 - 지역·카테고리 필터" },
-        { src: "/projects/mockups/eureka-2026/10-detail.jpg", caption: "게시글 상세 - 사진 · 좋아요" },
-        { src: "/projects/mockups/eureka-2026/14-write.jpg", caption: "글쓰기 - 사진 업로드" },
-        { src: "/projects/mockups/eureka-2026/15-mobile-home.jpg", caption: "휴대폰 화면 (390px)" },
-      ],
-      note: "로컬 시연 데이터로 찍었어요. 사진은 Unsplash 무료 이미지예요.",
-      related: { slug: "eureka-2021", label: "2021 원본 보기" },
-    },
-  },
   {
     slug: "gotcha",
     title: "GOTCHA",
@@ -194,7 +148,7 @@ export const PROJECTS_KO: (Project & { slug: ProjectSlug })[] = [
   },
   {
     slug: "eureka-2021",
-    title: "유레카 (2021 원본)",
+    title: "유레카 (2021)",
     subtitle: "여행 장소 공유 커뮤니티 · 2021 국비 과정 팀 프로젝트",
     period: "2021",
     role: "3인 팀 · 풀스택",
@@ -230,7 +184,6 @@ export const PROJECTS_KO: (Project & { slug: ProjectSlug })[] = [
         { src: "/projects/mockups/eureka-2021/14-write-modal.jpg", caption: "단계별 글쓰기 창" },
       ],
       note: "2021년 원본을 2026년에 로컬로 다시 띄워 찍었어요.",
-      related: { slug: "eureka-2026", label: "2026 리빌드 보기" },
     },
   },
 ];
