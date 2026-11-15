@@ -29,7 +29,7 @@ export const PROJECTS_KO: (Project & { slug: ProjectSlug })[] = [
       { label: "Frontend", url: "https://github.com/fcde-project9/GOTCHA-FE" },
       { label: "Backend", url: "https://github.com/fcde-project9/GOTCHA-BE" },
     ],
-    thumbnail: "/projects/gotcha.png",
+    thumbnail: "/projects/thumb-gotcha.jpg",
     mobileThumbPosition: "max-sm:object-center", // 휴대폰에서 썸네일을 자를 때 가운데 앱 화면이 잘리지 않게
     status: "released",
     device: "laptop",
@@ -82,7 +82,8 @@ export const PROJECTS_KO: (Project & { slug: ProjectSlug })[] = [
       { label: "Frontend", url: "https://github.com/WONJUN-KR/Eureka-FE" },
       { label: "Backend", url: "https://github.com/WONJUN-KR/Eureka-BE" },
     ],
-    thumbnail: "/projects/mockups/eureka/01-home.jpg",
+    thumbnail: "/projects/thumb-eureka.jpg",
+    homeThumbnail: "/projects/thumb-eureka-home.jpg",
     status: "local",
     device: "laptop",
     mockup: {
@@ -128,7 +129,8 @@ export const PROJECTS_KO: (Project & { slug: ProjectSlug })[] = [
       { label: "Backend", url: "https://github.com/WONJUN-KR/AI-Auto-Posting-Backend" },
     ],
     logo: "/projects/ocp.png",
-    thumbnail: "/projects/mockups/ai-auto-posting/01-home.jpg",
+    thumbnail: "/projects/thumb-ocp.jpg",
+    homeThumbnail: "/projects/thumb-ocp-home.jpg",
     status: "local",
     device: "laptop",
     mockup: {
@@ -169,7 +171,7 @@ export const PROJECTS_KO: (Project & { slug: ProjectSlug })[] = [
     stack: ["Java", "Spring Boot", "JPA", "Querydsl", "Thymeleaf", "MySQL"],
     repos: [{ label: "Repo", url: "https://github.com/WONJUN-KR/Co-s_House" }],
     logo: "/projects/coshouse.png",
-    thumbnail: "/projects/mockups/cos-house/01-home.jpg",
+    thumbnail: "/projects/thumb-coshouse.jpg",
     status: "local",
     device: "laptop",
     mockup: {

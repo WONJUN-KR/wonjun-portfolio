@@ -159,8 +159,9 @@ export default async function HomeView({ about, lang }: { about: AboutContent; l
         <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-x-8 gap-y-10">
           {featured.map((p, i) => {
             // 홈은 맛보기(이미지 + 한 줄 소개), 핵심 기능·내가 맡은 부분은 /projects 에서
-            const visual = p.thumbnail ?? p.logo;
             const lead = i === 0;
+            // 작은 카드는 크롬 창 하나짜리 썸네일(homeThumbnail)을 먼저 - 줄어도 화면 속 제목이 읽히게
+            const visual = (lead ? undefined : p.homeThumbnail) ?? p.thumbnail ?? p.logo;
             return (
               <Link
                 key={p.slug}
