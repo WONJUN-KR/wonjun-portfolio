@@ -30,6 +30,7 @@ export const PROJECTS_KO: (Project & { slug: ProjectSlug })[] = [
       { label: "Backend", url: "https://github.com/fcde-project9/GOTCHA-BE" },
     ],
     thumbnail: "/projects/thumb-gotcha.jpg",
+    homeThumbnail: "/projects/thumb-gotcha-home.jpg",
     mobileThumbPosition: "max-sm:object-center", // 휴대폰에서 썸네일을 자를 때 가운데 앱 화면이 잘리지 않게
     status: "released",
     device: "laptop",
