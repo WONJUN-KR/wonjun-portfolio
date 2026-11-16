@@ -81,7 +81,7 @@ export const ko = {
     pinned: "대표",
     lead: "팀장",
     features: "핵심 기능",
-    myPart: "내가 맡은 부분",
+    myPart: "담당",
     live: "라이브 보기",
   },
   gallery: {

@@ -1,7 +1,7 @@
 import type { Project } from "@/lib/projects";
 
 // 프로젝트 데이터 - 사진 · 영상 경로, 기술 스택, 링크, 상태. 프로젝트를 추가 · 삭제하면 PROJECT_SLUGS 도 같이
-export const PROJECT_SLUGS = ["gotcha", "ai-auto-posting", "cos-house", "eureka-2021"] as const;
+export const PROJECT_SLUGS = ["gotcha", "eureka", "ai-auto-posting", "cos-house"] as const;
 export type ProjectSlug = (typeof PROJECT_SLUGS)[number];
 
 export const PROJECTS_KO: (Project & { slug: ProjectSlug })[] = [
@@ -9,11 +9,11 @@ export const PROJECTS_KO: (Project & { slug: ProjectSlug })[] = [
     slug: "gotcha",
     title: "GOTCHA",
     subtitle: "가챠샵 지도 서비스 · App Store 출시",
-    period: "2026.01 ~ 2026.11",
+    period: "2026.01 ~ 진행중",
     role: "9인 팀(디자인 포함) · 풀스택",
     tagline: "근처 가챠샵을 지도에서 찾고, 리뷰와 제보로 함께 채워가는 서비스",
     features: [
-      "지도에서 주변 가챠샵 찾기 - 핀을 누르면 미리보기, 이 지역 다시 검색",
+      "지도에서 주변 가챠샵 찾기 · 핀 미리보기",
       "매장 정보·리뷰 보고 즐겨찾기",
       "새 가챠샵 제보 - 지도에서 위치를 찍으면 주소가 자동으로",
       "새 소식 알림 받기",
@@ -29,7 +29,8 @@ export const PROJECTS_KO: (Project & { slug: ProjectSlug })[] = [
       { label: "Frontend", url: "https://github.com/fcde-project9/GOTCHA-FE" },
       { label: "Backend", url: "https://github.com/fcde-project9/GOTCHA-BE" },
     ],
-    thumbnail: "/projects/gotcha.png",
+    thumbnail: "/projects/thumb-gotcha.jpg",
+    homeThumbnail: "/projects/thumb-gotcha-home.jpg",
     mobileThumbPosition: "max-sm:object-center", // 휴대폰에서 썸네일을 자를 때 가운데 앱 화면이 잘리지 않게
     status: "released",
     device: "laptop",
@@ -57,13 +58,60 @@ export const PROJECTS_KO: (Project & { slug: ProjectSlug })[] = [
     },
   },
   {
+    slug: "eureka",
+    title: "유레카",
+    subtitle: "여행 경로 공유 커뮤니티",
+    period: "2026.01 ~ 2026.11",
+    role: "개인 · 풀스택",
+    tagline: "다녀온 곳을 남기면 지도에 여행 경로가 그려지는 커뮤니티",
+    features: [
+      "들른 곳을 순서대로 기록 (장소 · 시간 · 메모 · 사진)",
+      "들른 곳 타임라인과 지도 위 여행 경로",
+      "지역 · 테마 · 검색으로 찾기, Best 픽",
+      "내 유레카 페이지 - 다녀온 곳 지도, 링크 공유",
+      "이메일 · 카카오 로그인, 좋아요 · 신고",
+    ],
+    myPart: [
+      "[BE] 게시글 · 들른 장소 · 사진 API, 검색 · 좋아요 · 신고(3건이면 숨김) - 개수 한도는 행 잠금, 중복은 유니크 제약",
+      "[BE] 카카오 로그인 - 토큰을 주소에 싣지 않고 1회용 코드 + nonce 로 교환, 동시 첫 로그인은 재시도",
+      "[FE] 디자인부터 새로 - 종이 여행 노트 톤, 홈 · 목록 · 상세(타임라인 + 지도 경로) · 단계별 글쓰기 · 공개 페이지",
+      "[FE] 로그인 상태를 여러 탭에서 안전하게 - 세션 번호 · 저장값 다시 읽기 · 탭 간 재발급 잠금",
+      "PR 마다 Claude 코드 리뷰 · 코드래빗(CLI · PR) 리뷰, 반복된 지적은 레포 리뷰 규칙 문서로",
+    ],
+    stack: ["Java", "TypeScript", "Spring Boot", "Next.js", "Spring Security", "JPA", "React", "Tailwind CSS", "TanStack Query", "Zustand", "카카오맵", "PostgreSQL", "Docker", "GitHub Actions", "AWS S3"],
+    repos: [
+      { label: "Frontend", url: "https://github.com/WONJUN-KR/Eureka-FE" },
+      { label: "Backend", url: "https://github.com/WONJUN-KR/Eureka-BE" },
+    ],
+    thumbnail: "/projects/thumb-eureka.jpg",
+    homeThumbnail: "/projects/thumb-eureka-home.jpg",
+    status: "local",
+    device: "laptop",
+    mockup: {
+      videos: [],
+      shots: [
+        { src: "/projects/mockups/eureka/01-home.jpg", caption: "홈 - 다녀온 곳을 남기고 다른 사람의 여행을 따라가기" },
+        { src: "/projects/mockups/eureka/02-home-bestpick.jpg", caption: "Best 픽 - 좋아요를 많이 받은 여행 기록" },
+        { src: "/projects/mockups/eureka/03-posts.jpg", caption: "전체 글 - 검색 · 카테고리 · 지역 · 도시 · 정렬" },
+        { src: "/projects/mockups/eureka/04-post-detail.jpg", caption: "글 상세 - 사진 · 지역 · 테마" },
+        { src: "/projects/mockups/eureka/05-post-route.jpg", caption: "들른 곳 타임라인 + 카카오 지도 위 여행 경로" },
+        { src: "/projects/mockups/eureka/06-write-places.jpg", caption: "글쓰기 - 들른 곳 순서 · 종류 · 시간 · 메모 · 사진" },
+        { src: "/projects/mockups/eureka/07-user-page.jpg", caption: "내 유레카 페이지 - 전국 지도에 다녀온 곳" },
+        { src: "/projects/mockups/eureka/08-mypage.jpg", caption: "마이페이지 - 작성글 · 추천한 글" },
+        { src: "/projects/mockups/eureka/09-login.jpg", caption: "로그인 - 이메일 · 카카오로 시작하기" },
+        { src: "/projects/mockups/eureka/10-mobile-home.jpg", caption: "휴대폰 홈 (390px)" },
+        { src: "/projects/mockups/eureka/11-mobile-detail.jpg", caption: "휴대폰 글 상세 (390px)" },
+      ],
+    },
+  },
+  {
     slug: "ai-auto-posting",
     title: "AI Auto Posting",
     subtitle: "블로그 콘텐츠 자동 발행 플랫폼",
     period: "2025.11 ~ 2025.12",
     role: "6인 팀 · 풀스택",
     lead: true,
-    tagline: "트렌드 키워드로 AI가 블로그 글을 쓰고, 연결한 블로그에 자동 발행",
+    tagline: "트렌드 키워드로 AI가 블로그 글을 쓰고 자동 발행",
     features: [
       "블로그 계정을 연결하고 발행 워크플로우 등록",
       "트렌드 키워드 수집 → AI 글 생성 → 자동 발행",
@@ -82,7 +130,8 @@ export const PROJECTS_KO: (Project & { slug: ProjectSlug })[] = [
       { label: "Backend", url: "https://github.com/WONJUN-KR/AI-Auto-Posting-Backend" },
     ],
     logo: "/projects/ocp.png",
-    thumbnail: "/projects/mockups/ai-auto-posting/01-home.jpg",
+    thumbnail: "/projects/thumb-ocp.jpg",
+    homeThumbnail: "/projects/thumb-ocp-home.jpg",
     status: "local",
     device: "laptop",
     mockup: {
@@ -123,7 +172,7 @@ export const PROJECTS_KO: (Project & { slug: ProjectSlug })[] = [
     stack: ["Java", "Spring Boot", "JPA", "Querydsl", "Thymeleaf", "MySQL"],
     repos: [{ label: "Repo", url: "https://github.com/WONJUN-KR/Co-s_House" }],
     logo: "/projects/coshouse.png",
-    thumbnail: "/projects/mockups/cos-house/01-home.jpg",
+    thumbnail: "/projects/thumb-coshouse.jpg",
     status: "local",
     device: "laptop",
     mockup: {
@@ -141,44 +190,6 @@ export const PROJECTS_KO: (Project & { slug: ProjectSlug })[] = [
         { src: "/projects/mockups/cos-house/20-admin.jpg", caption: "관리자 대시보드" },
         { src: "/projects/mockups/cos-house/21-admin-products.jpg", caption: "관리자 상품 관리 · 검색" },
         { src: "/projects/mockups/cos-house/26-mobile-home.jpg", caption: "휴대폰 화면 (390px)" },
-      ],
-    },
-  },
-  {
-    slug: "eureka-2021",
-    title: "유레카",
-    subtitle: "여행 장소 공유 커뮤니티 · 국비 과정 팀 프로젝트",
-    period: "2021",
-    role: "3인 팀 · 풀스택",
-    tagline: "혼자 알기 아까운 여행지를 사진과 함께 공유하는 JSP 커뮤니티",
-    features: [
-      "지역(시·도 → 도시)·테마 메가 메뉴로 장소 찾기",
-      "단계별 글쓰기 창: 카테고리 → 지역 → 누구와 → 세부 테마 → 사진 → 업로드",
-      "이 달의 Best 픽 · 떠나기 좋은 도시 · 읽기 창",
-    ],
-    myPart: [
-      "[2026 복원] DB 덤프 없이 DAO SQL로 스키마를 거꾸로 설계해 Oracle(docker)에 재구성",
-      "[2026 복원] 코드에 박혀 있던 DB 접속 정보를 환경변수 설정으로 분리",
-      "[2026 복원] Tomcat 9 + Oracle 한 줄 실행 스크립트, 화면 캡처 · 흐름 영상 정리",
-    ],
-    stack: ["Java", "Servlet", "JSP", "JDBC", "jQuery", "Oracle", "Tomcat"],
-    repos: [{ label: "Repo", url: "https://github.com/WONJUN-KR/Eureka-2021" }],
-    thumbnail: "/projects/mockups/eureka-2021/04-main-bestpick.jpg",
-    status: "local",
-    device: "laptop",
-    mockup: {
-      videos: [
-        { webm: "/projects/mockups/eureka-2021/main-scroll.webm", mp4: "/projects/mockups/eureka-2021/main-scroll.mp4", poster: "/projects/mockups/eureka-2021/01-main-banner.jpg", caption: "메인 화면 - 배너 · 메뉴 · Best 픽" },
-        { webm: "/projects/mockups/eureka-2021/write-flow.webm", mp4: "/projects/mockups/eureka-2021/write-flow.mp4", poster: "/projects/mockups/eureka-2021/14-write-modal.jpg", caption: "단계별 글쓰기 → 저장 → 읽기 창" },
-      ],
-      shots: [
-        { src: "/projects/mockups/eureka-2021/01-main-banner.jpg", caption: "메인 배너" },
-        { src: "/projects/mockups/eureka-2021/02-main-megamenu.jpg", caption: "지역·테마 메가 메뉴" },
-        { src: "/projects/mockups/eureka-2021/04-main-bestpick.jpg", caption: "이 달의 Best 픽" },
-        { src: "/projects/mockups/eureka-2021/05-main-recommend.jpg", caption: "떠나기 좋은 도시" },
-        { src: "/projects/mockups/eureka-2021/08-boardlist.jpg", caption: "게시글 목록" },
-        { src: "/projects/mockups/eureka-2021/10-read-popup.jpg", caption: "읽기 창" },
-        { src: "/projects/mockups/eureka-2021/14-write-modal.jpg", caption: "단계별 글쓰기 창" },
       ],
     },
   },

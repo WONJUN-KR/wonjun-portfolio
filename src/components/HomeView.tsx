@@ -153,19 +153,21 @@ export default async function HomeView({ about, lang }: { about: AboutContent; l
         </section>
       )}
 
-      {/* Projects - 첫 프로젝트는 크게(왼쪽 2칸), 나머지 둘은 오른쪽에 작게. 모바일은 대표 하나만(나머지는 "프로젝트 모두 보기") */}
+      {/* Projects - 첫 프로젝트는 왼쪽(580), 나머지 둘은 오른쪽(370)에 위아래로 - 작은 카드 썸네일 속 화면이 보이게 580:370 비율. 모바일은 대표 하나만(나머지는 "프로젝트 모두 보기") */}
       <section className="flex flex-col gap-8">
         <SectionHeader title={t("home.projects.title")} href={localizedPath(lang, "/projects")} linkLabel={t("home.projects.link")} />
-        <div className="grid grid-cols-1 md:grid-cols-3 md:grid-rows-2 gap-x-8 gap-y-10">
+        <div className="grid grid-cols-1 md:grid-cols-[580fr_370fr] md:grid-rows-2 gap-x-8 gap-y-10">
           {featured.map((p, i) => {
             // 홈은 맛보기(이미지 + 한 줄 소개), 핵심 기능·내가 맡은 부분은 /projects 에서
-            const visual = p.thumbnail ?? p.logo;
             const lead = i === 0;
+            // 홈은 홈용 썸네일(homeThumbnail)을 먼저 - 작은 카드는 크롬 창 하나짜리(줄어도 제목이 읽히게),
+            // 큰 카드는 휴대폰을 크게 (프로젝트 페이지용은 '화면 둘러보기' 버튼 자리를 비워 둔 구도)
+            const visual = p.homeThumbnail ?? p.thumbnail ?? p.logo;
             return (
               <Link
                 key={p.slug}
                 href={`${localizedPath(lang, "/projects")}#${p.slug}`}
-                className={`group flex flex-col gap-4 max-sm:gap-3 ${lead ? "md:col-span-2 md:row-span-2" : "max-sm:hidden"}`}
+                className={`group flex flex-col gap-4 max-sm:gap-3 ${lead ? "md:row-span-2" : "max-sm:hidden"}`}
               >
                 {visual && (
                   <div className={`relative overflow-hidden rounded-xl border border-line transition-opacity duration-150 group-hover:opacity-90 ${lead ? "aspect-[16/10]" : "aspect-[16/9]"} max-sm:aspect-[16/10] ${p.thumbnail ? "bg-background" : "bg-white"}`}>
@@ -173,7 +175,7 @@ export default async function HomeView({ about, lang }: { about: AboutContent; l
                       src={visual}
                       alt={p.title}
                       fill
-                      sizes={lead ? "(max-width: 768px) 100vw, 66vw" : "(max-width: 768px) 100vw, 33vw"}
+                      sizes={lead ? "(max-width: 768px) 100vw, 60vw" : "(max-width: 768px) 100vw, 40vw"}
                       className={p.thumbnail ? `object-cover object-top ${p.mobileThumbPosition ?? ""}` : "object-contain p-6 max-sm:p-3 mix-blend-multiply"}
                     />
                   </div>
