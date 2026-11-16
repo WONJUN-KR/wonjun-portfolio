@@ -21,6 +21,8 @@ export type Project = {
   liveUrl?: string;
   repos: Repo[];
   thumbnail?: string;
+  // 홈 작은 카드용 - 크롬 창 하나만 크게 (줄어도 첫 화면 제목이 읽히게). 없으면 thumbnail
+  homeThumbnail?: string;
   // 홈 휴대폰 카드(낮은 5:2)에서 썸네일 어디를 보여줄지 - 없으면 위쪽
   mobileThumbPosition?: string;
   logo?: string;
